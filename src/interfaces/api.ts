@@ -4,7 +4,7 @@ export interface IPlayerSchema {
     playerId: string,
     screenId: string,
     __typename: string,
-    direction: string | number,
+    direction: number,
 
 }
 
