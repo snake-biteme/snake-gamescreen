@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import apiClientAppSync from "../../services/apiClientAppSync";
 import {updatePosition} from "../../services/graphql";
-import {IPositionSchema, IRealTimeData} from "../../interfaces/api";
+import {IAllPlayers, IAllPositions, IPlayerSchema, IPositionSchema, IRealTimeData} from "../../interfaces/api";
 import styles from './Screen.module.css'
 
 
@@ -10,55 +10,78 @@ function initialBoard() {
     return new Array(ROWS).fill([...columns]);
 }
 
-const COLUMNS = 10;
+const COLUMNS = 8;
 const ROWS = 3;
-const TICK = 2000;
+const TICK = 1000;
 
 function Screen() {
-    const [snakes, setSnakes] = useState<{ [key: string]: IPositionSchema }>({});
+    const [snakes, setSnakes] = useState<IAllPlayers>({});
+    const [positions, setPositions] = useState<IAllPositions>({});
     const [board, setBoard] = useState<any>(initialBoard())
     const [HTMLBoard, setHTMLBoard] = useState<any>([])
     const [counter, setCounter] = useState<number>(0)
     const screenId = 'asdfsdfasdfsd';
 
+    const UP = 1;
+    const DOWN = 2;
+    const LEFT = 3;
+    const RIGHT = 4;
 
+    // move snake positions
     useEffect(() => {
         const interval = setInterval(() => {
-            console.log('TICK');
+            // setBoard([...initialBoard()]);
             setCounter(prev => prev + 1);
-            setBoard((prevBoard: any) => {
-                const nextBoard = JSON.parse(JSON.stringify(prevBoard));
-                for (let r = 0; r < ROWS; r++) {
-                    for (let c = 0; c < COLUMNS; c++) {
-                        const id = nextBoard[r][c]
-                        if (id) {
-                            console.log('FOUND ID', id, r, c)
-                            // todo here to check the direction
-                            nextBoard[r][c - 1] = id;
-                            nextBoard[r][c] = null;
-                        }
-                    }
-                }
-                return nextBoard;
-            })
 
+            if (positions === {}) return;
+
+            const newPositions: IAllPositions = {}
+
+            for (const [id, snake] of Object.entries(snakes)) {
+                if (snake.direction === 3) {
+                    const currentPosition = [...positions[id]]
+                    const currentHead = {...currentPosition[0]}
+
+                    const newCol = currentHead.col === 0 ? COLUMNS - 1 : currentHead.col - 1;
+
+                    currentPosition.unshift({
+                        row: currentHead.row,
+                        col: newCol,
+                    });
+
+                    const toBeCleared = currentPosition.pop();
+                    setBoard((prev: any) => {
+                       return [...prev, prev[toBeCleared!.row][toBeCleared!.col] = null];
+                    })
+
+                    newPositions[id] = currentPosition;
+                }
+            }
+
+            setPositions(newPositions);
         }, TICK);
 
         return () => clearInterval(interval);
-    })
+    });
 
+    // save new player
     useEffect(() => {
         const realtimeResults = (data: IRealTimeData) => {
             const position = data.data.onPositionUpdated;
 
             console.log('realtime data: ', position);
-            setSnakes((prevState: { [key: string]: IPositionSchema }) => {
+            setSnakes((prevState: IAllPlayers) => {
                 return {...prevState, [position.playerId]: position}
             })
 
-            const newBoard = JSON.parse(JSON.stringify(board));
-            newBoard[1][9] = position.playerId;
-            setBoard(newBoard)
+            const randomPosition = {
+                row: 1,
+                col: 9,
+            }
+
+            setPositions((prevState: IAllPositions) => {
+                return {...prevState, [position.playerId]: [randomPosition]}
+            })
         };
 
         const dummyData = {
@@ -68,6 +91,7 @@ function Screen() {
                     color: '#980d0d',
                     playerId: '1111',
                     screenId: 'asdfsdfasdfsd',
+                    direction: 3,
                     __typename: 'Position'
                 }
             }
@@ -91,6 +115,19 @@ function Screen() {
         // });
     }, [])
 
+    // get players on board
+    useEffect(() => {
+        const newBoard = JSON.parse(JSON.stringify(board));
+
+        for (const [id, position] of Object.entries(positions)) {
+            newBoard[position[0].row][position[0].col] = id;
+        }
+
+        setBoard(newBoard)
+
+    }, [positions])
+
+    // render board
     useEffect(() => {
         // console.log(board);
         const htmlBoard = []
