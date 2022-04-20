@@ -5,7 +5,7 @@ export const updatePosition = gql`
         onPositionUpdated(screenId: $screenId) {
             playerId
             screenId
-            angle
+            direction
             color
         }
     }

@@ -15,14 +15,14 @@ function NewPlayerLogic({setSnakes, setPositions} : IProps) {
     useEffect(() => {
         const realtimeResults = (data: IRealTimeData) => {
             const position = data.data.onPositionUpdated;
-            position.direction = position.angle === 0 ? 4 : position.angle
 
+            console.log('realtime data: ', position);
             setSnakes((prevState: IAllPlayers) => {
                 return {...prevState, [position.playerId]: position};
             })
 
             // todo make this better, rely on board not angle
-            if (position.angle === 0) {
+            if (position.direction === 'RIGHT') {
                 const randomPosition = {
                     row: 4,
                     col: 2,

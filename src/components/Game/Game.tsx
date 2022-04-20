@@ -37,18 +37,18 @@ function Game() {
                     const currentHead = {...currentPosition[0]};
                     const newHead: IPositionSchema = {...currentHead}
                     switch (snake.direction) {
-                        case 0:
+                        case 'START':
                             break;
-                        case 1:
+                        case 'UP':
                             newHead.row = currentHead.row === 0 ? ROWS - 1 : currentHead.row - 1;
                             break;
-                        case 2:
+                        case 'DOWN':
                             newHead.row = currentHead.row === ROWS - 1 ? 0 : currentHead.row + 1;
                             break;
-                        case 3:
+                        case 'LEFT':
                             newHead.col = currentHead.col === 0 ? COLUMNS - 1 : currentHead.col - 1;
                             break;
-                        case 4:
+                        case 'RIGHT':
                             newHead.col = currentHead.col === COLUMNS - 1 ? 0 : currentHead.col + 1;
                             break;
                     }

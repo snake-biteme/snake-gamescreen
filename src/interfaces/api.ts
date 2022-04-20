@@ -1,11 +1,9 @@
 export interface IPlayerSchema {
-    angle: number,
+    direction: string,
     color: string,
     playerId: string,
     screenId: string,
     __typename: string,
-    direction: number,
-
 }
 
 export interface IRealTimeData {
