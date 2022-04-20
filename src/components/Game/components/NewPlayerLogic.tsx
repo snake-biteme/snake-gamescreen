@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {IAllPlayers, IAllPositions, IRealTimeData} from "../../../interfaces/api";
+import {IAllPlayers, IAllPositions, IRealTimeData, TDirections} from "../../../interfaces/api";
 import apiClientAppSync from "../../../services/apiClientAppSync";
 import {updatePosition} from "../../../services/graphql";
 import {getRandomColumn, getRandomRow} from "../../utils";
@@ -7,6 +7,18 @@ import {getRandomColumn, getRandomRow} from "../../utils";
 interface IProps {
     setPlayers: Function,
     setPositions: Function,
+}
+
+function updateDirection(previousDirection: TDirections, newDirection: TDirections) {
+    let updatedDirection = newDirection // new direction by default
+
+    // snake can only go to three directions
+    if (previousDirection === 'UP' && updatedDirection === 'DOWN') updatedDirection = 'UP';
+    if (previousDirection === 'RIGHT' && updatedDirection === 'LEFT') updatedDirection = 'RIGHT';
+    if (previousDirection === 'DOWN' && updatedDirection === 'UP') updatedDirection = 'DOWN';
+    if (previousDirection === 'LEFT' && updatedDirection === 'RIGHT') updatedDirection = 'LEFT';
+
+    return updatedDirection
 }
 
 
@@ -24,15 +36,7 @@ function NewPlayerLogic({setPlayers, setPositions}: IProps) {
             allPlayers = prevState;
 
             const previousDirection = prevState[position.playerId]?.direction;
-            let updatedDirection = position.direction // new direction by default
-
-            // snake can only go to three directions
-            if (previousDirection === 'UP' && updatedDirection === 'DOWN') updatedDirection = 'UP';
-            if (previousDirection === 'RIGHT' && updatedDirection === 'LEFT') updatedDirection = 'RIGHT';
-            if (previousDirection === 'DOWN' && updatedDirection === 'UP') updatedDirection = 'DONW';
-            if (previousDirection === 'LEFT' && updatedDirection === 'RIGHT') updatedDirection = 'LEFT';
-
-            position.direction = updatedDirection
+            position.direction = updateDirection(previousDirection, position.direction)
 
             return {...prevState, [position.playerId]: position};
         })
