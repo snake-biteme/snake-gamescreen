@@ -12,13 +12,14 @@ function initialBoard() {
     return new Array(ROWS).fill([...columns]);
 }
 
-function Screen() {
+function Game() {
     const [snakes, setSnakes] = useState<IAllPlayers>({});
     const [positions, setPositions] = useState<IAllPositions>({});
     const [board, setBoard] = useState<any>(initialBoard());
     const [HTMLBoard, setHTMLBoard] = useState<any>([]);
     const [counter, setCounter] = useState<number>(0);
     const screenId = 'asdfsdfasdfsd';
+
 
     // const UP = 1;
     // const DOWN = 2;
@@ -158,4 +159,4 @@ function Screen() {
     );
 }
 
-export default Screen;
+export default Game;
