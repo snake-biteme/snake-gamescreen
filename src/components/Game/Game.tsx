@@ -16,56 +16,48 @@ function Game() {
     const [board, setBoard] = useState<any>(initialBoard());
     const [counter, setCounter] = useState<number>(0);
 
-    function playerExists(playerID: string) {
-        console.log(players)
-        console.log(!!players[playerID])
-        return !!players[playerID];
-    }
-
     // move snake positions
     useEffect(() => {
             const interval = setInterval(() => {
                 setCounter(prev => prev + 1);
 
-                if (positions === {}) return;
+            if (JSON.stringify(positions) === '{}') return;
 
-                const newPositions: IAllPositions = {};
+            const newPositions: IAllPositions = {};
 
-                for (const [id, snake] of Object.entries(players)) {
-                    const currentPosition = [...positions[id]];
-                    const currentHead = {...currentPosition[0]};
-                    const newHead: IPositionSchema = {...currentHead}
-                    switch (snake.direction) {
-                        case 'START':
-                            break;
-                        case 'UP':
-                            newHead.row = currentHead.row === 0 ? ROWS - 1 : currentHead.row - 1;
-                            break;
-                        case 'DOWN':
-                            newHead.row = currentHead.row === ROWS - 1 ? 0 : currentHead.row + 1;
-                            break;
-                        case 'LEFT':
-                            newHead.col = currentHead.col === 0 ? COLUMNS - 1 : currentHead.col - 1;
-                            break;
-                        case 'RIGHT':
-                            newHead.col = currentHead.col === COLUMNS - 1 ? 0 : currentHead.col + 1;
-                            break;
-                    }
-                    currentPosition.unshift(newHead);
-                    const toBeCleared = currentPosition.pop();
-                    newPositions[id] = currentPosition;
-                    setBoard((prev: any) => {
-                        if (toBeCleared) {
-                            return [...prev, prev[toBeCleared.row][toBeCleared.col] = null];
-                        }
-                    })
+            for (const [id, snake] of Object.entries(players)) {
+                const currentPosition = [...positions[id]];
+                const currentHead = {...currentPosition[0]};
+                const newHead: IPositionSchema = {...currentHead}
+                switch (snake.direction) {
+                    case 'UP':
+                        newHead.row = currentHead.row === 0 ? ROWS - 1 : currentHead.row - 1;
+                        break;
+                    case 'DOWN':
+                        newHead.row = currentHead.row === ROWS - 1 ? 0 : currentHead.row + 1;
+                        break;
+                    case 'LEFT':
+                        newHead.col = currentHead.col === 0 ? COLUMNS - 1 : currentHead.col - 1;
+                        break;
+                    case 'RIGHT':
+                        newHead.col = currentHead.col === COLUMNS - 1 ? 0 : currentHead.col + 1;
+                        break;
                 }
-                setPositions(newPositions);
+                currentPosition.unshift(newHead);
+                const toBeCleared = currentPosition.pop();
+                newPositions[id] = currentPosition;
+                setBoard((prev: any) => {
+                    if (toBeCleared) {
+                        return [...prev, prev[toBeCleared.row][toBeCleared.col] = null];
+                    }
+                })
+            }
+            setPositions(newPositions);
+            console.log('FINISHED INTERVAL')
 
-            }, TICK);
-            return () => clearInterval(interval);
-        }, [positions]
-    );
+        }, TICK);
+        return () => clearInterval(interval);
+    }, [positions]);
 
 // get players on board
     useEffect(() => {
