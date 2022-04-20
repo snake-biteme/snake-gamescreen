@@ -13,6 +13,7 @@ function Board({board, snakes} : IProps) {
     const [htmlBoard, setHTMLBoard] = useState([])
 
     useEffect(() => {
+        // console.log('HTML BOARD')
         const htmlBoardArr: any = [];
         for (let r = 0; r < ROWS; r++) {
             const row: any = [];

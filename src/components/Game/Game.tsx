@@ -18,13 +18,14 @@ function Game() {
 
     // move snake positions
     useEffect(() => {
-            const interval = setInterval(() => {
-                setCounter(prev => prev + 1);
+        // console.log('SETTING INTERVAL')
+        const interval = setInterval(() => {
+            setCounter(prev => prev + 1);
 
             if (JSON.stringify(positions) === '{}') return;
 
             const newPositions: IAllPositions = {};
-
+            // console.log('MOVING SNAKES', players)
             for (const [id, snake] of Object.entries(players)) {
                 const currentPosition = [...positions[id]];
                 const currentHead = {...currentPosition[0]};
@@ -53,7 +54,7 @@ function Game() {
                 })
             }
             setPositions(newPositions);
-            console.log('FINISHED INTERVAL')
+            // console.log('FINISHED INTERVAL')
 
         }, TICK);
         return () => clearInterval(interval);
@@ -61,6 +62,7 @@ function Game() {
 
 // get players on board
     useEffect(() => {
+        // console.log('PLAYERS ON BOARD', players)
         const newBoard = JSON.parse(JSON.stringify(board));
         if (Object.keys(positions).length > 0) {
 
