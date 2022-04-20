@@ -20,7 +20,6 @@ function Game() {
         if (JSON.stringify(positions) === '{}') return;
 
         const newPositions: IAllPositions = {};
-        console.log('MOVING SNAKES', players)
         for (const [id, snake] of Object.entries(players)) {
             const currentPosition = [...positions[id]];
             const currentHead = {...currentPosition[0]};
@@ -50,16 +49,18 @@ function Game() {
         }
         setPositions(newPositions);
 
-        const newBoard = JSON.parse(JSON.stringify(board));
-        if (Object.keys(newPositions).length > 0) {
+    }, [counter])
 
-            for (const [id, position] of Object.entries(newPositions)) {
+    useEffect(() => {
+        const newBoard = JSON.parse(JSON.stringify(board));
+        if (Object.keys(positions).length > 0) {
+
+            for (const [id, position] of Object.entries(positions)) {
                 newBoard[position[0].row][position[0].col] = id;
             }
             setBoard(newBoard);
         }
-
-    }, [counter])
+    }, [positions])
 
     useEffect(() => {
         const interval = setInterval(() => {
