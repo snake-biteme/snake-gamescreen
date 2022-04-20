@@ -7,6 +7,7 @@ export const updatePosition = gql`
             screenId
             direction
             color
+            name
         }
     }
 `;

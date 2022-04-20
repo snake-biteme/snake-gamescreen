@@ -3,6 +3,7 @@ export interface IPlayerSchema {
     color: string,
     playerId: string,
     screenId: string,
+    name: string,
     __typename: string,
 }
 
