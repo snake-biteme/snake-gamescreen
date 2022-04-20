@@ -25,6 +25,7 @@ function NewPlayerLogic({setPlayers, setPositions}: IProps) {
             return {...prevState, [position.playerId]: position};
         })
 
+        // generate random position for new players - checking if they exist
         if (!(allPlayers ? allPlayers[position.playerId] : true)) {
             const randomPosition = {
                 row: getRandomRow(),
