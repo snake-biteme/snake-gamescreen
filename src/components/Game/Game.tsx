@@ -2,9 +2,9 @@ import React, {useEffect, useState} from 'react';
 import apiClientAppSync from "../../services/apiClientAppSync";
 import {updatePosition} from "../../services/graphql";
 import {IAllPlayers, IAllPositions, IPositionSchema, IRealTimeData} from "../../interfaces/api";
-import styles from './Screen.module.css'
 import {COLUMNS, ROWS, TICK} from "../../CONST";
 import {getRandomColumn, getRandomRow} from "../utils";
+import Board from "./components/Board/Board";
 
 
 function initialBoard() {
@@ -16,7 +16,6 @@ function Game() {
     const [snakes, setSnakes] = useState<IAllPlayers>({});
     const [positions, setPositions] = useState<IAllPositions>({});
     const [board, setBoard] = useState<any>(initialBoard());
-    const [HTMLBoard, setHTMLBoard] = useState<any>([]);
     const [counter, setCounter] = useState<number>(0);
     const screenId = 'asdfsdfasdfsd';
 
@@ -69,7 +68,7 @@ function Game() {
             }, TICK);
 
             return () => clearInterval(interval);
-        }
+        }, []
     );
 
 // new player and directions
@@ -126,33 +125,10 @@ function Game() {
 
     }, [positions]);
 
-// render board
-    useEffect(() => {
-        // console.log(board);
-        const htmlBoard = [];
-        for (let r = 0; r < ROWS; r++) {
-            const row = [];
-            for (let c = 0; c < COLUMNS; c++) {
-                const columnKey = `C_${c}`;
-                let colorStyle = {};
-                if (board[r][c]) {
-                    colorStyle = {backgroundColor: snakes[board[r][c]].color};
-                }
-
-                row.push(<div key={columnKey} className={styles.cell} style={colorStyle}/>);
-            }
-            const rowKey = `R_${r}`
-            htmlBoard.push(<div key={rowKey} className={styles.row}>{row}</div>);
-        }
-        setHTMLBoard(htmlBoard);
-
-    }, [board]);
-
-
     return (
         <div>
             Game
-            {HTMLBoard}
+            <Board board={board} snakes={snakes}/>
             <div>{counter}</div>
         </div>
 
