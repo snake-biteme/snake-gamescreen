@@ -3,17 +3,19 @@ import AWSAppSyncClient from 'aws-appsync'
 import {AUTH_TYPE} from 'aws-appsync/lib/client'
 
 
+const { REACT_APP_REGION, REACT_APP_ACCESS_KEY_ID, REACT_APP_SECRET_ACCESS_KEY, REACT_APP_URL } = process.env
+
 AWS.config.update({
-    region: 'eu-central-1',
+    region: REACT_APP_REGION!,
     credentials: new AWS.Credentials({
-        accessKeyId: 'AKIAXSHWDEE3TL4PZPE5',
-        secretAccessKey: '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',
+        accessKeyId: REACT_APP_ACCESS_KEY_ID!,
+        secretAccessKey: REACT_APP_SECRET_ACCESS_KEY!,
     }),
 });
 
 export default new AWSAppSyncClient({
-    url: 'https://efmtgafdgrabfamesyqszszv5e.appsync-api.eu-central-1.amazonaws.com/graphql',
-    region: 'eu-central-1',
+    url: REACT_APP_URL!,
+    region: REACT_APP_REGION!,
     auth: {
         type: AUTH_TYPE.AWS_IAM,
         credentials: AWS.config.credentials!,
