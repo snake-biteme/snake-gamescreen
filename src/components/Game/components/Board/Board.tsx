@@ -24,7 +24,7 @@ function Board({board, snakes} : IProps) {
                     colorStyle = {backgroundColor: snakes[board[r][c]].color};
                 }
 
-                row.push(<div key={columnKey} className={styles.cell} style={colorStyle}/>);
+                row.push(<div key={columnKey} className={styles.cell} style={colorStyle}>{snakes[board[r][c]]?.name}</div>);
             }
             const rowKey = `R_${r}`
             htmlBoardArr.push(<div key={rowKey} className={styles.row}>{row}</div>);
