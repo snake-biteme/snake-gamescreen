@@ -2,30 +2,33 @@ import React, {useEffect} from 'react';
 import {IAllPlayers, IAllPositions, IRealTimeData} from "../../../interfaces/api";
 import apiClientAppSync from "../../../services/apiClientAppSync";
 import {updatePosition} from "../../../services/graphql";
+import {getRandomColumn, getRandomRow} from "../../utils";
 
 interface IProps {
-    setSnakes: Function,
+    setPlayers: Function,
     setPositions: Function,
+    playerExists: Function,
 }
 
-function NewPlayerLogic({setSnakes, setPositions} : IProps) {
+
+function NewPlayerLogic({setPlayers, setPositions, playerExists}: IProps) {
 
     const screenId = 'asdfsdfasdfsd';
+
 
     useEffect(() => {
         const realtimeResults = (data: IRealTimeData) => {
             const position = data.data.onPositionUpdated;
 
             console.log('realtime data: ', position);
-            setSnakes((prevState: IAllPlayers) => {
+            setPlayers((prevState: IAllPlayers) => {
                 return {...prevState, [position.playerId]: position};
             })
 
-            // todo make this better, rely on board not angle
-            if (position.direction === 'RIGHT') {
+            if (!playerExists(position.playerId)) {
                 const randomPosition = {
-                    row: 4,
-                    col: 2,
+                    row: getRandomRow(),
+                    col: getRandomColumn(),
                 };
 
                 setPositions((prevState: IAllPositions) => {

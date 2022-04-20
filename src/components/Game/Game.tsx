@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {IAllPlayers, IAllPositions, IPositionSchema} from "../../interfaces/api";
 import {COLUMNS, ROWS, TICK} from "../../CONST";
-import {getRandomColumn, getRandomRow} from "../utils";
 import Board from "./components/Board/Board";
 import NewPlayerLogic from "./components/NewPlayerLogic";
 
@@ -12,16 +11,16 @@ function initialBoard() {
 }
 
 function Game() {
-    const [snakes, setSnakes] = useState<IAllPlayers>({});
+    const [players, setPlayers] = useState<IAllPlayers>({});
     const [positions, setPositions] = useState<IAllPositions>({});
     const [board, setBoard] = useState<any>(initialBoard());
     const [counter, setCounter] = useState<number>(0);
 
-
-    // const UP = 1;
-    // const DOWN = 2;
-    // const LEFT = 3;
-    // const RIGHT = 4;
+    function playerExists(playerID: string) {
+        console.log(players)
+        console.log(!!players[playerID])
+        return !!players[playerID];
+    }
 
     // move snake positions
     useEffect(() => {
@@ -32,7 +31,7 @@ function Game() {
 
                 const newPositions: IAllPositions = {};
 
-                for (const [id, snake] of Object.entries(snakes)) {
+                for (const [id, snake] of Object.entries(players)) {
                     const currentPosition = [...positions[id]];
                     const currentHead = {...currentPosition[0]};
                     const newHead: IPositionSchema = {...currentHead}
@@ -83,8 +82,8 @@ function Game() {
     return (
         <div>
             Game
-            <NewPlayerLogic setSnakes={setSnakes} setPositions={setPositions}/>
-            <Board board={board} snakes={snakes}/>
+            <NewPlayerLogic setPlayers={setPlayers} setPositions={setPositions} playerExists={playerExists}/>
+            <Board board={board} snakes={players}/>
             <div>{counter}</div>
         </div>
 
