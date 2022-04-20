@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import apiClientAppSync from "../../services/apiClientAppSync";
-import {updatePosition} from "../../services/graphql";
-import {IAllPlayers, IAllPositions, IPositionSchema, IRealTimeData} from "../../interfaces/api";
+import {IAllPlayers, IAllPositions, IPositionSchema} from "../../interfaces/api";
 import {COLUMNS, ROWS, TICK} from "../../CONST";
 import {getRandomColumn, getRandomRow} from "../utils";
 import Board from "./components/Board/Board";
+import NewPlayerLogic from "./components/NewPlayerLogic";
 
 
 function initialBoard() {
@@ -17,7 +16,6 @@ function Game() {
     const [positions, setPositions] = useState<IAllPositions>({});
     const [board, setBoard] = useState<any>(initialBoard());
     const [counter, setCounter] = useState<number>(0);
-    const screenId = 'asdfsdfasdfsd';
 
 
     // const UP = 1;
@@ -66,50 +64,9 @@ function Game() {
                 setPositions(newPositions);
 
             }, TICK);
-
             return () => clearInterval(interval);
-        }, []
+        }, [positions]
     );
-
-// new player and directions
-    useEffect(() => {
-        const realtimeResults = (data: IRealTimeData) => {
-            const position = data.data.onPositionUpdated;
-            position.direction = position.angle === 0 ? 4 : position.angle
-
-            console.log('realtime data: ', position);
-            setSnakes((prevState: IAllPlayers) => {
-                return {...prevState, [position.playerId]: position};
-            })
-
-            // todo make this better, rely on board not angle
-            if (position.angle === 0) {
-                const randomPosition = {
-                    row: getRandomRow(),
-                    col: getRandomColumn(),
-                };
-
-                setPositions((prevState: IAllPositions) => {
-                    return {...prevState, [position.playerId]: [randomPosition]};
-                });
-            }
-        };
-
-        apiClientAppSync.hydrated().then((client) => {
-            const observable = client.subscribe({
-                query: updatePosition,
-                variables: {
-                    screenId: screenId,
-                }
-            });
-
-            observable.subscribe({
-                next: realtimeResults,
-                complete: console.log,
-                error: console.error,
-            });
-        });
-    }, [])
 
 // get players on board
     useEffect(() => {
@@ -121,13 +78,12 @@ function Game() {
             }
             setBoard(newBoard);
         }
-
-
     }, [positions]);
 
     return (
         <div>
             Game
+            <NewPlayerLogic setSnakes={setSnakes} setPositions={setPositions}/>
             <Board board={board} snakes={snakes}/>
             <div>{counter}</div>
         </div>
