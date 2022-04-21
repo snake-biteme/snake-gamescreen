@@ -20,6 +20,7 @@ function Game() {
         if (JSON.stringify(positions) === '{}') return;
 
         const newPositions: IAllPositions = {};
+        // MOVE SNAKES
         for (const [id, snake] of Object.entries(players)) {
             const currentPosition = [...positions[id]];
             const currentHead = {...currentPosition[0]};
@@ -38,9 +39,17 @@ function Game() {
                     newHead.col = currentHead.col === COLUMNS - 1 ? 0 : currentHead.col + 1;
                     break;
             }
+
+            // add a new head
             currentPosition.unshift(newHead);
+
+            // drop tail
             const toBeCleared = currentPosition.pop();
+
+            // save to new state
             newPositions[id] = currentPosition;
+
+            // clear tail from board
             setBoard((prev: any) => {
                 if (toBeCleared) {
                     return [...prev, prev[toBeCleared.row][toBeCleared.col] = null];
@@ -49,20 +58,32 @@ function Game() {
         }
         setPositions(newPositions);
 
+        // SET FOOD
+
+
+
     }, [counter])
 
     useEffect(() => {
+        // create a copy of current board
         const newBoard = JSON.parse(JSON.stringify(board));
         if (Object.keys(positions).length > 0) {
-
+            // set all snakes to board
+            //todo fix - what should be added to the board, for loop
             for (const [id, position] of Object.entries(positions)) {
                 newBoard[position[0].row][position[0].col] = id;
             }
+
+            // set all food to board
+
+
+
             setBoard(newBoard);
         }
     }, [positions])
 
     useEffect(() => {
+        // tick logic
         const interval = setInterval(() => {
             setCounter(prev => prev + 1);
         }, TICK)
