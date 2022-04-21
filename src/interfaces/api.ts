@@ -4,6 +4,7 @@ export interface IPlayerSchema {
     playerId: string,
     screenId: string,
     name: string,
+    toGrow: number,
     __typename: string,
 }
 

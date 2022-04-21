@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {IAllPlayers, IAllPositions, IPositionSchema} from "../../interfaces/api";
-import {COLUMNS, ROWS, TICK} from "../../CONST";
+import {COLUMNS, MIN_LENGTH, ROWS, TICK} from "../../CONST";
 import Board from "./components/Board/Board";
 import NewPlayerLogic from "./components/NewPlayerLogic";
 import {getUnoccupiedPosition} from "../utils";
@@ -45,8 +45,12 @@ function Game() {
             // add a new head
             currentPosition.unshift(newHead);
 
-            // drop tail
-            const toBeCleared = currentPosition.pop();
+            // drop tail if min length
+
+            let toBeCleared: IPositionSchema | undefined;
+            if (currentPosition.length > MIN_LENGTH) {
+                toBeCleared = currentPosition.pop();
+            }
 
             // save to new state
             newPositions[id] = currentPosition;
@@ -56,6 +60,7 @@ function Game() {
                 if (toBeCleared) {
                     return [...prev, prev[toBeCleared.row][toBeCleared.col] = null];
                 }
+                return prev;
             })
         }
         setPositions(newPositions);
@@ -78,9 +83,10 @@ function Game() {
         const newBoard = JSON.parse(JSON.stringify(board));
         if (Object.keys(positions).length > 0) {
             // set all snakes to board
-            //todo fix - what should be added to the board, for loop
             for (const [id, position] of Object.entries(positions)) {
-                newBoard[position[0].row][position[0].col] = id;
+                position.forEach((oneCell => {
+                    newBoard[oneCell.row][oneCell.col] = id;
+                }))
             }
 
             // set all food to board
