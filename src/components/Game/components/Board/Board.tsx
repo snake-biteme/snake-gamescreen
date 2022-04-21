@@ -8,7 +8,6 @@ interface IProps {
     players: IAllPlayers,
 }
 
-
 function Board({board, players} : IProps) {
     const [htmlBoard, setHTMLBoard] = useState([])
 
@@ -27,10 +26,10 @@ function Board({board, players} : IProps) {
                 //check if cell is occupied
                 const occupied = board[r][c]
                 if (occupied) {
-                    // by food or player
+                    // by food
                     if (occupied === 'FOOD') {
                         cellType = 'foodCell'
-
+                    // by player
                     } else {
                         cellType = 'snakeCell'
                         colorStyle = {backgroundColor: players[board[r][c]].color};

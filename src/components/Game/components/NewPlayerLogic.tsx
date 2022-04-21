@@ -12,7 +12,7 @@ interface IProps {
 function updateDirection(previousDirection: TDirections, newDirection: TDirections) {
     let updatedDirection = newDirection // new direction by default
 
-    // snake can only go to three directions
+    // snake can only go to three directions, i.e. if going UP cannot go DOWN
     if (previousDirection === 'UP' && updatedDirection === 'DOWN') updatedDirection = 'UP';
     if (previousDirection === 'RIGHT' && updatedDirection === 'LEFT') updatedDirection = 'RIGHT';
     if (previousDirection === 'DOWN' && updatedDirection === 'UP') updatedDirection = 'DOWN';
@@ -27,13 +27,17 @@ function NewPlayerLogic({setPlayers, setPositions}: IProps) {
     const screenId = 'asdfsdfasdfsd';
 
     const realtimeResults = (data: IRealTimeData) => {
+        // new position or new player info
         const position = data.data.onPositionUpdated;
         // console.log('realtime data: ', position);
 
         let allPlayers;
+        // update players (add new, update position of previous)
         setPlayers((prevState: IAllPlayers) => {
+            // saving most current state of players
             allPlayers = prevState;
 
+            // check if invalid direction
             const previousDirection = prevState[position.playerId]?.direction;
             position.direction = updateDirection(previousDirection, position.direction)
 
@@ -63,7 +67,7 @@ function NewPlayerLogic({setPlayers, setPositions}: IProps) {
                     screenId: screenId,
                 }
             });
-
+            // run realtime results once received new subscription, i.e. new player or new directions
             observable.subscribe({
                 next: realtimeResults,
                 complete: console.log,
