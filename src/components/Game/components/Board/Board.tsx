@@ -15,20 +15,32 @@ function Board({board, players} : IProps) {
     useEffect(() => {
         // console.log('HTML BOARD')
         const htmlBoardArr: any = [];
+        // loop through max number of rows
         for (let r = 0; r < ROWS; r++) {
             const row: any = [];
+            // loop through max number of cols
             for (let c = 0; c < COLUMNS; c++) {
                 const columnKey = `C_${c}`;
                 let colorStyle = {};
+                let cellType = ''
 
-                //check if there is a player
-                if (board[r][c]) {
-                    colorStyle = {backgroundColor: players[board[r][c]].color};
+                //check if cell is occupied
+                const occupied = board[r][c]
+                if (occupied) {
+                    // by food or player
+                    if (occupied === 'FOOD') {
+                        cellType = 'foodCell'
+
+                    } else {
+                        cellType = 'snakeCell'
+                        colorStyle = {backgroundColor: players[board[r][c]].color};
+                    }
                 }
-
-                row.push(<div key={columnKey} className={styles.cell} style={colorStyle}>{players[board[r][c]]?.name}</div>);
+                // add the div to the row
+                row.push(<div key={columnKey} className={`${styles.cell} ${styles[cellType]}`} style={colorStyle}/>);
             }
             const rowKey = `R_${r}`
+            // add all rows to complete the board
             htmlBoardArr.push(<div key={rowKey} className={styles.row}>{row}</div>);
         }
         setHTMLBoard(htmlBoardArr);

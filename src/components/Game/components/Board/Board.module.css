@@ -7,3 +7,12 @@
 .row {
   display: flex;
 }
+
+.foodCell {
+  background-color: blue;
+  border-radius: 50%;
+}
+
+.snakeCell {
+  border-radius: 4px;
+}

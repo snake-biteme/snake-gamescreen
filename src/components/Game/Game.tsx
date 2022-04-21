@@ -3,7 +3,7 @@ import {IAllPlayers, IAllPositions, IPositionSchema} from "../../interfaces/api"
 import {COLUMNS, ROWS, TICK} from "../../CONST";
 import Board from "./components/Board/Board";
 import NewPlayerLogic from "./components/NewPlayerLogic";
-
+import {getUnoccupiedPosition} from "../utils";
 
 function initialBoard() {
     const columns = new Array(COLUMNS).fill(null);
@@ -13,6 +13,7 @@ function initialBoard() {
 function Game() {
     const [players, setPlayers] = useState<IAllPlayers>({});
     const [positions, setPositions] = useState<IAllPositions>({});
+    const [foods, setFoods] = useState<IPositionSchema[]>([]);
     const [board, setBoard] = useState<any>(initialBoard());
     const [counter, setCounter] = useState<number>(0);
 
@@ -58,7 +59,21 @@ function Game() {
         }
         setPositions(newPositions);
 
-        // SET FOOD
+        // GENERATE FOOD
+        const foodToAdd = Object.keys(newPositions).length - foods.length;
+
+        const newFood: IPositionSchema[] = []
+        for (let i = 0; i < foodToAdd; i++) {
+            const foodPosition = getUnoccupiedPosition(positions, foods)
+            newFood.push(foodPosition)
+        }
+
+
+        setFoods(prev => {
+            console.log('prev', prev)
+            console.log('new', newFood)
+            return [...prev, ...newFood]
+        })
 
 
 
@@ -75,8 +90,9 @@ function Game() {
             }
 
             // set all food to board
-
-
+            for (const food of foods) {
+                newBoard[food.row][food.col] = 'FOOD';
+            }
 
             setBoard(newBoard);
         }
