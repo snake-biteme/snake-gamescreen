@@ -1,32 +1,47 @@
 import React, {useEffect, useState} from 'react';
-import {COLUMNS, ROWS} from "../../../../CONST";
-import styles from "./Board.module.css";
-import {IAllPlayers} from "../../../../interfaces/api";
+import {COLUMNS, ROWS} from '../../../../CONST';
+import styles from './Board.module.css';
+import {IAllPlayers} from '../../../../interfaces/api';
+
+
 
 interface IProps {
-    board: any,
-    snakes: IAllPlayers,
+    board: (string|null)[][],
+    players: IAllPlayers,
 }
 
-
-function Board({board, snakes} : IProps) {
-    const [htmlBoard, setHTMLBoard] = useState([])
+function Board({board, players} : IProps) {
+    const [htmlBoard, setHTMLBoard] = useState<JSX.Element[]>([]);
 
     useEffect(() => {
         // console.log('HTML BOARD')
-        const htmlBoardArr: any = [];
+        const htmlBoardArr: JSX.Element[] = [];
+        // loop through max number of rows
         for (let r = 0; r < ROWS; r++) {
-            const row: any = [];
+            const row: JSX.Element[] = [];
+            // loop through max number of cols
             for (let c = 0; c < COLUMNS; c++) {
                 const columnKey = `C_${c}`;
                 let colorStyle = {};
-                if (board[r][c]) {
-                    colorStyle = {backgroundColor: snakes[board[r][c]].color};
-                }
+                let cellType = '';
 
-                row.push(<div key={columnKey} className={styles.cell} style={colorStyle}/>);
+                //check if cell is occupied
+                const occupied = board[r][c];
+                if (occupied !== null) {
+                    // by food
+                    if (occupied === 'FOOD') {
+                        cellType = 'foodCell';
+                    // by player
+                    } else {
+                        cellType = 'snakeCell';
+                        colorStyle = {backgroundColor: players[occupied].color};
+                    }
+                }
+                // add the div to the row
+                row.push(<div key={columnKey} className={`${styles.cell} ${styles[cellType]}`} style={colorStyle}/>);
             }
-            const rowKey = `R_${r}`
+            const rowKey = `R_${r}`;
+            // add all rows to complete the board
             htmlBoardArr.push(<div key={rowKey} className={styles.row}>{row}</div>);
         }
         setHTMLBoard(htmlBoardArr);

@@ -1,11 +1,14 @@
 export interface IPlayerSchema {
-    direction: string,
+    direction: TDirections,
     color: string,
     playerId: string,
     screenId: string,
     name: string,
+    toGrow: number,
     __typename: string,
 }
+
+export type TDirections = 'UP' | 'DOWN' | 'RIGHT' | 'LEFT';
 
 export interface IRealTimeData {
     data: {

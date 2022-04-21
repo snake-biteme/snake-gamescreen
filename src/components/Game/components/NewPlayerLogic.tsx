@@ -1,12 +1,31 @@
-import React, {useEffect} from 'react';
-import {IAllPlayers, IAllPositions, IRealTimeData} from "../../../interfaces/api";
-import apiClientAppSync from "../../../services/apiClientAppSync";
-import {updatePosition} from "../../../services/graphql";
-import {getRandomColumn, getRandomRow} from "../../utils";
+import React, {useEffect, Dispatch, SetStateAction} from 'react';
+import {IAllPlayers, IAllPositions, IRealTimeData, TDirections} from '../../../interfaces/api';
+import apiClientAppSync from '../../../services/apiClientAppSync';
+import {updatePosition} from '../../../services/graphql';
+import {getRandomColumn, getRandomRow} from '../../utils';
 
 interface IProps {
-    setPlayers: Function,
-    setPositions: Function,
+    // setState hook types: https://stackoverflow.com/a/56028976/18631517
+    setPlayers: Dispatch<SetStateAction<IAllPlayers>>,
+    setPositions: Dispatch<SetStateAction<IAllPositions>>,
+}
+
+function updateDirection(previousDirection: TDirections, newDirection: TDirections) {
+    let updatedDirection = newDirection; // new direction by default
+
+    // snake can only go to three directions, i.e. if going UP cannot go DOWN
+    if (previousDirection === 'UP' && updatedDirection === 'DOWN') updatedDirection = 'UP';
+    if (previousDirection === 'RIGHT' && updatedDirection === 'LEFT') updatedDirection = 'RIGHT';
+    if (previousDirection === 'DOWN' && updatedDirection === 'UP') updatedDirection = 'DOWN';
+    if (previousDirection === 'LEFT' && updatedDirection === 'RIGHT') updatedDirection = 'LEFT';
+
+    return updatedDirection;
+}
+
+function playerExists(allPlayers: IAllPlayers, playerId: string) {
+    if (allPlayers) {
+        return allPlayers[playerId];
+    }
 }
 
 
@@ -15,30 +34,27 @@ function NewPlayerLogic({setPlayers, setPositions}: IProps) {
     const screenId = 'asdfsdfasdfsd';
 
     const realtimeResults = (data: IRealTimeData) => {
-        // console.log('SETTING PLAYERS AND STATE')
+        // update position or new player
         const position = data.data.onPositionUpdated;
+
+
         // console.log('realtime data: ', position);
 
-        let allPlayers;
+        let allPlayers = {};
+        // update players (add new, update position of previous)
         setPlayers((prevState: IAllPlayers) => {
+            // saving most current state of players
             allPlayers = prevState;
 
+            // check if invalid direction
             const previousDirection = prevState[position.playerId]?.direction;
-            let updatedDirection = position.direction // new direction by default
-
-            // snake can only go to three directions
-            if (previousDirection === 'UP' && updatedDirection === 'DOWN') updatedDirection = 'UP';
-            if (previousDirection === 'RIGHT' && updatedDirection === 'LEFT') updatedDirection = 'RIGHT';
-            if (previousDirection === 'DOWN' && updatedDirection === 'UP') updatedDirection = 'DONW';
-            if (previousDirection === 'LEFT' && updatedDirection === 'RIGHT') updatedDirection = 'LEFT';
-
-            position.direction = updatedDirection
+            position.direction = updateDirection(previousDirection, position.direction);
 
             return {...prevState, [position.playerId]: position};
-        })
+        });
 
         // generate random position for new players - checking if they exist
-        if (!(allPlayers ? allPlayers[position.playerId] : true)) {
+        if (!playerExists(allPlayers, position.playerId)) {
             const randomPosition = {
                 row: getRandomRow(),
                 col: getRandomColumn(),
@@ -60,14 +76,14 @@ function NewPlayerLogic({setPlayers, setPositions}: IProps) {
                     screenId: screenId,
                 }
             });
-
+            // run realtime results once received new subscription, i.e. new player or new directions
             observable.subscribe({
                 next: realtimeResults,
                 complete: console.log,
                 error: console.error,
             });
         });
-    }, [])
+    }, []);
     return (
         <></>
     );

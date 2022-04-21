@@ -1,9 +1,18 @@
 .cell {
-  height: 30px;
-  width: 30px;
+  min-height: 20px;
+  min-width: 20px;
   border: 1px solid red;
 }
 
 .row {
   display: flex;
+}
+
+.foodCell {
+  background-color: blue;
+  border-radius: 50%;
+}
+
+.snakeCell {
+  border-radius: 4px;
 }
