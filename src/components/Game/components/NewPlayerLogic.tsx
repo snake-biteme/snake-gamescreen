@@ -22,7 +22,7 @@ function updateDirection(previousDirection: TDirections, newDirection: TDirectio
     return updatedDirection;
 }
 
-function playerExists(allPlayers: IAllPlayers, playerId: string) {
+function playerExists(allPlayers: IAllPlayers | IAllPositions, playerId: string) {
     if (allPlayers) {
         return allPlayers[playerId];
     }
@@ -30,21 +30,15 @@ function playerExists(allPlayers: IAllPlayers, playerId: string) {
 
 
 function NewPlayerLogic({setPlayers, setPositions}: IProps) {
-
+    // todo receive from qr code
     const screenId = 'asdfsdfasdfsd';
 
     const realtimeResults = (data: IRealTimeData) => {
-        // update position or new player
+        // updated position or new player
         const position = data.data.onPositionUpdated;
 
-
-        // console.log('realtime data: ', position);
-
-        let allPlayers = {};
         // update players (add new, update position of previous)
         setPlayers((prevState: IAllPlayers) => {
-            // saving most current state of players
-            allPlayers = prevState;
 
             // check if invalid direction
             const previousDirection = prevState[position.playerId]?.direction;
@@ -54,21 +48,20 @@ function NewPlayerLogic({setPlayers, setPositions}: IProps) {
         });
 
         // generate random position for new players - checking if they exist
-        if (!playerExists(allPlayers, position.playerId)) {
-            const randomPosition = {
-                row: getRandomRow(),
-                col: getRandomColumn(),
-            };
-
-            setPositions((prevState: IAllPositions) => {
+        setPositions((prevState: IAllPositions) => {
+            if (!playerExists(prevState, position.playerId)) {
+                const randomPosition = {
+                    row: getRandomRow(),
+                    col: getRandomColumn(),
+                };
                 return {...prevState, [position.playerId]: [randomPosition]};
-            });
-        }
+            }
+            return prevState;
+        });
     };
 
 
     useEffect(() => {
-        // console.log('RECEIVING SUBSCRIPTION')
         apiClientAppSync.hydrated().then((client) => {
             const observable = client.subscribe({
                 query: updatePosition,

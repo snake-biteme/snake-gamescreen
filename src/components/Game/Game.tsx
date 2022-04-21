@@ -15,21 +15,23 @@ function Game() {
     const [players, setPlayers] = useState<IAllPlayers>({});
     const [positions, setPositions] = useState<IAllPositions>({});
     const [foods, setFoods] = useState<IPositionSchema[]>([]);
-    const [board, setBoard] = useState<(string|null)[][]>(initialBoard());
+    const [board, setBoard] = useState<(string | null)[][]>(initialBoard());
     const [counter, setCounter] = useState<number>(0);
 
     useEffect(() => {
         // if there are no players
         if (JSON.stringify(positions) === '{}') return;
 
+        // todo set app background color to be the linear gradient of all players
+
         const newPositions: IAllPositions = {};
         const eatenFood: IPositionSchema[] = [];
         // MOVE SNAKES
-        for (const [id, snake] of Object.entries(players)) {
-            const currentPosition = [...positions[id]];
+        for (const [id, snake] of Object.entries(positions)) {
+            const currentPosition = [...snake];
             const currentHead = {...currentPosition[0]};
             const newHead: IPositionSchema = {...currentHead};
-            switch (snake.direction) {
+            switch (players[id].direction) {
             case 'UP':
                 newHead.row = currentHead.row === 0 ? ROWS - 1 : currentHead.row - 1;
                 break;
@@ -47,8 +49,20 @@ function Game() {
             // add a new head
             currentPosition.unshift(newHead);
 
-            // drop tail if min length
-            let toBeCleared: IPositionSchema | undefined;
+            const toBeCleared: (IPositionSchema | undefined)[] = [];
+
+            //CHECK FOR COLLISIONS
+            let collided = false;
+            for (const snake of Object.values(positions)) {
+                snake.forEach(cell => {
+                    if (cell.row === newHead.row && cell.col === newHead.col) {
+                        collided = true;
+                        // todo instead of deleting turn it into food?
+                        toBeCleared.push(...positions[id]);
+                    }
+                });
+            }
+
 
             // ANY FOOD EATEN?
             let foodToClear: IPositionSchema | undefined;
@@ -66,23 +80,26 @@ function Game() {
                 }
             }
 
-            //CHECK FOR COLLISIONS
-            // todo implement game over
 
-            // if too small or did not eat food - pop tail in positions
+            // if large enough or did not eat food - pop tail in positions
             if (currentPosition.length > MIN_LENGTH && ateFood === 'no') {
-                toBeCleared = currentPosition.pop();
+                toBeCleared.push(currentPosition.pop());
             }
 
-            // save to new state
-            newPositions[id] = currentPosition;
+            // save player to new positions if no collision detected
+            if (!collided) {
+                newPositions[id] = currentPosition;
+            }
 
-            setBoard((prev: (string|null)[][]) => {
+            // CLEAR BOARD OF FOOD AND SNAKE BODY PARTS
+            setBoard((prev: (string | null)[][]) => {
                 const updated = [...prev];
-                // clear tail from board
-                if (toBeCleared) {
-                    updated[toBeCleared.row][toBeCleared.col] = null;
-                }
+                // clear tail and dead snakes from board
+                toBeCleared.forEach(cell => {
+                    if (cell) {
+                        updated[cell.row][cell.col] = null;
+                    }
+                });
                 //clear eaten food from board
                 if (foodToClear) {
                     updated[foodToClear.row][foodToClear.col] = null;
@@ -92,7 +109,7 @@ function Game() {
         }
 
         // UPDATE FOOD
-        // clear food that is eaten
+        // clear food that is eaten from food state
         const newFoods = eatenFood.length > 0 ? getUpdatedFood(foods, eatenFood) : foods;
         // generate additional food
         const foodToAdd = Object.keys(newPositions).length - newFoods.length;
