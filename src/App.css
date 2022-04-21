@@ -1,3 +1,18 @@
+:root {
+  --primary-color: #e5e5e5;
+  --secondary-color: #6e6e6e;
+}
 .App {
-  text-align: center;
+    text-align: center;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--primary-color) linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    border: none;
 }

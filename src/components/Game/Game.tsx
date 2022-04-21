@@ -4,6 +4,7 @@ import {COLUMNS, MIN_LENGTH, ROWS, TICK} from '../../CONST';
 import Board from './components/Board/Board';
 import NewPlayerLogic from './components/NewPlayerLogic';
 import {getUnoccupiedPosition, getUpdatedFood} from '../utils';
+import styles from './Game.module.css';
 
 function initialBoard() {
     const columns = new Array(COLUMNS).fill(null);
@@ -137,7 +138,7 @@ function Game() {
 
 
     return (
-        <div>
+        <div className={styles.gameScreen}>
             Game
             <NewPlayerLogic setPlayers={setPlayers} setPositions={setPositions}/>
             <Board board={board} players={players}/>
