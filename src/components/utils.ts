@@ -47,3 +47,17 @@ export function getUnoccupiedPosition(positions: IAllPositions, foods: IPosition
         col: randomCol
     };
 }
+
+export function getUpdatedFood(foods: IPositionSchema[], eatenFood: IPositionSchema[]): IPositionSchema[] {
+   const updatedFood: IPositionSchema[] = [];
+
+   for (const food of foods) {
+        for (const eaten of eatenFood) {
+            if (food.row !== eaten.row && food.col !== eaten.row) {
+                updatedFood.push(food);
+            }
+        }
+   }
+
+   return updatedFood;
+}

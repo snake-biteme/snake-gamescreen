@@ -3,7 +3,7 @@ import {IAllPlayers, IAllPositions, IPositionSchema} from "../../interfaces/api"
 import {COLUMNS, MIN_LENGTH, ROWS, TICK} from "../../CONST";
 import Board from "./components/Board/Board";
 import NewPlayerLogic from "./components/NewPlayerLogic";
-import {getUnoccupiedPosition} from "../utils";
+import {getUnoccupiedPosition, getUpdatedFood} from "../utils";
 
 function initialBoard() {
     const columns = new Array(COLUMNS).fill(null);
@@ -22,6 +22,7 @@ function Game() {
         if (JSON.stringify(positions) === '{}') return;
 
         const newPositions: IAllPositions = {};
+        const eatenFood: IPositionSchema[] = [];
         // MOVE SNAKES
         for (const [id, snake] of Object.entries(players)) {
             const currentPosition = [...positions[id]];
@@ -46,9 +47,25 @@ function Game() {
             currentPosition.unshift(newHead);
 
             // drop tail if min length
-
             let toBeCleared: IPositionSchema | undefined;
-            if (currentPosition.length > MIN_LENGTH) {
+
+            // ANY FOOD EATEN?
+            // check if newHead is colliding with food
+            let foodToClear: IPositionSchema | undefined;
+            let ateFood = 'no';
+            for (const food of foods) {
+                if (newHead.col === food.col && newHead.row === food.row) {
+                    ateFood = 'yes';
+                    foodToClear = {
+                        row: food.row,
+                        col: food.col,
+                    }
+
+                    eatenFood.push(foodToClear);
+                }
+            }
+
+            if (currentPosition.length > MIN_LENGTH && ateFood === 'no') {
                 toBeCleared = currentPosition.pop();
             }
 
@@ -57,24 +74,40 @@ function Game() {
 
             // clear tail from board
             setBoard((prev: any) => {
+                let updated = [...prev]
+                // console.log('before', updated)
                 if (toBeCleared) {
-                    return [...prev, prev[toBeCleared.row][toBeCleared.col] = null];
+                    updated[toBeCleared.row][toBeCleared.col] = null;
                 }
-                return prev;
+
+                if (foodToClear) {
+                    // console.log('DELETING')
+                    updated[foodToClear.row][foodToClear.col] = null;
+                }
+
+                // console.log('after', updated)
+
+                return updated;
             })
         }
-        setPositions(newPositions);
 
-        // GENERATE FOOD
-        const foodToAdd = Object.keys(newPositions).length - foods.length;
 
-        const newFood: IPositionSchema[] = []
+        // UPDATE FOOD
+        // clear food that is eaten
+        const newFoods = eatenFood.length > 0 ? getUpdatedFood(foods, eatenFood) : foods;
+        // generate additional food
+        const foodToAdd = Object.keys(newPositions).length - newFoods.length;
+
+        // const newFood: IPositionSchema[] = []
         for (let i = 0; i < foodToAdd; i++) {
             const foodPosition = getUnoccupiedPosition(positions, foods)
-            newFood.push(foodPosition)
+            newFoods.push(foodPosition)
         }
 
-        setFoods(prev => [...prev, ...newFood])
+        setFoods(newFoods)
+
+        setPositions(newPositions);
+
 
     }, [counter])
 
@@ -96,7 +129,7 @@ function Game() {
 
             setBoard(newBoard);
         }
-    }, [positions])
+    }, [positions, foods])
 
     useEffect(() => {
         // tick logic, set counter to 1 at each tick
