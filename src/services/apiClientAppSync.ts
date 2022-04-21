@@ -1,9 +1,14 @@
-import * as AWS from 'aws-sdk'
-import AWSAppSyncClient from 'aws-appsync'
-import {AUTH_TYPE} from 'aws-appsync/lib/client'
+import * as AWS from 'aws-sdk';
+import AWSAppSyncClient from 'aws-appsync';
+import {AUTH_TYPE} from 'aws-appsync/lib/client';
 
 
-const { REACT_APP_REGION, REACT_APP_ACCESS_KEY_ID, REACT_APP_SECRET_ACCESS_KEY, REACT_APP_URL } = process.env
+const {
+    REACT_APP_REGION,
+    REACT_APP_ACCESS_KEY_ID,
+    REACT_APP_SECRET_ACCESS_KEY,
+    REACT_APP_URL
+} = process.env;
 
 AWS.config.update({
     region: REACT_APP_REGION!,

@@ -1,16 +1,17 @@
-import React, {useEffect} from 'react';
-import {IAllPlayers, IAllPositions, IRealTimeData, TDirections} from "../../../interfaces/api";
-import apiClientAppSync from "../../../services/apiClientAppSync";
-import {updatePosition} from "../../../services/graphql";
-import {getRandomColumn, getRandomRow} from "../../utils";
+import React, {useEffect, Dispatch, SetStateAction} from 'react';
+import {IAllPlayers, IAllPositions, IRealTimeData, TDirections} from '../../../interfaces/api';
+import apiClientAppSync from '../../../services/apiClientAppSync';
+import {updatePosition} from '../../../services/graphql';
+import {getRandomColumn, getRandomRow} from '../../utils';
 
 interface IProps {
-    setPlayers: Function,
-    setPositions: Function,
+    // setState hook types: https://stackoverflow.com/a/56028976/18631517
+    setPlayers: Dispatch<SetStateAction<IAllPlayers>>,
+    setPositions: Dispatch<SetStateAction<IAllPositions>>,
 }
 
 function updateDirection(previousDirection: TDirections, newDirection: TDirections) {
-    let updatedDirection = newDirection // new direction by default
+    let updatedDirection = newDirection; // new direction by default
 
     // snake can only go to three directions, i.e. if going UP cannot go DOWN
     if (previousDirection === 'UP' && updatedDirection === 'DOWN') updatedDirection = 'UP';
@@ -18,12 +19,12 @@ function updateDirection(previousDirection: TDirections, newDirection: TDirectio
     if (previousDirection === 'DOWN' && updatedDirection === 'UP') updatedDirection = 'DOWN';
     if (previousDirection === 'LEFT' && updatedDirection === 'RIGHT') updatedDirection = 'LEFT';
 
-    return updatedDirection
+    return updatedDirection;
 }
 
 function playerExists(allPlayers: IAllPlayers, playerId: string) {
     if (allPlayers) {
-        return allPlayers[playerId]
+        return allPlayers[playerId];
     }
 }
 
@@ -47,10 +48,10 @@ function NewPlayerLogic({setPlayers, setPositions}: IProps) {
 
             // check if invalid direction
             const previousDirection = prevState[position.playerId]?.direction;
-            position.direction = updateDirection(previousDirection, position.direction)
+            position.direction = updateDirection(previousDirection, position.direction);
 
             return {...prevState, [position.playerId]: position};
-        })
+        });
 
         // generate random position for new players - checking if they exist
         if (!playerExists(allPlayers, position.playerId)) {
@@ -82,7 +83,7 @@ function NewPlayerLogic({setPlayers, setPositions}: IProps) {
                 error: console.error,
             });
         });
-    }, [])
+    }, []);
     return (
         <></>
     );

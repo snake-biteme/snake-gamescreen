@@ -1,8 +1,8 @@
-import {COLUMNS, ROWS} from "../CONST";
-import {IAllPositions, IPositionSchema} from "../interfaces/api";
+import {COLUMNS, ROWS} from '../CONST';
+import {IAllPositions, IPositionSchema} from '../interfaces/api';
 
 function randomIntFromInterval(min: number, max: number) { // min and max included
-    return Math.floor(Math.random() * (max - min) + min)
+    return Math.floor(Math.random() * (max - min) + min);
 }
 
 export function getRandomRow() {
@@ -15,8 +15,8 @@ export function getRandomColumn() {
 
 export function getOccupiedByPLayers(positions: IAllPositions, rowOrCol: ('row' | 'col')) {
     return Object.values(positions).reduce((prev: (number)[], currentPositions: IPositionSchema[]) => {
-        const currentRows = currentPositions.map((position: IPositionSchema) => position[rowOrCol])
-        return [...prev, ...currentRows]
+        const currentRows = currentPositions.map((position: IPositionSchema) => position[rowOrCol]);
+        return [...prev, ...currentRows];
     }, []);
 }
 
@@ -49,15 +49,15 @@ export function getUnoccupiedPosition(positions: IAllPositions, foods: IPosition
 }
 
 export function getUpdatedFood(foods: IPositionSchema[], eatenFood: IPositionSchema[]): IPositionSchema[] {
-   const updatedFood: IPositionSchema[] = [];
+    const updatedFood: IPositionSchema[] = [];
 
-   for (const food of foods) {
+    for (const food of foods) {
         for (const eaten of eatenFood) {
             if (food.row !== eaten.row && food.col !== eaten.row) {
                 updatedFood.push(food);
             }
         }
-   }
+    }
 
-   return updatedFood;
+    return updatedFood;
 }

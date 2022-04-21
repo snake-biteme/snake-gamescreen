@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {IAllPlayers, IAllPositions, IPositionSchema} from "../../interfaces/api";
-import {COLUMNS, MIN_LENGTH, ROWS, TICK} from "../../CONST";
-import Board from "./components/Board/Board";
-import NewPlayerLogic from "./components/NewPlayerLogic";
-import {getUnoccupiedPosition, getUpdatedFood} from "../utils";
+import {IAllPlayers, IAllPositions, IPositionSchema} from '../../interfaces/api';
+import {COLUMNS, MIN_LENGTH, ROWS, TICK} from '../../CONST';
+import Board from './components/Board/Board';
+import NewPlayerLogic from './components/NewPlayerLogic';
+import {getUnoccupiedPosition, getUpdatedFood} from '../utils';
 
 function initialBoard() {
     const columns = new Array(COLUMNS).fill(null);
@@ -14,7 +14,7 @@ function Game() {
     const [players, setPlayers] = useState<IAllPlayers>({});
     const [positions, setPositions] = useState<IAllPositions>({});
     const [foods, setFoods] = useState<IPositionSchema[]>([]);
-    const [board, setBoard] = useState<any>(initialBoard());
+    const [board, setBoard] = useState<(string|null)[][]>(initialBoard());
     const [counter, setCounter] = useState<number>(0);
 
     useEffect(() => {
@@ -27,20 +27,20 @@ function Game() {
         for (const [id, snake] of Object.entries(players)) {
             const currentPosition = [...positions[id]];
             const currentHead = {...currentPosition[0]};
-            const newHead: IPositionSchema = {...currentHead}
+            const newHead: IPositionSchema = {...currentHead};
             switch (snake.direction) {
-                case 'UP':
-                    newHead.row = currentHead.row === 0 ? ROWS - 1 : currentHead.row - 1;
-                    break;
-                case 'DOWN':
-                    newHead.row = currentHead.row === ROWS - 1 ? 0 : currentHead.row + 1;
-                    break;
-                case 'LEFT':
-                    newHead.col = currentHead.col === 0 ? COLUMNS - 1 : currentHead.col - 1;
-                    break;
-                case 'RIGHT':
-                    newHead.col = currentHead.col === COLUMNS - 1 ? 0 : currentHead.col + 1;
-                    break;
+            case 'UP':
+                newHead.row = currentHead.row === 0 ? ROWS - 1 : currentHead.row - 1;
+                break;
+            case 'DOWN':
+                newHead.row = currentHead.row === ROWS - 1 ? 0 : currentHead.row + 1;
+                break;
+            case 'LEFT':
+                newHead.col = currentHead.col === 0 ? COLUMNS - 1 : currentHead.col - 1;
+                break;
+            case 'RIGHT':
+                newHead.col = currentHead.col === COLUMNS - 1 ? 0 : currentHead.col + 1;
+                break;
             }
 
             // add a new head
@@ -50,21 +50,22 @@ function Game() {
             let toBeCleared: IPositionSchema | undefined;
 
             // ANY FOOD EATEN?
-            // check if newHead is colliding with food
             let foodToClear: IPositionSchema | undefined;
             let ateFood = 'no';
             for (const food of foods) {
+                // check if head will collide with food
                 if (newHead.col === food.col && newHead.row === food.row) {
                     ateFood = 'yes';
                     foodToClear = {
                         row: food.row,
                         col: food.col,
-                    }
+                    };
 
                     eatenFood.push(foodToClear);
                 }
             }
 
+            // if too small or did not eat food - pop tail in positions
             if (currentPosition.length > MIN_LENGTH && ateFood === 'no') {
                 toBeCleared = currentPosition.pop();
             }
@@ -72,23 +73,18 @@ function Game() {
             // save to new state
             newPositions[id] = currentPosition;
 
-            // clear tail from board
-            setBoard((prev: any) => {
-                let updated = [...prev]
-                // console.log('before', updated)
+            setBoard((prev: (string|null)[][]) => {
+                const updated = [...prev];
+                // clear tail from board
                 if (toBeCleared) {
                     updated[toBeCleared.row][toBeCleared.col] = null;
                 }
-
+                //clear eaten food from board
                 if (foodToClear) {
-                    // console.log('DELETING')
                     updated[foodToClear.row][foodToClear.col] = null;
                 }
-
-                // console.log('after', updated)
-
                 return updated;
-            })
+            });
         }
 
 
@@ -100,16 +96,16 @@ function Game() {
 
         // const newFood: IPositionSchema[] = []
         for (let i = 0; i < foodToAdd; i++) {
-            const foodPosition = getUnoccupiedPosition(positions, foods)
-            newFoods.push(foodPosition)
+            const foodPosition = getUnoccupiedPosition(positions, foods);
+            newFoods.push(foodPosition);
         }
 
-        setFoods(newFoods)
+        setFoods(newFoods);
 
         setPositions(newPositions);
 
 
-    }, [counter])
+    }, [counter]);
 
     useEffect(() => {
         // create a copy of current board
@@ -119,7 +115,7 @@ function Game() {
             for (const [id, position] of Object.entries(positions)) {
                 position.forEach((oneCell => {
                     newBoard[oneCell.row][oneCell.col] = id;
-                }))
+                }));
             }
 
             // set all food to board
@@ -129,15 +125,15 @@ function Game() {
 
             setBoard(newBoard);
         }
-    }, [positions, foods])
+    }, [positions, foods]);
 
     useEffect(() => {
         // tick logic, set counter to 1 at each tick
         const interval = setInterval(() => {
             setCounter(prev => prev + 1);
-        }, TICK)
+        }, TICK);
         return () => clearInterval(interval);
-    }, [])
+    }, []);
 
 
     return (
