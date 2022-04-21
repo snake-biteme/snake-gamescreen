@@ -19,8 +19,9 @@ function App() {
     }, []);
 
     return (
-        <div className="App">
-            <Game/>
+        <div className="App" style={customBackground}>
+            <Navbar/>
+            <Game setColors={setColors}/>
         </div>
     );
 }

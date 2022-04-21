@@ -1,0 +1,19 @@
+.logo {
+    display: flex;
+    font-size: 60px;
+    align-items: flex-end;
+    margin-left: 20px;
+}
+
+.letter {
+    border: 3px solid darkgreen;
+    min-width: 80px;
+    min-height: 80px;
+    border-radius: 20px;
+}
+
+.capital {
+    font-size: 80px;
+    min-width: 100px;
+    min-height: 100px;
+}
