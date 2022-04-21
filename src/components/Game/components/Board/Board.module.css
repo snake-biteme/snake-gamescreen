@@ -1,7 +1,7 @@
 .cell {
   min-height: 20px;
   min-width: 20px;
-  border: 1px solid red;
+  border: 1px solid #000000;
 }
 
 .row {
@@ -9,7 +9,7 @@
 }
 
 .foodCell {
-  background-color: blue;
+  background-color: var(--primary-color);
   border-radius: 50%;
 }
 
