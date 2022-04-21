@@ -28,7 +28,6 @@ function NewPlayerLogic({setPlayers, setPositions}: IProps) {
 
     const realtimeResults = (data: IRealTimeData) => {
         const position = data.data.onPositionUpdated;
-        console.log('SETTING PLAYERS AND STATE', position)
         // console.log('realtime data: ', position);
 
         let allPlayers;

@@ -95,7 +95,7 @@ function Game() {
         <div>
             Game
             <NewPlayerLogic setPlayers={setPlayers} setPositions={setPositions}/>
-            <Board board={board} snakes={players}/>
+            <Board board={board} players={players}/>
             <div>{counter}</div>
         </div>
 
