@@ -49,9 +49,9 @@ export interface IPositionSchema {
 export interface IAllPositions {
     [key: string] : IPositionSchema[],
 }
-
 ```
-- current version of 
+- most up to date position of all active players and the snakes
+- snake body is an array of coordinates
 
 ## Rules
 - amount of food will be always same or more than number of players
