@@ -1,12 +1,13 @@
 :root {
-  --primary-color: #e5e5e5;
-  --secondary-color: #6e6e6e;
+    --primary-color: #1ad02c;
+    --secondary-color: #ececec;
 }
+
 .App {
     text-align: center;
     min-height: 100vh;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
     background: var(--primary-color) linear-gradient(45deg, var(--primary-color), var(--secondary-color));
 }

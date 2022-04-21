@@ -1,7 +1,7 @@
 import {COLUMNS, ROWS} from '../CONST';
 import {IAllPositions, IPositionSchema} from '../interfaces/api';
 
-function randomIntFromInterval(min: number, max: number) { // min and max included
+export function randomIntFromInterval(min: number, max: number) { // min and max included
     return Math.floor(Math.random() * (max - min) + min);
 }
 
@@ -62,4 +62,9 @@ export function getUpdatedFood(foods: IPositionSchema[], eatenFood: IPositionSch
     }
 
     return updatedFood;
+}
+
+export function bothArraysEqual(prevColors: string[], allColors: string[]) {
+    //https://stackoverflow.com/questions/3115982/how-to-check-if-two-arrays-are-equal-with-javascript
+    return prevColors.every(item => allColors.includes(item)) && allColors.every(item => prevColors.includes(item));
 }

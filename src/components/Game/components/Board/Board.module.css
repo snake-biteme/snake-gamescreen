@@ -9,7 +9,7 @@
 }
 
 .foodCell {
-  background-color: var(--primary-color);
+  background-color: var(--secondary-color);
   border-radius: 50%;
 }
 

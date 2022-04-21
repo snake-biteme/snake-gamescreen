@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
-import {IAllPlayers, IAllPositions, IPositionSchema} from '../../interfaces/api';
+import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
+import {IAllPlayers, IAllPositions, IPlayerSchema, IPositionSchema} from '../../interfaces/api';
 import {COLUMNS, MIN_LENGTH, ROWS, TICK} from '../../CONST';
 import Board from './components/Board/Board';
 import NewPlayerLogic from './components/NewPlayerLogic';
-import {getUnoccupiedPosition, getUpdatedFood} from '../utils';
+import {bothArraysEqual, getUnoccupiedPosition, getUpdatedFood} from '../utils';
 import styles from './Game.module.css';
 
 function initialBoard() {
@@ -11,7 +11,11 @@ function initialBoard() {
     return new Array(ROWS).fill([...columns]);
 }
 
-function Game() {
+export interface IProps {
+    setColors: Dispatch<SetStateAction<string[]>>
+}
+
+function Game({setColors}: IProps) {
     const [players, setPlayers] = useState<IAllPlayers>({});
     const [positions, setPositions] = useState<IAllPositions>({});
     const [foods, setFoods] = useState<IPositionSchema[]>([]);
@@ -22,7 +26,18 @@ function Game() {
         // if there are no players
         if (JSON.stringify(positions) === '{}') return;
 
-        // todo set app background color to be the linear gradient of all players
+        // todo positions vs players?
+        const allColors = Object.values(players).reduce((acc: string[], player) => {
+            acc.push(player.color);
+            return acc;
+        }, []);
+
+        setColors(prevState => {
+            if (!bothArraysEqual(prevState, allColors)) {
+                return allColors;
+            }
+            return prevState;
+        });
 
         const newPositions: IAllPositions = {};
         const eatenFood: IPositionSchema[] = [];
@@ -157,7 +172,6 @@ function Game() {
 
     return (
         <div className={styles.gameScreen}>
-            Game
             <NewPlayerLogic setPlayers={setPlayers} setPositions={setPositions}/>
             <Board board={board} players={players}/>
             <div>{counter}</div>
