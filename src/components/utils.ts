@@ -14,6 +14,7 @@ export function getRandomColumn() {
 }
 
 export function getOccupiedByPLayers(positions: IAllPositions, rowOrCol: ('row' | 'col')) {
+    //todo can be a set
     return Object.values(positions).reduce((prev: (number)[], currentPositions: IPositionSchema[]) => {
         const currentRows = currentPositions.map((position: IPositionSchema) => position[rowOrCol]);
         return [...prev, ...currentRows];
@@ -21,6 +22,7 @@ export function getOccupiedByPLayers(positions: IAllPositions, rowOrCol: ('row' 
 }
 
 export function getOccupiedByFood(foods: IPositionSchema[], rowOrCol: ('row' | 'col')) {
+    // todo can be a set
     return foods.map((food) => food[rowOrCol]);
 }
 

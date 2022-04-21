@@ -66,6 +66,9 @@ function Game() {
                 }
             }
 
+            //CHECK FOR COLLISIONS
+            // todo implement game over
+
             // if too small or did not eat food - pop tail in positions
             if (currentPosition.length > MIN_LENGTH && ateFood === 'no') {
                 toBeCleared = currentPosition.pop();
@@ -88,7 +91,6 @@ function Game() {
             });
         }
 
-
         // UPDATE FOOD
         // clear food that is eaten
         const newFoods = eatenFood.length > 0 ? getUpdatedFood(foods, eatenFood) : foods;
@@ -104,7 +106,6 @@ function Game() {
         setFoods(newFoods);
 
         setPositions(newPositions);
-
 
     }, [counter]);
 
