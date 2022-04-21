@@ -18,6 +18,7 @@ function Game() {
     const [counter, setCounter] = useState<number>(0);
 
     useEffect(() => {
+        // if there are no players
         if (JSON.stringify(positions) === '{}') return;
 
         const newPositions: IAllPositions = {};
@@ -68,14 +69,7 @@ function Game() {
             newFood.push(foodPosition)
         }
 
-
-        setFoods(prev => {
-            console.log('prev', prev)
-            console.log('new', newFood)
-            return [...prev, ...newFood]
-        })
-
-
+        setFoods(prev => [...prev, ...newFood])
 
     }, [counter])
 
@@ -99,7 +93,7 @@ function Game() {
     }, [positions])
 
     useEffect(() => {
-        // tick logic
+        // tick logic, set counter to 1 at each tick
         const interval = setInterval(() => {
             setCounter(prev => prev + 1);
         }, TICK)

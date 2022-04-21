@@ -21,17 +21,25 @@ function updateDirection(previousDirection: TDirections, newDirection: TDirectio
     return updatedDirection
 }
 
+function playerExists(allPlayers: IAllPlayers, playerId: string) {
+    if (allPlayers) {
+        return allPlayers[playerId]
+    }
+}
+
 
 function NewPlayerLogic({setPlayers, setPositions}: IProps) {
 
     const screenId = 'asdfsdfasdfsd';
 
     const realtimeResults = (data: IRealTimeData) => {
-        // new position or new player info
+        // update position or new player
         const position = data.data.onPositionUpdated;
+
+
         // console.log('realtime data: ', position);
 
-        let allPlayers;
+        let allPlayers = {};
         // update players (add new, update position of previous)
         setPlayers((prevState: IAllPlayers) => {
             // saving most current state of players
@@ -45,7 +53,7 @@ function NewPlayerLogic({setPlayers, setPositions}: IProps) {
         })
 
         // generate random position for new players - checking if they exist
-        if (!(allPlayers ? allPlayers[position.playerId] : true)) {
+        if (!playerExists(allPlayers, position.playerId)) {
             const randomPosition = {
                 row: getRandomRow(),
                 col: getRandomColumn(),
