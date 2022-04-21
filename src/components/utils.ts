@@ -34,12 +34,12 @@ export function getUnoccupiedPosition(positions: IAllPositions, foods: IPosition
         randomRow = getRandomRow();
     }
 
-    let randomCol = getRandomRow();
+    let randomCol = getRandomColumn();
     const occupiedPlayerCols = getOccupiedByPLayers(positions, 'col');
     const occupiedFoodCols = getOccupiedByFood(foods, 'col');
     const allOccupiedCols = [...occupiedPlayerCols, ...occupiedFoodCols];
     while (allOccupiedCols.includes(randomCol)) {
-        randomCol = getRandomRow();
+        randomCol = getRandomColumn();
     }
 
     return {
