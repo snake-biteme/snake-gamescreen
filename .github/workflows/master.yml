@@ -49,7 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     # When application is successfully tested and build has been generated
     # Then we can start with deployment
-    needs: build
+    needs: zip
     steps:
       # Download previously shared build
       - name: Download built ZIP artifact
