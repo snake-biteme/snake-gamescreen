@@ -1,5 +1,5 @@
 import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
-import {IAllPlayers, IAllPositions, IPlayerSchema, IPositionSchema} from '../../interfaces/api';
+import {IAllPlayers, IAllPositions, IPositionSchema} from '../../interfaces/api';
 import {COLUMNS, MIN_LENGTH, ROWS, TICK} from '../../CONST';
 import Board from './components/Board/Board';
 import NewPlayerLogic from './components/NewPlayerLogic';
