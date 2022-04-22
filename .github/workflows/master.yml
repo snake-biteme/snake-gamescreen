@@ -15,15 +15,37 @@ jobs:
           node-version: 16.x
       - name: Install dependencies
         run: npm install
-#      - name: Test
-#        run: npm test
-#        env:
-#          CI: true
+      #      - name: Test
+      #        run: npm test
+      #        env:
+      #          CI: true
       - name: Generate build
         run: npm run build
       # Share artifact inside workflow
-      - name: Share artifact inside workflow
+      - name: Store Artifact
         uses: actions/upload-artifact@v1
         with:
           name: biteme-gamescreen
           path: build
+  deploy:
+    runs-on: ubuntu-latest
+    # When application is successfully tested and build has been generated
+    # Then we can start with deployment
+    needs: build
+    steps:
+      # Download previously shared build
+      - name: biteme-gamescreen
+        uses: actions/download-artifact@v1
+        with:
+          name: react-github-actions-build
+      # Set the credentials from repository settings/secrets
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-1
+      # Copy the files from build folder to the S3 bucket
+      - name: Deploy to S3
+        run: aws s3 sync . s3://biteme-release/dev/ --acl public-read
+        working-directory: build
