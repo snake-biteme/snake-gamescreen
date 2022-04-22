@@ -32,6 +32,6 @@ export interface IAllPositions {
 export interface IScores {
     [key: string]: {
         food: number,
-        status: number,
+        status: boolean,
     },
 }

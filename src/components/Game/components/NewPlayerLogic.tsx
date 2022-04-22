@@ -64,9 +64,9 @@ function NewPlayerLogic({setPlayers, setPositions, screenId, setScores}: IProps)
             return prevState;
         });
 
-        // set initial food and status for new players OR reset for returning players
+        // set initial food and status for new players OR reset for returning players (i.e. with status false)
         setScores((prevState: IScores) => {
-            if (!playerExists(prevState, playerId) || prevState[playerId].status === INACTIVE) {
+            if (!playerExists(prevState, playerId) || !prevState[playerId].status) {
                 const initialState = {
                     food: 0,
                     status: ACTIVE,
