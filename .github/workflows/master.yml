@@ -50,7 +50,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: biteme-gamescreen
-          path: biteme-gamescreen.zip
+          path: build/biteme-gamescreen.zip
 
       # Set the credentials from repository settings/secrets
       - name: Configure AWS credentials
@@ -62,4 +62,4 @@ jobs:
 
       # Copy the files from build folder to the S3 bucket
       - name: Release to S3
-        run: aws s3 cp biteme-gamescreen.zip s3://biteme-release/dev/biteme-gamescreen.zip
+        run: aws s3 cp build/biteme-gamescreen.zip s3://biteme-release/dev/biteme-gamescreen.zip
