@@ -75,3 +75,4 @@ export interface IAllPositions {
 
 ## Resources
 - [inspiration for ticks](https://bookout.co.il/2020/07/16/cool-snake-with-react-hooks/)
+- [deployment to S3](https://ljmocic.medium.com/deploying-react-application-to-aws-s3-using-github-actions-85addacaeace)
