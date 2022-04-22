@@ -63,3 +63,12 @@ jobs:
       # Copy the files from build folder to the S3 bucket
       - name: Release to S3
         run: aws s3 cp build/biteme-gamescreen.zip s3://biteme-release/dev/biteme-gamescreen.zip
+
+      - name: Deploy
+        run: |
+          curl \
+          -X POST \
+          -H "Accept: application/vnd.github.v3+json" \
+          -H "Authorization: token ${{ secrets.PAT_TOKEN }}" \
+          --data '{"ref": "refs/heads/master"}' \
+          https://api.github.com/repos/tinazhouhui/snake_infrastructure/actions/workflows/frontend.yml/dispatches
