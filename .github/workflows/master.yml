@@ -24,41 +24,17 @@ jobs:
         env:
           CI: false
       # Share artifact inside workflow
-      - name: Store Artifact
-        uses: actions/upload-artifact@v1
-        with:
-          name: biteme-gamescreen-build
-          path: build
-  zip:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Download built artifact
-        uses: actions/download-artifact@v1
-        with:
-          name: biteme-gamescreen-build
       - name: Zip build
         uses: thedoctor0/zip-release@master
         with:
-          filename: biteme-gamescreen-release-build.zip
-          path: biteme-gamescreen-build
-            # Upload as an artifact of the current workflow
-      - name: Upload build zip artifact
+          filename: biteme-gamescreen.zip
+          path: build
+      - name: Store Artifact
         uses: actions/upload-artifact@v1
         with:
-          name: biteme-gamescreen-release-build.zip
-          path: biteme-gamescreen-release-build.zip
-  deploy:
-    runs-on: ubuntu-latest
-    # When application is successfully tested and build has been generated
-    # Then we can start with deployment
-    needs: zip
-    steps:
-      # Download previously shared build
-      - name: Download built ZIP artifact
-        uses: actions/download-artifact@v1
-        with:
-          name: biteme-gamescreen-release-build.zip
+          name: biteme-gamescreen
+          path: biteme-gamescreen.zip
+
       # Set the credentials from repository settings/secrets
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -68,5 +44,5 @@ jobs:
           aws-region: eu-west-1
       # Copy the files from build folder to the S3 bucket
       - name: Deploy to S3
-        run: aws s3 sync . s3://biteme-release/gamescreen/ --acl public-read
-        working-directory: biteme-gamescreen-release-build.zip
+        run: aws s3 sync . s3://biteme-release/dev/
+        working-directory: biteme-gamescreen.zip
