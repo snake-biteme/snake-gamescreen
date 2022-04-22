@@ -3,7 +3,7 @@ import {IAllPlayers, IAllPositions, IRealTimeData, IScores, TDirections} from '.
 import apiClientAppSync from '../../../services/apiClientAppSync';
 import {updatePosition} from '../../../services/graphql';
 import {getRandomColumn, getRandomRow} from '../../utils';
-import {ACTIVE} from '../../../CONST';
+import {ACTIVE, INACTIVE} from '../../../CONST';
 
 interface IProps {
     // setState hook types: https://stackoverflow.com/a/56028976/18631517
@@ -40,36 +40,38 @@ function NewPlayerLogic({setPlayers, setPositions, screenId, setScores}: IProps)
         // updated position or new player
         const position = data.data.onPositionUpdated;
 
+        const {playerId, direction} = position;
+
         // update players (add new, update position of previous)
         setPlayers((prevState: IAllPlayers) => {
 
             // check if invalid direction
-            const previousDirection = prevState[position.playerId]?.direction;
-            position.direction = updateDirection(previousDirection, position.direction);
+            const previousDirection = prevState[playerId]?.direction;
+            position.direction = updateDirection(previousDirection, direction);
 
-            return {...prevState, [position.playerId]: position};
+            return {...prevState, [playerId]: position};
         });
 
         // generate random position for new players - checking if they exist
         setPositions((prevState: IAllPositions) => {
-            if (!playerExists(prevState, position.playerId)) {
+            if (!playerExists(prevState, playerId)) {
                 const randomPosition = {
                     row: getRandomRow(),
                     col: getRandomColumn(),
                 };
-                return {...prevState, [position.playerId]: [randomPosition]};
+                return {...prevState, [playerId]: [randomPosition]};
             }
             return prevState;
         });
 
         // set initial food score for new players
         setScores((prevState: IScores) => {
-            if (!playerExists(prevState, position.playerId)) {
+            if (!playerExists(prevState, playerId)) {
                 const initialState = {
                     food: 0,
                     status: ACTIVE,
                 };
-                return {...prevState, [position.playerId]: initialState};
+                return {...prevState, [playerId]: initialState};
             }
             return prevState;
         });
