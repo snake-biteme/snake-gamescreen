@@ -44,7 +44,7 @@ jobs:
         uses: thedoctor0/zip-release@master
         with:
           filename: biteme-gamescreen.zip
-          path: build/*
+          directory: build
 
       - name: Store Artifact
         uses: actions/upload-artifact@v1
@@ -59,9 +59,6 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-1
-
-      - name: List
-        run: ls -l
 
       # Copy the files from build folder to the S3 bucket
       - name: Release to S3
