@@ -5,12 +5,12 @@
 
 .App {
     text-align: center;
-    min-height: 100vh;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-around;
     background: var(--primary-color) linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-    padding: 80px;
 }
 
 * {

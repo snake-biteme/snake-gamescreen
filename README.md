@@ -15,6 +15,12 @@ npm start
 
 ## Architecture
 ### States
+
+#### Counter
+- type: `number`
+- ensures that the game renders at each tick rather than at change of other states
+- 
+
 #### Players
 ```ts
 type TDirections = 'UP' | 'DOWN' | 'RIGHT' | 'LEFT';
@@ -35,7 +41,6 @@ interface IRealTimeData {
     }
 }
 ```
-
 - stores all players that ever joined the game, does not delete the ones that died
 - allows for them to rejoin without the need to refresh the controller (`playerId` stays the same);
 
@@ -50,11 +55,22 @@ export interface IAllPositions {
     [key: string] : IPositionSchema[],
 }
 ```
-- most up to date position of all active players and the snakes
+- most up-to-date position of all active players and the snakes
 - snake body is an array of coordinates
+
+#### Foods
+- type: `IPositionSchema[]`
+- most up-to-date position of all foods
+
+#### Board
+- type: `(string | null)[][]`
+- abstract representation of the board in the form of array of arrays (rows and cols)
+- if there is `food = 'FOOD'`
+- if there is `player = ${playerId}`
 
 ## Rules
 - amount of food will be always same or more than number of players
+- there are only 3 directions a snake can go (forward, left, right; no backwards)
 - minimal length of snakes is 3 cells
 
 ## Resources
