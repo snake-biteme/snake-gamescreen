@@ -1,13 +1,15 @@
 import React, {useEffect, Dispatch, SetStateAction} from 'react';
-import {IAllPlayers, IAllPositions, IRealTimeData, TDirections} from '../../../interfaces/api';
+import {IAllPlayers, IAllPositions, IRealTimeData, IScores, TDirections} from '../../../interfaces/api';
 import apiClientAppSync from '../../../services/apiClientAppSync';
 import {updatePosition} from '../../../services/graphql';
 import {getRandomColumn, getRandomRow} from '../../utils';
+import {ACTIVE} from '../../../CONST';
 
 interface IProps {
     // setState hook types: https://stackoverflow.com/a/56028976/18631517
     setPlayers: Dispatch<SetStateAction<IAllPlayers>>,
     setPositions: Dispatch<SetStateAction<IAllPositions>>,
+    setScores: Dispatch<SetStateAction<IScores>>,
     screenId: string
 }
 
@@ -23,14 +25,14 @@ function updateDirection(previousDirection: TDirections, newDirection: TDirectio
     return updatedDirection;
 }
 
-function playerExists(allPlayers: IAllPlayers | IAllPositions, playerId: string) {
+function playerExists(allPlayers: IAllPlayers | IAllPositions | IScores, playerId: string) {
     if (allPlayers) {
         return allPlayers[playerId];
     }
 }
 
 
-function NewPlayerLogic({setPlayers, setPositions, screenId}: IProps) {
+function NewPlayerLogic({setPlayers, setPositions, screenId, setScores}: IProps) {
     // todo swap with screenId from props
     const screenID = 'asdfsdfasdfsd';
 
@@ -59,6 +61,19 @@ function NewPlayerLogic({setPlayers, setPositions, screenId}: IProps) {
             }
             return prevState;
         });
+
+        // set initial food score for new players
+        setScores((prevState: IScores) => {
+            if (!playerExists(prevState, position.playerId)) {
+                const initialState = {
+                    food: 0,
+                    status: ACTIVE,
+                };
+                return {...prevState, [position.playerId]: initialState};
+            }
+            return prevState;
+        });
+
     };
 
 

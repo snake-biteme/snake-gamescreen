@@ -1,5 +1,5 @@
 import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
-import {IAllPlayers, IAllPositions, IPositionSchema} from '../../interfaces/api';
+import {IAllPlayers, IAllPositions, IPositionSchema, IScores} from '../../interfaces/api';
 import {COLUMNS, MIN_LENGTH, ROWS, TICK} from '../../CONST';
 import Board from './components/Board/Board';
 import NewPlayerLogic from './components/NewPlayerLogic';
@@ -23,6 +23,7 @@ function Game({setColors, screenId}: IProps) {
     const [foods, setFoods] = useState<IPositionSchema[]>([]);
     const [board, setBoard] = useState<(string | null)[][]>(initialBoard());
     const [counter, setCounter] = useState<number>(0);
+    const [scores, setScores] = useState<IScores>({});
 
     useEffect(() => {
         // if there are no players
@@ -94,6 +95,11 @@ function Game({setColors, screenId}: IProps) {
                     };
 
                     eatenFood.push(foodToClear);
+
+                    setScores(prev => {
+                        const addFoodCount = prev[id].food + 1;
+                        return {...prev, [id]: {...prev[id], food: addFoodCount}};
+                    });
                 }
             }
 
@@ -175,8 +181,8 @@ function Game({setColors, screenId}: IProps) {
     return (
         <>
             <div className={styles.gameScreen}>
-                <NewPlayerLogic screenId={screenId} setPlayers={setPlayers} setPositions={setPositions}/>
-                <Scoreboard players={players}/>
+                <NewPlayerLogic screenId={screenId} setPlayers={setPlayers} setPositions={setPositions} setScores={setScores}/>
+                <Scoreboard scores={scores} players={players}/>
                 <Board board={board} players={players}/>
             </div>
             <div>{counter}</div>
