@@ -22,3 +22,5 @@ jobs:
       #          CI: true
       - name: Generate build
         run: npm run build
+        env:
+          CI: false
