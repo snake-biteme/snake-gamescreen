@@ -5,6 +5,7 @@ import Board from './components/Board/Board';
 import NewPlayerLogic from './components/NewPlayerLogic';
 import {bothArraysEqual, getUnoccupiedPosition, getUpdatedFood} from '../utils';
 import styles from './Game.module.css';
+import Scoreboard from './Scoreboard/Scoreboard';
 
 function initialBoard() {
     const columns = new Array(COLUMNS).fill(null);
@@ -172,11 +173,14 @@ function Game({setColors, screenId}: IProps) {
 
 
     return (
-        <div className={styles.gameScreen}>
-            <NewPlayerLogic screenId={screenId} setPlayers={setPlayers} setPositions={setPositions}/>
-            <Board board={board} players={players}/>
+        <>
+            <div className={styles.gameScreen}>
+                <NewPlayerLogic screenId={screenId} setPlayers={setPlayers} setPositions={setPositions}/>
+                <Scoreboard players={players}/>
+                <Board board={board} players={players}/>
+            </div>
             <div>{counter}</div>
-        </div>
+        </>
 
     );
 }

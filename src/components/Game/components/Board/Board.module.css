@@ -1,18 +1,22 @@
+.board {
+    box-shadow: 0 15px 60px hsla(0, 0%, 0%, 0.36);
+}
+
 .cell {
-  min-height: 20px;
-  min-width: 20px;
-  border: 1px solid #000000;
+    min-height: 20px;
+    min-width: 20px;
+    border: 1px solid #000000;
 }
 
 .row {
-  display: flex;
+    display: flex;
 }
 
 .foodCell {
-  background-color: var(--secondary-color);
-  border-radius: 50%;
+    background-color: var(--secondary-color);
+    border-radius: 50%;
 }
 
 .snakeCell {
-  border-radius: 4px;
+    border-radius: 4px;
 }
