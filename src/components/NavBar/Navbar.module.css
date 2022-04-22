@@ -1,13 +1,15 @@
 .container {
     display: flex;
-    margin: 30px 0;
+    margin-bottom: 80px;
     justify-content: space-between;
     align-items: center;
     width: 100%;
 }
+
 .qrcode {
     width: 150px;
     height: 150px;
     background-color: red;
     margin-right: 20px;
+    box-shadow: 0 15px 60px hsla(0, 0%, 0%, 0.24);
 }

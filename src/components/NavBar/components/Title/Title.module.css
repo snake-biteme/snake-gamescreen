@@ -6,10 +6,11 @@
 }
 
 .letter {
-    border: 3px solid darkgreen;
+    border: 5px solid darkgreen;
     min-width: 80px;
     min-height: 80px;
     border-radius: 20px;
+    box-shadow: 0 15px 60px hsla(0, 0%, 0%, 0.24);
 }
 
 .capital {
