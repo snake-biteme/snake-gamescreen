@@ -37,7 +37,7 @@ jobs:
       - name: Download built artifact
         uses: actions/download-artifact@v1
         with:
-          name: biteme-gamescreen
+          name: biteme-gamescreen-build
       # Set the credentials from repository settings/secrets
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -48,4 +48,4 @@ jobs:
       # Copy the files from build folder to the S3 bucket
       - name: Deploy to S3
         run: aws s3 sync . s3://biteme-release/dev/ --acl public-read
-        working-directory: build
+        working-directory: biteme-gamescreen-build
