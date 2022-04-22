@@ -34,10 +34,10 @@ jobs:
     needs: build
     steps:
       # Download previously shared build
-      - name: biteme-gamescreen
+      - name: Download built artifact
         uses: actions/download-artifact@v1
         with:
-          name: react-github-actions-build
+          name: biteme-gamescreen
       # Set the credentials from repository settings/secrets
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
