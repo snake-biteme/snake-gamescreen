@@ -27,6 +27,24 @@ jobs:
         with:
           name: biteme-gamescreen-build
           path: build
+  zip:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download built artifact
+        uses: actions/download-artifact@v1
+        with:
+          name: biteme-gamescreen-build
+      - name: Zip build
+        uses: thedoctor0/zip-release@master
+        with:
+          filename: biteme-gamescreen-release-build.zip
+          path: biteme-gamescreen-build
+            # Upload as an artifact of the current workflow
+      - name: Upload build zip artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: biteme-gamescreen-release-build.zip
+          path: biteme-gamescreen-release-build.zip
   deploy:
     runs-on: ubuntu-latest
     # When application is successfully tested and build has been generated
@@ -34,10 +52,10 @@ jobs:
     needs: build
     steps:
       # Download previously shared build
-      - name: Download built artifact
+      - name: Download built ZIP artifact
         uses: actions/download-artifact@v1
         with:
-          name: biteme-gamescreen-build
+          name: biteme-gamescreen-release-build.zip
       # Set the credentials from repository settings/secrets
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -48,4 +66,4 @@ jobs:
       # Copy the files from build folder to the S3 bucket
       - name: Deploy to S3
         run: aws s3 sync . s3://biteme-release/dev/ --acl public-read
-        working-directory: biteme-gamescreen-build
+        working-directory: biteme-gamescreen-release-build.zip
