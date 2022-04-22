@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {IAllPlayers, IScores} from '../../../interfaces/api';
 import {pSBC} from '../../utils';
+import styles from './Scoreboard.module.css';
 
 interface IProps {
     players: IAllPlayers,
@@ -19,8 +20,8 @@ function Scoreboard({players, scores}: IProps) {
         const htmlList = Object.entries(sortedScores).map(([id, score]) => {
             const {color, name} = players[id];
 
-            const active = score.status ? 'active' : 'dead';
-            return <div key={id} style={{background: pSBC(0.1, color, undefined, undefined)}}>
+            const active = score.status ? 'active' : 'inactive';
+            return <div key={id} className={`${styles[active]} ${styles.player}`} style={{background: pSBC(0.1, color, undefined, undefined)}}>
                 <p>{active} {name} {score.food}</p>
             </div>;
         });
@@ -28,7 +29,7 @@ function Scoreboard({players, scores}: IProps) {
     }, [scores]);
 
     return (
-        <div>{scoreBoard}</div>
+        <div className={styles.container}>{scoreBoard}</div>
     );
 }
 
