@@ -12,10 +12,11 @@ function initialBoard() {
 }
 
 export interface IProps {
-    setColors: Dispatch<SetStateAction<string[]>>
+    setColors: Dispatch<SetStateAction<string[]>>,
+    screenId: string
 }
 
-function Game({setColors}: IProps) {
+function Game({setColors, screenId}: IProps) {
     const [players, setPlayers] = useState<IAllPlayers>({});
     const [positions, setPositions] = useState<IAllPositions>({});
     const [foods, setFoods] = useState<IPositionSchema[]>([]);
@@ -172,7 +173,7 @@ function Game({setColors}: IProps) {
 
     return (
         <div className={styles.gameScreen}>
-            <NewPlayerLogic setPlayers={setPlayers} setPositions={setPositions}/>
+            <NewPlayerLogic screenId={screenId} setPlayers={setPlayers} setPositions={setPositions}/>
             <Board board={board} players={players}/>
             <div>{counter}</div>
         </div>

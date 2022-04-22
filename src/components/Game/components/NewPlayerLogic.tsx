@@ -8,6 +8,7 @@ interface IProps {
     // setState hook types: https://stackoverflow.com/a/56028976/18631517
     setPlayers: Dispatch<SetStateAction<IAllPlayers>>,
     setPositions: Dispatch<SetStateAction<IAllPositions>>,
+    screenId: string
 }
 
 function updateDirection(previousDirection: TDirections, newDirection: TDirections) {
@@ -29,9 +30,9 @@ function playerExists(allPlayers: IAllPlayers | IAllPositions, playerId: string)
 }
 
 
-function NewPlayerLogic({setPlayers, setPositions}: IProps) {
-    // todo receive from qr code
-    const screenId = 'asdfsdfasdfsd';
+function NewPlayerLogic({setPlayers, setPositions, screenId}: IProps) {
+    // todo swap with screenId from props
+    const screenID = 'asdfsdfasdfsd';
 
     const realtimeResults = (data: IRealTimeData) => {
         // updated position or new player
@@ -66,7 +67,7 @@ function NewPlayerLogic({setPlayers, setPositions}: IProps) {
             const observable = client.subscribe({
                 query: updatePosition,
                 variables: {
-                    screenId: screenId,
+                    screenId: screenID,
                 }
             });
             // run realtime results once received new subscription, i.e. new player or new directions
