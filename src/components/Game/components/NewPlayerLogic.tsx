@@ -3,7 +3,7 @@ import {IAllPlayers, IAllPositions, IRealTimeData, IScores, TDirections} from '.
 import apiClientAppSync from '../../../services/apiClientAppSync';
 import {updatePosition} from '../../../services/graphql';
 import {getRandomColumn, getRandomRow} from '../../utils';
-import {ACTIVE, INACTIVE} from '../../../CONST';
+import {ACTIVE} from '../../../CONST';
 
 interface IProps {
     // setState hook types: https://stackoverflow.com/a/56028976/18631517
@@ -77,7 +77,6 @@ function NewPlayerLogic({setPlayers, setPositions, screenId, setScores}: IProps)
         });
 
     };
-
 
     useEffect(() => {
         apiClientAppSync.hydrated().then((client) => {
