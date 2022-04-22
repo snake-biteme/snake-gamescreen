@@ -3,7 +3,12 @@ import Title from './components/Title/Title';
 import styles from './Navbar.module.css';
 import {QRCodeSVG} from 'qrcode.react';
 
-function Navbar() {
+interface IProps {
+    screenId: string,
+}
+
+function Navbar({screenId} : IProps) {
+
     const url = 'https://www.google.com';
     // className not supported
     const qrcodeStyles = {
@@ -13,7 +18,7 @@ function Navbar() {
     return (
         <div className={styles.container}>
             <Title/>
-            <QRCodeSVG style={qrcodeStyles} value={url} size={200}/>
+            <QRCodeSVG style={qrcodeStyles} value={`${url}/${screenId}`} size={200}/>
         </div>
     );
 }

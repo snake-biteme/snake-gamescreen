@@ -26,5 +26,14 @@ export interface IPositionSchema {
 }
 
 export interface IAllPositions {
-    [key: string] : IPositionSchema[],
+    [key: string]: IPositionSchema[],
+}
+
+export interface IScore {
+    food: number,
+    status: boolean,
+}
+
+export interface IScores {
+    [key: string]: IScore,
 }

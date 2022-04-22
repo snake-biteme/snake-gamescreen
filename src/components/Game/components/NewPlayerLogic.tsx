@@ -1,13 +1,16 @@
 import React, {useEffect, Dispatch, SetStateAction} from 'react';
-import {IAllPlayers, IAllPositions, IRealTimeData, TDirections} from '../../../interfaces/api';
+import {IAllPlayers, IAllPositions, IRealTimeData, IScores, TDirections} from '../../../interfaces/api';
 import apiClientAppSync from '../../../services/apiClientAppSync';
 import {updatePosition} from '../../../services/graphql';
 import {getRandomColumn, getRandomRow} from '../../utils';
+import {ACTIVE} from '../../../CONST';
 
 interface IProps {
     // setState hook types: https://stackoverflow.com/a/56028976/18631517
     setPlayers: Dispatch<SetStateAction<IAllPlayers>>,
     setPositions: Dispatch<SetStateAction<IAllPositions>>,
+    setScores: Dispatch<SetStateAction<IScores>>,
+    screenId: string
 }
 
 function updateDirection(previousDirection: TDirections, newDirection: TDirections) {
@@ -22,51 +25,65 @@ function updateDirection(previousDirection: TDirections, newDirection: TDirectio
     return updatedDirection;
 }
 
-function playerExists(allPlayers: IAllPlayers | IAllPositions, playerId: string) {
+function playerExists(allPlayers: IAllPlayers | IAllPositions | IScores, playerId: string) {
     if (allPlayers) {
         return allPlayers[playerId];
     }
 }
 
 
-function NewPlayerLogic({setPlayers, setPositions}: IProps) {
-    // todo receive from qr code
-    const screenId = 'asdfsdfasdfsd';
+function NewPlayerLogic({setPlayers, setPositions, screenId, setScores}: IProps) {
+    // todo swap with screenId from props
+    const screenID = 'asdfsdfasdfsd';
 
     const realtimeResults = (data: IRealTimeData) => {
         // updated position or new player
         const position = data.data.onPositionUpdated;
 
+        const {playerId, direction} = position;
+
         // update players (add new, update position of previous)
         setPlayers((prevState: IAllPlayers) => {
 
             // check if invalid direction
-            const previousDirection = prevState[position.playerId]?.direction;
-            position.direction = updateDirection(previousDirection, position.direction);
+            const previousDirection = prevState[playerId]?.direction;
+            position.direction = updateDirection(previousDirection, direction);
 
-            return {...prevState, [position.playerId]: position};
+            return {...prevState, [playerId]: position};
         });
 
         // generate random position for new players - checking if they exist
         setPositions((prevState: IAllPositions) => {
-            if (!playerExists(prevState, position.playerId)) {
+            if (!playerExists(prevState, playerId)) {
                 const randomPosition = {
                     row: getRandomRow(),
                     col: getRandomColumn(),
                 };
-                return {...prevState, [position.playerId]: [randomPosition]};
+                return {...prevState, [playerId]: [randomPosition]};
             }
             return prevState;
         });
-    };
 
+        // set initial food and status for new players OR reset for returning players (i.e. with status false)
+        setScores((prevState: IScores) => {
+            if (!playerExists(prevState, playerId) || !prevState[playerId].status) {
+                const initialState = {
+                    food: 0,
+                    status: ACTIVE,
+                };
+                return {...prevState, [playerId]: initialState};
+            }
+            return prevState;
+        });
+
+    };
 
     useEffect(() => {
         apiClientAppSync.hydrated().then((client) => {
             const observable = client.subscribe({
                 query: updatePosition,
                 variables: {
-                    screenId: screenId,
+                    screenId: screenID,
                 }
             });
             // run realtime results once received new subscription, i.e. new player or new directions

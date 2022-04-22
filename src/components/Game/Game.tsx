@@ -1,10 +1,11 @@
 import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
-import {IAllPlayers, IAllPositions, IPositionSchema} from '../../interfaces/api';
-import {COLUMNS, MIN_LENGTH, ROWS, TICK} from '../../CONST';
+import {IAllPlayers, IAllPositions, IPositionSchema, IScores} from '../../interfaces/api';
+import {COLUMNS, INACTIVE, MIN_LENGTH, ROWS, TICK} from '../../CONST';
 import Board from './components/Board/Board';
 import NewPlayerLogic from './components/NewPlayerLogic';
 import {bothArraysEqual, getUnoccupiedPosition, getUpdatedFood} from '../utils';
 import styles from './Game.module.css';
+import Scoreboard from './Scoreboard/Scoreboard';
 
 function initialBoard() {
     const columns = new Array(COLUMNS).fill(null);
@@ -12,15 +13,17 @@ function initialBoard() {
 }
 
 export interface IProps {
-    setColors: Dispatch<SetStateAction<string[]>>
+    setColors: Dispatch<SetStateAction<string[]>>,
+    screenId: string
 }
 
-function Game({setColors}: IProps) {
+function Game({setColors, screenId}: IProps) {
     const [players, setPlayers] = useState<IAllPlayers>({});
     const [positions, setPositions] = useState<IAllPositions>({});
     const [foods, setFoods] = useState<IPositionSchema[]>([]);
     const [board, setBoard] = useState<(string | null)[][]>(initialBoard());
     const [counter, setCounter] = useState<number>(0);
+    const [scores, setScores] = useState<IScores>({});
 
     useEffect(() => {
         // if there are no players
@@ -74,6 +77,11 @@ function Game({setColors}: IProps) {
                         collided = true;
                         // todo instead of deleting turn it into food?
                         toBeCleared.push(...positions[id]);
+
+                        // deactive player status in scores
+                        setScores(prev => {
+                            return {...prev, [id]: {...prev[id], status: INACTIVE}};
+                        });
                     }
                 });
             }
@@ -92,6 +100,11 @@ function Game({setColors}: IProps) {
                     };
 
                     eatenFood.push(foodToClear);
+
+                    setScores(prev => {
+                        const addFoodCount = prev[id].food + 1;
+                        return {...prev, [id]: {...prev[id], food: addFoodCount}};
+                    });
                 }
             }
 
@@ -171,11 +184,14 @@ function Game({setColors}: IProps) {
 
 
     return (
-        <div className={styles.gameScreen}>
-            <NewPlayerLogic setPlayers={setPlayers} setPositions={setPositions}/>
-            <Board board={board} players={players}/>
+        <>
+            <div className={styles.gameScreen}>
+                <NewPlayerLogic screenId={screenId} setPlayers={setPlayers} setPositions={setPositions} setScores={setScores}/>
+                <Scoreboard scores={scores} players={players}/>
+                <Board board={board} players={players}/>
+            </div>
             <div>{counter}</div>
-        </div>
+        </>
 
     );
 }

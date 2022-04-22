@@ -48,7 +48,7 @@ function Board({board, players} : IProps) {
 
     }, [board]);
     return (
-        <div>
+        <div className={styles.board}>
             {htmlBoard}
         </div>
     );
