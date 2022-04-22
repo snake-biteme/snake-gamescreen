@@ -1,6 +1,6 @@
 import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
 import {IAllPlayers, IAllPositions, IPositionSchema, IScores} from '../../interfaces/api';
-import {COLUMNS, MIN_LENGTH, ROWS, TICK} from '../../CONST';
+import {COLUMNS, INACTIVE, MIN_LENGTH, ROWS, TICK} from '../../CONST';
 import Board from './components/Board/Board';
 import NewPlayerLogic from './components/NewPlayerLogic';
 import {bothArraysEqual, getUnoccupiedPosition, getUpdatedFood} from '../utils';
@@ -77,6 +77,11 @@ function Game({setColors, screenId}: IProps) {
                         collided = true;
                         // todo instead of deleting turn it into food?
                         toBeCleared.push(...positions[id]);
+
+                        // deactive player status in scores
+                        setScores(prev => {
+                            return {...prev, [id]: {...prev[id], status: INACTIVE}};
+                        });
                     }
                 });
             }

@@ -9,8 +9,9 @@ interface IProps {
 
 function Scoreboard({players, scores}: IProps) {
     const htmlList = Object.values(players).map(player => {
-        return <div key={player.playerId} style={{background: pSBC(0.1, player.color, undefined, undefined)}}>
-            <p>{player.name} {scores[player.playerId]?.food}</p>
+        const {playerId, color, name} = player;
+        return <div key={playerId} style={{background: pSBC(0.1, color, undefined, undefined)}}>
+            <p>{scores[playerId]?.status} {name} {scores[playerId]?.food}</p>
         </div>;
     });
 
