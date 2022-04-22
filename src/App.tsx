@@ -1,22 +1,24 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import './App.css';
 import Game from './components/Game/Game';
-import {randomIntFromInterval} from './components/utils';
+import {hexToRgb, randomIntFromInterval} from './components/utils';
 import Navbar from './components/NavBar/Navbar';
 
 function App() {
     const [colors, setColors] = useState<string[]>([]);
-    const [degree, setDegree] = useState<number>(45);
+    const defaultGradient = `linear-gradient(40deg, rgba(${hexToRgb('#1ad02c')},0.8) , rgba(${hexToRgb('#cecece')}, 0) 90%)`;
+    const formattedColor: string[] = [defaultGradient];
 
-    const colorString = colors.join(', ');
+
+    for (const color of colors)  {
+        formattedColor.push(`linear-gradient(${randomIntFromInterval(0, 360)}deg, rgba(${hexToRgb(color)},0.8), rgba(${hexToRgb(color)},0) 90%)`);
+    }
+    const colorString = formattedColor.join(', ');
+
     // set background color to all player's color
     const customBackground = {
-        background: `linear-gradient(${degree}deg, var(--primary-color), ${colorString === '' ? 'var(--secondary-color)' : colorString})`,
+        background: `${colorString}`,
     };
-
-    useEffect(() => {
-        setDegree(randomIntFromInterval(0, 360));
-    }, []);
 
     return (
         <div className="App" style={customBackground}>
