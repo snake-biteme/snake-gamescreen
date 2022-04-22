@@ -25,7 +25,7 @@ jobs:
       - name: Store Artifact
         uses: actions/upload-artifact@v1
         with:
-          name: biteme-gamescreen
+          name: biteme-gamescreen-build
           path: build
   deploy:
     runs-on: ubuntu-latest
