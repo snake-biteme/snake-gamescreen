@@ -1,7 +1,8 @@
 # 💻 Gamescreen for BiteMe
 
 ##BiteMe
-BiteMe is a multiplayer snake game
+BiteMe is a multiplayer snake game.
+It is a share screen type of game.
 
 ## Start
 `bash
@@ -14,6 +15,7 @@ npm start
 - React, Typescript
 
 ## Architecture
+
 ### States
 
 #### Counter
@@ -72,6 +74,24 @@ export interface IAllPositions {
 - amount of food will be always same or more than number of players
 - there are only 3 directions a snake can go (forward, left, right; no backwards)
 - minimal length of snakes is 3 cells
+
+## CICD
+### CI
+1. github workflow on feature branches to build a package
+2. using makefile to execute the commands
+3. github workflow on master branch to build a package as well as release to S3 - release bucket
+4. using makefile to execute commands as well as gulpfile for zipping
+
+In simple words, everytime I push something to a feature branch, github will try to build a package that is ready to be deployed (npm run build). 
+Everytime I push to master branch, not only will a package be created but a version file will be added to the build. 
+This build is then saved as an artifact on github as well as saved to the S3 release bucket
+
+### CD
+- on push to master, deploy to staging - happening in the infrastructure repository
+
+Everytime I push to master (merge pull from feature), a workflow on my infrastructure repository is triggered.
+This will copy latest version from the S3 release bucket and deploy it to the public staging bucket.
+From there the static files are served.
 
 ## Resources
 - [inspiration for ticks](https://bookout.co.il/2020/07/16/cool-snake-with-react-hooks/)
