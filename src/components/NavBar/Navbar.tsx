@@ -19,7 +19,7 @@ function Navbar({screenId} : IProps) {
     return (
         <div className={styles.container}>
             <Title/>
-            <QRCodeSVG style={qrcodeStyles} value={`${url}/${screenId}`} size={200}/>
+            <QRCodeSVG style={qrcodeStyles} value={`${url}/?screenId=${screenId}`} size={200}/>
         </div>
     );
 }
