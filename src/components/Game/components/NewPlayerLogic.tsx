@@ -41,8 +41,6 @@ function playerExists(allPlayers: IAllPlayers | IAllPositions | IScores, playerI
 
 
 function NewPlayerLogic({setPlayers, setPositions, screenId, setScores, foods}: IProps) {
-    // todo swap with screenId from props
-    const screenID = 'asdfsdfasdfsd';
 
     const realtimeResults = (data: IRealTimeData) => {
         // updated position or new player
@@ -88,7 +86,7 @@ function NewPlayerLogic({setPlayers, setPositions, screenId, setScores, foods}: 
             const observable = client.subscribe({
                 query: updatePosition,
                 variables: {
-                    screenId: screenID,
+                    screenId: screenId,
                 }
             });
             // run realtime results once received new subscription, i.e. new player or new directions
