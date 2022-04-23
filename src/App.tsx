@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
 import Game from './components/Game/Game';
 import {hexToRgb, randomIntFromInterval} from './components/utils';
@@ -17,9 +17,14 @@ function getFormattedColors(colors: string[]) {
 }
 
 function App() {
-    // create the screen ID
-    const screenId = uuidv4();
+    const [screenId, setScreenId] = useState<string>('');
     const [colors, setColors] = useState<string[]>([]);
+
+    // create the screen ID
+    useEffect(() => {
+        setScreenId(uuidv4());
+    }, []);
+
     // set background color to all player's color
     const colorString = getFormattedColors(colors);
     return (
