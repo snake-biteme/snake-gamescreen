@@ -6,7 +6,6 @@ import NewPlayerLogic from './components/NewPlayerLogic';
 import {bothArraysEqual, getUnoccupiedPosition, getUpdatedFood} from '../utils';
 import styles from './Game.module.css';
 import Scoreboard from './Scoreboard/Scoreboard';
-import TestComponent from './components/TestComponent';
 
 function initialBoard() {
     const columns = new Array(COLUMNS).fill(null);
@@ -18,12 +17,20 @@ export interface IProps {
 }
 
 function Game({setColors}: IProps) {
+    const [counter, setCounter] = useState<number>(0);
     const [players, setPlayers] = useState<IAllPlayers>({});
     const [positions, setPositions] = useState<IAllPositions>({});
     const [foods, setFoods] = useState<IPositionSchema[]>([]);
     const [board, setBoard] = useState<(string | null)[][]>(initialBoard());
-    const [counter, setCounter] = useState<number>(0);
     const [scores, setScores] = useState<IScores>({});
+
+    useEffect(() => {
+        // tick logic, set counter to 1 at each tick
+        const interval = setInterval(() => {
+            setCounter(prev => prev + 1);
+        }, TICK);
+        return () => clearInterval(interval);
+    }, []);
 
     useEffect(() => {
         // if there are no players
@@ -174,18 +181,12 @@ function Game({setColors}: IProps) {
         }
     }, [positions, foods]);
 
-    useEffect(() => {
-        // tick logic, set counter to 1 at each tick
-        const interval = setInterval(() => {
-            setCounter(prev => prev + 1);
-        }, TICK);
-        return () => clearInterval(interval);
-    }, []);
 
     return (
         <>
             <div className={styles.gameScreen}>
-                <NewPlayerLogic setPlayers={setPlayers} setPositions={setPositions} setScores={setScores} foods={foods}/>
+                <NewPlayerLogic setPlayers={setPlayers} setPositions={setPositions} setScores={setScores}
+                    foods={foods}/>
                 <Scoreboard scores={scores} players={players}/>
                 <Board board={board} players={players}/>
             </div>

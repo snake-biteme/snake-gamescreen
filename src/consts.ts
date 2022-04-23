@@ -2,7 +2,7 @@ import {v4 as uuidv4} from 'uuid';
 
 export const COLUMNS = 20;
 export const ROWS = 20;
-export const TICK = 400;
+export const TICK = 200;
 export const MIN_LENGTH = 3;
 export const ACTIVE = true;
 export const INACTIVE = false;
