@@ -2,6 +2,7 @@ import React from 'react';
 import Title from './components/Title/Title';
 import styles from './Navbar.module.css';
 import {QRCodeSVG} from 'qrcode.react';
+import {CONTROLLER_URL} from '../../consts';
 
 interface IProps {
     screenId: string,
@@ -9,7 +10,7 @@ interface IProps {
 
 function Navbar({screenId} : IProps) {
 
-    const url = 'https://www.google.com';
+    const url = CONTROLLER_URL;
     // className not supported
     const qrcodeStyles = {
         marginRight: '20px',
