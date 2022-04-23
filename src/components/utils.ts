@@ -1,5 +1,5 @@
 import {COLUMNS, ROWS} from '../consts';
-import {IAllPositions, IPositionSchema} from '../interfaces/api';
+import {IAllPositions, IPositionSchema, TDirections} from '../interfaces/api';
 
 export function randomIntFromInterval(min: number, max: number) { // min and max included
     return Math.floor(Math.random() * (max - min) + min);
@@ -15,8 +15,8 @@ export function getRandomColumn() {
 
 export function getOccupiedByPLayers(positions: IAllPositions, rowOrCol: ('row' | 'col')) {
     //todo can be a set
-    return Object.values(positions).reduce((prev: (number)[], currentPositions: IPositionSchema[]) => {
-        const currentRows = currentPositions.map((position: IPositionSchema) => position[rowOrCol]);
+    return Object.values(positions).reduce((prev: (number)[], currentPositions) => {
+        const currentRows = currentPositions.position.map((position: IPositionSchema) => position[rowOrCol]);
         return [...prev, ...currentRows];
     }, []);
 }
@@ -68,6 +68,22 @@ export function bothArraysEqual(prevColors: string[], allColors: string[]) {
     //https://stackoverflow.com/questions/3115982/how-to-check-if-two-arrays-are-equal-with-javascript
     return prevColors.every(item => allColors.includes(item)) && allColors.every(item => prevColors.includes(item));
 }
+
+export function updateDirection(previousDirection: TDirections, newDirection: TDirections) {
+    console.log('prev', previousDirection, 'new', newDirection);
+
+    let updatedDirection = newDirection; // new direction by default
+
+    // snake can only go to three directions, i.e. if going UP cannot go DOWN
+    if (previousDirection === 'UP' && updatedDirection === 'DOWN') updatedDirection = 'UP';
+    if (previousDirection === 'RIGHT' && updatedDirection === 'LEFT') updatedDirection = 'RIGHT';
+    if (previousDirection === 'DOWN' && updatedDirection === 'UP') updatedDirection = 'DOWN';
+    if (previousDirection === 'LEFT' && updatedDirection === 'RIGHT') updatedDirection = 'LEFT';
+
+    console.log('updated', updatedDirection);
+    return updatedDirection;
+}
+
 
 export function rgbToHex(r: number, g: number, b: number) {
     return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);

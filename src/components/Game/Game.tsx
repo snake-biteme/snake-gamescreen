@@ -3,7 +3,7 @@ import {IAllPlayers, IAllPositions, IPositionSchema, IScores} from '../../interf
 import {COLUMNS, INACTIVE, MIN_LENGTH, ROWS, TICK} from '../../consts';
 import Board from './components/Board/Board';
 import NewPlayerLogic from './components/NewPlayerLogic';
-import {bothArraysEqual, getUnoccupiedPosition, getUpdatedFood} from '../utils';
+import {bothArraysEqual, getUnoccupiedPosition, getUpdatedFood, updateDirection} from '../utils';
 import styles from './Game.module.css';
 import Scoreboard from './Scoreboard/Scoreboard';
 
@@ -53,9 +53,12 @@ function Game({setColors}: IProps) {
         const eatenFood: IPositionSchema[] = [];
         // MOVE SNAKES
         for (const [id, snake] of Object.entries(positions)) {
-            const currentPosition = [...snake];
+            const currentPosition = [...snake.position];
             const currentHead = {...currentPosition[0]};
             const newHead: IPositionSchema = {...currentHead};
+            // todo why is this being called when only dependent on counter?
+            const updatedDirection = updateDirection(snake.prevDirection, players[id].direction);
+
             switch (players[id].direction) {
             case 'UP':
                 newHead.row = currentHead.row === 0 ? ROWS - 1 : currentHead.row - 1;
@@ -79,11 +82,11 @@ function Game({setColors}: IProps) {
             //CHECK FOR COLLISIONS
             let collided = false;
             for (const snake of Object.values(positions)) {
-                snake.forEach(cell => {
+                snake.position.forEach(cell => {
                     if (cell.row === newHead.row && cell.col === newHead.col) {
                         collided = true;
                         // todo instead of deleting turn it into food?
-                        toBeCleared.push(...positions[id]);
+                        toBeCleared.push(...positions[id].position);
 
                         // deactive player status in scores
                         setScores(prev => {
@@ -92,7 +95,6 @@ function Game({setColors}: IProps) {
                     }
                 });
             }
-
 
             // ANY FOOD EATEN?
             let foodToClear: IPositionSchema | undefined;
@@ -115,7 +117,6 @@ function Game({setColors}: IProps) {
                 }
             }
 
-
             // if large enough or did not eat food - pop tail in positions
             if (currentPosition.length > MIN_LENGTH && ateFood === 'no') {
                 toBeCleared.push(currentPosition.pop());
@@ -123,7 +124,10 @@ function Game({setColors}: IProps) {
 
             // save player to new positions if no collision detected
             if (!collided) {
-                newPositions[id] = currentPosition;
+                newPositions[id] = {
+                    position: currentPosition,
+                    prevDirection: updatedDirection,
+                };
             }
 
             // CLEAR BOARD OF FOOD AND SNAKE BODY PARTS
@@ -167,7 +171,7 @@ function Game({setColors}: IProps) {
         if (Object.keys(positions).length > 0) {
             // set all snakes to board
             for (const [id, position] of Object.entries(positions)) {
-                position.forEach((oneCell => {
+                position.position.forEach((oneCell => {
                     newBoard[oneCell.row][oneCell.col] = id;
                 }));
             }

@@ -9,7 +9,7 @@ import {
 } from '../../../interfaces/api';
 import apiClientAppSync from '../../../services/apiClientAppSync';
 import {updatePosition} from '../../../services/graphql';
-import {getUnoccupiedPosition} from '../../utils';
+import {getUnoccupiedPosition, updateDirection} from '../../utils';
 import {ACTIVE, SCREEN_ID} from '../../../consts';
 
 interface IProps {
@@ -18,18 +18,6 @@ interface IProps {
     setPositions: Dispatch<SetStateAction<IAllPositions>>,
     setScores: Dispatch<SetStateAction<IScores>>,
     foods: IPositionSchema[],
-}
-
-function updateDirection(previousDirection: TDirections, newDirection: TDirections) {
-    let updatedDirection = newDirection; // new direction by default
-
-    // snake can only go to three directions, i.e. if going UP cannot go DOWN
-    if (previousDirection === 'UP' && updatedDirection === 'DOWN') updatedDirection = 'UP';
-    if (previousDirection === 'RIGHT' && updatedDirection === 'LEFT') updatedDirection = 'RIGHT';
-    if (previousDirection === 'DOWN' && updatedDirection === 'UP') updatedDirection = 'DOWN';
-    if (previousDirection === 'LEFT' && updatedDirection === 'RIGHT') updatedDirection = 'LEFT';
-
-    return updatedDirection;
 }
 
 function playerExists(allPlayers: IAllPlayers | IAllPositions | IScores, playerId: string) {
@@ -60,8 +48,15 @@ function NewPlayerLogic({setPlayers, setPositions, setScores, foods}: IProps) {
         // generate random position for new players - checking if they exist
         setPositions((prevState: IAllPositions) => {
             if (!playerExists(prevState, playerId)) {
+                console.log('FIRST DIRECTION');
                 const randomPosition = getUnoccupiedPosition(prevState, foods);
-                return {...prevState, [playerId]: [randomPosition]};
+                return {
+                    ...prevState,
+                    [playerId]: {
+                        position: [randomPosition],
+                        prevDirection: direction,
+                    }
+                };
             }
             return prevState;
         });
