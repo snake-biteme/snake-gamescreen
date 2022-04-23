@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import './App.css';
 import Game from './components/Game/Game';
 import {hexToRgb, randomIntFromInterval} from './components/utils';
 import Navbar from './components/NavBar/Navbar';
-import {v4 as uuidv4} from 'uuid';
 
 function getFormattedColors(colors: string[]) {
     const defaultGradient = `linear-gradient(40deg, rgba(${hexToRgb('#1ad02c')},0.8) , rgba(${hexToRgb('#cecece')}, 0) 90%)`;
@@ -17,20 +16,14 @@ function getFormattedColors(colors: string[]) {
 }
 
 function App() {
-    const [screenId, setScreenId] = useState<string>('');
     const [colors, setColors] = useState<string[]>([]);
-
-    // create the screen ID
-    useEffect(() => {
-        setScreenId(uuidv4());
-    }, []);
 
     // set background color to all player's color
     const colorString = getFormattedColors(colors);
     return (
         <div className="App" style={{background: `${colorString}`}}>
-            <Navbar screenId={screenId}/>
-            <Game screenId={screenId} setColors={setColors}/>
+            <Navbar />
+            <Game setColors={setColors}/>
         </div>
     );
 }

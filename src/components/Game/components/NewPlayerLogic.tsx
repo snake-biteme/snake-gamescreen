@@ -10,7 +10,7 @@ import {
 import apiClientAppSync from '../../../services/apiClientAppSync';
 import {updatePosition} from '../../../services/graphql';
 import {getUnoccupiedPosition} from '../../utils';
-import {ACTIVE} from '../../../consts';
+import {ACTIVE, SCREEN_ID} from '../../../consts';
 
 interface IProps {
     // setState hook types: https://stackoverflow.com/a/56028976/18631517
@@ -18,7 +18,6 @@ interface IProps {
     setPositions: Dispatch<SetStateAction<IAllPositions>>,
     setScores: Dispatch<SetStateAction<IScores>>,
     foods: IPositionSchema[],
-    screenId: string
 }
 
 function updateDirection(previousDirection: TDirections, newDirection: TDirections) {
@@ -40,7 +39,7 @@ function playerExists(allPlayers: IAllPlayers | IAllPositions | IScores, playerI
 }
 
 
-function NewPlayerLogic({setPlayers, setPositions, screenId, setScores, foods}: IProps) {
+function NewPlayerLogic({setPlayers, setPositions, setScores, foods}: IProps) {
 
     const realtimeResults = (data: IRealTimeData) => {
         // updated position or new player
@@ -86,7 +85,7 @@ function NewPlayerLogic({setPlayers, setPositions, screenId, setScores, foods}: 
             const observable = client.subscribe({
                 query: updatePosition,
                 variables: {
-                    screenId: screenId,
+                    screenId: SCREEN_ID,
                 }
             });
             // run realtime results once received new subscription, i.e. new player or new directions

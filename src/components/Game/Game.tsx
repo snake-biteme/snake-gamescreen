@@ -6,6 +6,7 @@ import NewPlayerLogic from './components/NewPlayerLogic';
 import {bothArraysEqual, getUnoccupiedPosition, getUpdatedFood} from '../utils';
 import styles from './Game.module.css';
 import Scoreboard from './Scoreboard/Scoreboard';
+import TestComponent from './components/TestComponent';
 
 function initialBoard() {
     const columns = new Array(COLUMNS).fill(null);
@@ -14,10 +15,9 @@ function initialBoard() {
 
 export interface IProps {
     setColors: Dispatch<SetStateAction<string[]>>,
-    screenId: string
 }
 
-function Game({setColors, screenId}: IProps) {
+function Game({setColors}: IProps) {
     const [players, setPlayers] = useState<IAllPlayers>({});
     const [positions, setPositions] = useState<IAllPositions>({});
     const [foods, setFoods] = useState<IPositionSchema[]>([]);
@@ -182,11 +182,10 @@ function Game({setColors, screenId}: IProps) {
         return () => clearInterval(interval);
     }, []);
 
-
     return (
         <>
             <div className={styles.gameScreen}>
-                <NewPlayerLogic screenId={screenId} setPlayers={setPlayers} setPositions={setPositions} setScores={setScores} foods={foods}/>
+                <NewPlayerLogic setPlayers={setPlayers} setPositions={setPositions} setScores={setScores} foods={foods}/>
                 <Scoreboard scores={scores} players={players}/>
                 <Board board={board} players={players}/>
             </div>

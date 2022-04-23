@@ -2,13 +2,9 @@ import React from 'react';
 import Title from './components/Title/Title';
 import styles from './Navbar.module.css';
 import {QRCodeSVG} from 'qrcode.react';
-import {CONTROLLER_URL} from '../../consts';
+import {CONTROLLER_URL, SCREEN_ID} from '../../consts';
 
-interface IProps {
-    screenId: string,
-}
-
-function Navbar({screenId} : IProps) {
+function Navbar() {
 
     const url = CONTROLLER_URL;
     // className not supported
@@ -19,7 +15,7 @@ function Navbar({screenId} : IProps) {
     return (
         <div className={styles.container}>
             <Title/>
-            <QRCodeSVG style={qrcodeStyles} value={`${url}/?screenId=${screenId}`} size={200}/>
+            <QRCodeSVG style={qrcodeStyles} value={`${url}/?screenId=${SCREEN_ID}`} size={200}/>
         </div>
     );
 }
