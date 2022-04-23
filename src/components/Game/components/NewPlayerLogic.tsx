@@ -3,7 +3,7 @@ import {IAllPlayers, IAllPositions, IRealTimeData, IScores, TDirections} from '.
 import apiClientAppSync from '../../../services/apiClientAppSync';
 import {updatePosition} from '../../../services/graphql';
 import {getRandomColumn, getRandomRow} from '../../utils';
-import {ACTIVE} from '../../../CONST';
+import {ACTIVE} from '../../../consts';
 
 interface IProps {
     // setState hook types: https://stackoverflow.com/a/56028976/18631517

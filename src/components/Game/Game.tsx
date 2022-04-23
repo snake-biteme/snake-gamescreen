@@ -1,6 +1,6 @@
 import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
 import {IAllPlayers, IAllPositions, IPositionSchema, IScores} from '../../interfaces/api';
-import {COLUMNS, INACTIVE, MIN_LENGTH, ROWS, TICK} from '../../CONST';
+import {COLUMNS, INACTIVE, MIN_LENGTH, ROWS, TICK} from '../../consts';
 import Board from './components/Board/Board';
 import NewPlayerLogic from './components/NewPlayerLogic';
 import {bothArraysEqual, getUnoccupiedPosition, getUpdatedFood} from '../utils';

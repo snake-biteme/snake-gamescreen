@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {COLUMNS, ROWS} from '../../../../CONST';
+import {COLUMNS, ROWS} from '../../../../consts';
 import styles from './Board.module.css';
 import {IAllPlayers} from '../../../../interfaces/api';
 

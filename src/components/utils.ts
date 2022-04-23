@@ -1,4 +1,4 @@
-import {COLUMNS, ROWS} from '../CONST';
+import {COLUMNS, ROWS} from '../consts';
 import {IAllPositions, IPositionSchema} from '../interfaces/api';
 
 export function randomIntFromInterval(min: number, max: number) { // min and max included
