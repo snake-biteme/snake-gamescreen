@@ -1,8 +1,15 @@
 import React, {useEffect, Dispatch, SetStateAction} from 'react';
-import {IAllPlayers, IAllPositions, IRealTimeData, IScores, TDirections} from '../../../interfaces/api';
+import {
+    IAllPlayers,
+    IAllPositions,
+    IPositionSchema,
+    IRealTimeData,
+    IScores,
+    TDirections
+} from '../../../interfaces/api';
 import apiClientAppSync from '../../../services/apiClientAppSync';
 import {updatePosition} from '../../../services/graphql';
-import {getRandomColumn, getRandomRow} from '../../utils';
+import {getUnoccupiedPosition} from '../../utils';
 import {ACTIVE} from '../../../consts';
 
 interface IProps {
@@ -10,6 +17,7 @@ interface IProps {
     setPlayers: Dispatch<SetStateAction<IAllPlayers>>,
     setPositions: Dispatch<SetStateAction<IAllPositions>>,
     setScores: Dispatch<SetStateAction<IScores>>,
+    foods: IPositionSchema[],
     screenId: string
 }
 
@@ -32,7 +40,7 @@ function playerExists(allPlayers: IAllPlayers | IAllPositions | IScores, playerI
 }
 
 
-function NewPlayerLogic({setPlayers, setPositions, screenId, setScores}: IProps) {
+function NewPlayerLogic({setPlayers, setPositions, screenId, setScores, foods}: IProps) {
     // todo swap with screenId from props
     const screenID = 'asdfsdfasdfsd';
 
@@ -55,10 +63,7 @@ function NewPlayerLogic({setPlayers, setPositions, screenId, setScores}: IProps)
         // generate random position for new players - checking if they exist
         setPositions((prevState: IAllPositions) => {
             if (!playerExists(prevState, playerId)) {
-                const randomPosition = {
-                    row: getRandomRow(),
-                    col: getRandomColumn(),
-                };
+                const randomPosition = getUnoccupiedPosition(prevState, foods);
                 return {...prevState, [playerId]: [randomPosition]};
             }
             return prevState;

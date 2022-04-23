@@ -186,7 +186,7 @@ function Game({setColors, screenId}: IProps) {
     return (
         <>
             <div className={styles.gameScreen}>
-                <NewPlayerLogic screenId={screenId} setPlayers={setPlayers} setPositions={setPositions} setScores={setScores}/>
+                <NewPlayerLogic screenId={screenId} setPlayers={setPlayers} setPositions={setPositions} setScores={setScores} foods={foods}/>
                 <Scoreboard scores={scores} players={players}/>
                 <Board board={board} players={players}/>
             </div>
