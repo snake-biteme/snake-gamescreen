@@ -21,7 +21,6 @@ npm start
 #### Counter
 - type: `number`
 - ensures that the game renders at each tick rather than at change of other states
-- 
 
 #### Players
 ```ts

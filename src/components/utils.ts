@@ -70,7 +70,6 @@ export function bothArraysEqual(prevColors: string[], allColors: string[]) {
 }
 
 export function updateDirection(previousDirection: TDirections, newDirection: TDirections) {
-    console.log('prev', previousDirection, 'new', newDirection);
 
     let updatedDirection = newDirection; // new direction by default
 
@@ -80,7 +79,6 @@ export function updateDirection(previousDirection: TDirections, newDirection: TD
     if (previousDirection === 'DOWN' && updatedDirection === 'UP') updatedDirection = 'DOWN';
     if (previousDirection === 'LEFT' && updatedDirection === 'RIGHT') updatedDirection = 'LEFT';
 
-    console.log('updated', updatedDirection);
     return updatedDirection;
 }
 

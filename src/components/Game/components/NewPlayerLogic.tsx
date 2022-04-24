@@ -37,18 +37,12 @@ function NewPlayerLogic({setPlayers, setPositions, setScores, foods}: IProps) {
 
         // update players (add new, update position of previous)
         setPlayers((prevState: IAllPlayers) => {
-
-            // check if invalid direction
-            const previousDirection = prevState[playerId]?.direction;
-            position.direction = updateDirection(previousDirection, direction);
-
             return {...prevState, [playerId]: position};
         });
 
         // generate random position for new players - checking if they exist
         setPositions((prevState: IAllPositions) => {
             if (!playerExists(prevState, playerId)) {
-                console.log('FIRST DIRECTION');
                 const randomPosition = getUnoccupiedPosition(prevState, foods);
                 return {
                     ...prevState,

@@ -56,10 +56,11 @@ function Game({setColors}: IProps) {
             const currentPosition = [...snake.position];
             const currentHead = {...currentPosition[0]};
             const newHead: IPositionSchema = {...currentHead};
-            // todo why is this being called when only dependent on counter?
+
+            // check if move is valid - can only move to three directions, if not valid keep the previous direction (not the last valid direction sent)
             const updatedDirection = updateDirection(snake.prevDirection, players[id].direction);
 
-            switch (players[id].direction) {
+            switch (updatedDirection) {
             case 'UP':
                 newHead.row = currentHead.row === 0 ? ROWS - 1 : currentHead.row - 1;
                 break;
@@ -77,9 +78,9 @@ function Game({setColors}: IProps) {
             // add a new head
             currentPosition.unshift(newHead);
 
+            //CHECK FOR COLLISIONS
             const toBeCleared: (IPositionSchema | undefined)[] = [];
 
-            //CHECK FOR COLLISIONS
             let collided = false;
             for (const snake of Object.values(positions)) {
                 snake.position.forEach(cell => {
@@ -117,7 +118,7 @@ function Game({setColors}: IProps) {
                 }
             }
 
-            // if large enough or did not eat food - pop tail in positions
+            // if large enough or did not eat food - pop tail in positions - this allows for the snake to "move" rather than grow infinitelly
             if (currentPosition.length > MIN_LENGTH && ateFood === 'no') {
                 toBeCleared.push(currentPosition.pop());
             }
