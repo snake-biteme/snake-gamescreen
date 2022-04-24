@@ -26,7 +26,10 @@ export interface IPositionSchema {
 }
 
 export interface IAllPositions {
-    [key: string]: IPositionSchema[],
+    [key: string]: {
+        position: IPositionSchema[],
+        prevDirection: TDirections,
+    },
 }
 
 export interface IScore {

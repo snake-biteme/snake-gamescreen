@@ -5,12 +5,11 @@ import {
     IPositionSchema,
     IRealTimeData,
     IScores,
-    TDirections
 } from '../../../interfaces/api';
 import apiClientAppSync from '../../../services/apiClientAppSync';
 import {updatePosition} from '../../../services/graphql';
-import {getUnoccupiedPosition} from '../../utils';
 import {ACTIVE, SCREEN_ID} from '../../../consts';
+import {getUnoccupiedPosition} from '../GameLogic';
 
 interface IProps {
     // setState hook types: https://stackoverflow.com/a/56028976/18631517
@@ -19,25 +18,6 @@ interface IProps {
     setScores: Dispatch<SetStateAction<IScores>>,
     foods: IPositionSchema[],
 }
-
-function updateDirection(previousDirection: TDirections, newDirection: TDirections) {
-    let updatedDirection = newDirection; // new direction by default
-
-    // snake can only go to three directions, i.e. if going UP cannot go DOWN
-    if (previousDirection === 'UP' && updatedDirection === 'DOWN') updatedDirection = 'UP';
-    if (previousDirection === 'RIGHT' && updatedDirection === 'LEFT') updatedDirection = 'RIGHT';
-    if (previousDirection === 'DOWN' && updatedDirection === 'UP') updatedDirection = 'DOWN';
-    if (previousDirection === 'LEFT' && updatedDirection === 'RIGHT') updatedDirection = 'LEFT';
-
-    return updatedDirection;
-}
-
-function playerExists(allPlayers: IAllPlayers | IAllPositions | IScores, playerId: string) {
-    if (allPlayers) {
-        return allPlayers[playerId];
-    }
-}
-
 
 function NewPlayerLogic({setPlayers, setPositions, setScores, foods}: IProps) {
 
@@ -49,26 +29,27 @@ function NewPlayerLogic({setPlayers, setPositions, setScores, foods}: IProps) {
 
         // update players (add new, update position of previous)
         setPlayers((prevState: IAllPlayers) => {
-
-            // check if invalid direction
-            const previousDirection = prevState[playerId]?.direction;
-            position.direction = updateDirection(previousDirection, direction);
-
             return {...prevState, [playerId]: position};
         });
 
         // generate random position for new players - checking if they exist
         setPositions((prevState: IAllPositions) => {
-            if (!playerExists(prevState, playerId)) {
+            if (!prevState[playerId]) {
                 const randomPosition = getUnoccupiedPosition(prevState, foods);
-                return {...prevState, [playerId]: [randomPosition]};
+                return {
+                    ...prevState,
+                    [playerId]: {
+                        position: [randomPosition],
+                        prevDirection: direction,
+                    }
+                };
             }
             return prevState;
         });
 
         // set initial food and status for new players OR reset for returning players (i.e. with status false)
         setScores((prevState: IScores) => {
-            if (!playerExists(prevState, playerId) || !prevState[playerId].status) {
+            if (!prevState[playerId] || !prevState[playerId].status) {
                 const initialState = {
                     food: 0,
                     status: ACTIVE,
@@ -77,7 +58,6 @@ function NewPlayerLogic({setPlayers, setPositions, setScores, foods}: IProps) {
             }
             return prevState;
         });
-
     };
 
     useEffect(() => {
