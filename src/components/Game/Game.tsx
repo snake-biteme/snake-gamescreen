@@ -3,9 +3,10 @@ import {IAllPlayers, IAllPositions, IPositionSchema, IScores} from '../../interf
 import {COLUMNS, INACTIVE, MIN_LENGTH, ROWS, TICK} from '../../consts';
 import Board from './components/Board/Board';
 import NewPlayerLogic from './components/NewPlayerLogic';
-import {bothArraysEqual, getUnoccupiedPosition, getUpdatedFood, updateDirection} from '../utils';
+import {bothArraysEqual} from '../utils';
 import styles from './Game.module.css';
 import Scoreboard from './Scoreboard/Scoreboard';
+import {getUnoccupiedPosition, getUpdatedFood, updateDirection} from './GameLogic';
 
 function initialBoard() {
     const columns = new Array(COLUMNS).fill(null);

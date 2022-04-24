@@ -8,8 +8,8 @@ import {
 } from '../../../interfaces/api';
 import apiClientAppSync from '../../../services/apiClientAppSync';
 import {updatePosition} from '../../../services/graphql';
-import {getUnoccupiedPosition} from '../../utils';
 import {ACTIVE, SCREEN_ID} from '../../../consts';
+import {getUnoccupiedPosition} from '../GameLogic';
 
 interface IProps {
     // setState hook types: https://stackoverflow.com/a/56028976/18631517
