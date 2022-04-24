@@ -6,7 +6,7 @@ import NewPlayerLogic from './components/NewPlayerLogic';
 import {bothArraysEqual} from '../utils';
 import styles from './Game.module.css';
 import Scoreboard from './Scoreboard/Scoreboard';
-import {getUnoccupiedPosition, getUpdatedFood, updateDirection} from './GameLogic';
+import {getAllColors, getNewHead, getUnoccupiedPosition, getUpdatedFood, updateDirection} from './GameLogic';
 
 function initialBoard() {
     const columns = new Array(COLUMNS).fill(null);
@@ -38,11 +38,7 @@ function Game({setColors}: IProps) {
         if (JSON.stringify(positions) === '{}') return;
 
         // todo positions vs players?
-        const allColors = Object.values(players).reduce((acc: string[], player) => {
-            acc.push(player.color);
-            return acc;
-        }, []);
-
+        const allColors = getAllColors(players);
         setColors(prevState => {
             if (!bothArraysEqual(prevState, allColors)) {
                 return allColors;
@@ -53,28 +49,18 @@ function Game({setColors}: IProps) {
         const newPositions: IAllPositions = {};
         const eatenFood: IPositionSchema[] = [];
         // MOVE SNAKES
+        // for each snake...
         for (const [id, snake] of Object.entries(positions)) {
+            // copy its current position so we can update it
             const currentPosition = [...snake.position];
+            // get its current head
             const currentHead = {...currentPosition[0]};
-            const newHead: IPositionSchema = {...currentHead};
 
             // check if move is valid - can only move to three directions, if not valid keep the previous direction (not the last valid direction sent)
             const updatedDirection = updateDirection(snake.prevDirection, players[id].direction);
 
-            switch (updatedDirection) {
-            case 'UP':
-                newHead.row = currentHead.row === 0 ? ROWS - 1 : currentHead.row - 1;
-                break;
-            case 'DOWN':
-                newHead.row = currentHead.row === ROWS - 1 ? 0 : currentHead.row + 1;
-                break;
-            case 'LEFT':
-                newHead.col = currentHead.col === 0 ? COLUMNS - 1 : currentHead.col - 1;
-                break;
-            case 'RIGHT':
-                newHead.col = currentHead.col === COLUMNS - 1 ? 0 : currentHead.col + 1;
-                break;
-            }
+            // get the position of new head
+            const newHead: IPositionSchema = getNewHead(currentHead, updatedDirection);
 
             // add a new head
             currentPosition.unshift(newHead);
@@ -83,6 +69,7 @@ function Game({setColors}: IProps) {
             const toBeCleared: (IPositionSchema | undefined)[] = [];
 
             let collided = false;
+            // check against every snake, including itself
             for (const snake of Object.values(positions)) {
                 snake.position.forEach(cell => {
                     if (cell.row === newHead.row && cell.col === newHead.col) {
@@ -100,11 +87,11 @@ function Game({setColors}: IProps) {
 
             // ANY FOOD EATEN?
             let foodToClear: IPositionSchema | undefined;
-            let ateFood = 'no';
+            let ateFood = false;
             for (const food of foods) {
                 // check if head will collide with food
                 if (newHead.col === food.col && newHead.row === food.row) {
-                    ateFood = 'yes';
+                    ateFood = true;
                     foodToClear = {
                         row: food.row,
                         col: food.col,
@@ -120,7 +107,7 @@ function Game({setColors}: IProps) {
             }
 
             // if large enough or did not eat food - pop tail in positions - this allows for the snake to "move" rather than grow infinitelly
-            if (currentPosition.length > MIN_LENGTH && ateFood === 'no') {
+            if (currentPosition.length > MIN_LENGTH && !ateFood) {
                 toBeCleared.push(currentPosition.pop());
             }
 
