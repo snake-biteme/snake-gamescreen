@@ -5,11 +5,10 @@ import {
     IPositionSchema,
     IRealTimeData,
     IScores,
-    TDirections
 } from '../../../interfaces/api';
 import apiClientAppSync from '../../../services/apiClientAppSync';
 import {updatePosition} from '../../../services/graphql';
-import {getUnoccupiedPosition, updateDirection} from '../../utils';
+import {getUnoccupiedPosition} from '../../utils';
 import {ACTIVE, SCREEN_ID} from '../../../consts';
 
 interface IProps {
@@ -19,13 +18,6 @@ interface IProps {
     setScores: Dispatch<SetStateAction<IScores>>,
     foods: IPositionSchema[],
 }
-
-function playerExists(allPlayers: IAllPlayers | IAllPositions | IScores, playerId: string) {
-    if (allPlayers) {
-        return allPlayers[playerId];
-    }
-}
-
 
 function NewPlayerLogic({setPlayers, setPositions, setScores, foods}: IProps) {
 
@@ -42,7 +34,7 @@ function NewPlayerLogic({setPlayers, setPositions, setScores, foods}: IProps) {
 
         // generate random position for new players - checking if they exist
         setPositions((prevState: IAllPositions) => {
-            if (!playerExists(prevState, playerId)) {
+            if (!prevState[playerId]) {
                 const randomPosition = getUnoccupiedPosition(prevState, foods);
                 return {
                     ...prevState,
@@ -57,7 +49,7 @@ function NewPlayerLogic({setPlayers, setPositions, setScores, foods}: IProps) {
 
         // set initial food and status for new players OR reset for returning players (i.e. with status false)
         setScores((prevState: IScores) => {
-            if (!playerExists(prevState, playerId) || !prevState[playerId].status) {
+            if (!prevState[playerId] || !prevState[playerId].status) {
                 const initialState = {
                     food: 0,
                     status: ACTIVE,
@@ -66,7 +58,6 @@ function NewPlayerLogic({setPlayers, setPositions, setScores, foods}: IProps) {
             }
             return prevState;
         });
-
     };
 
     useEffect(() => {
