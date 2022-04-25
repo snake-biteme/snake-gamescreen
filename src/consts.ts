@@ -4,7 +4,7 @@ export const MIN_SIZE = 24;
 
 // dont forget to account for borders
 export const COLUMNS = Math.floor((window.innerWidth - 400)/ (MIN_SIZE + 2));
-export const ROWS = Math.floor(window.innerHeight/ MIN_SIZE * 0.5);
+export const ROWS = Math.floor(window.innerHeight/ MIN_SIZE * 0.6);
 // export const COLUMNS = 4;
 // export const ROWS = 4;
 export const TICK = 300;

@@ -1,23 +1,18 @@
-import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
+import React, { useEffect, useState} from 'react';
 import {IAllPlayers, IAllPositions, IPositionSchema, IScores} from '../../interfaces/api';
 import {COLUMNS, INACTIVE, MIN_LENGTH, ROWS, TICK} from '../../consts';
 import Board from './components/Board/Board';
 import NewPlayerLogic from './components/NewPlayerLogic';
-import {bothArraysEqual} from '../utils';
 import styles from './Game.module.css';
 import Scoreboard from './Scoreboard/Scoreboard';
-import {getAllColors, getNewHead, getUnoccupiedPosition, getUpdatedFood, updateDirection} from './GameLogic';
+import {getNewHead, getUnoccupiedPosition, getUpdatedFood, updateDirection} from './GameLogic';
 
 function initialBoard() {
     const columns = new Array(COLUMNS).fill(null);
     return new Array(ROWS).fill([...columns]);
 }
 
-export interface IProps {
-    setColors: Dispatch<SetStateAction<string[]>>,
-}
-
-function Game({setColors}: IProps) {
+function Game() {
     const [counter, setCounter] = useState<number>(0);
     const [players, setPlayers] = useState<IAllPlayers>({});
     const [positions, setPositions] = useState<IAllPositions>({});
@@ -36,15 +31,6 @@ function Game({setColors}: IProps) {
     useEffect(() => {
         // if there are no players
         if (JSON.stringify(positions) === '{}') return;
-
-        // todo positions vs players?
-        const allColors = getAllColors(players);
-        setColors(prevState => {
-            if (!bothArraysEqual(prevState, allColors)) {
-                return allColors;
-            }
-            return prevState;
-        });
 
         const newPositions: IAllPositions = {};
         const eatenFood: IPositionSchema[] = [];

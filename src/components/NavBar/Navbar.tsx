@@ -1,8 +1,8 @@
 import React from 'react';
-import Title from './components/Title/Title';
 import styles from './Navbar.module.css';
 import {QRCodeSVG} from 'qrcode.react';
 import {CONTROLLER_URL, SCREEN_ID} from '../../consts';
+import logo from '../../images/logo.png';
 
 function Navbar() {
 
@@ -14,7 +14,7 @@ function Navbar() {
     };
     return (
         <div className={styles.container}>
-            <Title/>
+            <img className={styles.logo} src={logo}/>
             <QRCodeSVG style={qrcodeStyles} value={`${url}/?screenId=${SCREEN_ID}`} size={200}/>
         </div>
     );

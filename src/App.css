@@ -1,13 +1,9 @@
 :root {
-    --primary-color: #1ad02c;
+    --primary-color: darkgreen;
     --secondary-color: #cecece;
     --medium: 20px;
 }
-* {
-    margin: 0;
-    padding: 0;
-    border: none;
-}
+
 
 .App {
     text-align: center;
@@ -16,6 +12,27 @@
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
-    background: var(--primary-color) linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    position: fixed;
+    left: 0;
+    right: 0;
+    z-index: 0;
 }
 
+.App:before {
+    content: "";
+    background-image: url("./images/background.png");
+    filter: blur(4px);
+    -webkit-filter: blur(4px);
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    right: 0;
+    z-index: -1;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    border: none;
+}

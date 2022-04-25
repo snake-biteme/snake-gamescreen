@@ -1,4 +1,4 @@
-import {IAllPlayers, IAllPositions, IPositionSchema, TDirections} from '../../interfaces/api';
+import {IAllPositions, IPositionSchema, TDirections} from '../../interfaces/api';
 import {randomIntFromInterval} from '../utils';
 import {COLUMNS, ROWS} from '../../consts';
 
@@ -34,13 +34,6 @@ export function getUnoccupiedPosition(positions: IAllPositions, foods: IPosition
     // get a random position from unoccupied positions
     const randomIndex = randomIntFromInterval(0, allUnoccupiedPositions.length);
     return allUnoccupiedPositions[randomIndex];
-}
-
-export function getAllColors(players: IAllPlayers): string[] {
-    return Object.values(players).reduce((acc: string[], player) => {
-        acc.push(player.color);
-        return acc;
-    }, []);
 }
 
 export function getUpdatedFood(foods: IPositionSchema[], eatenFood: IPositionSchema[]): IPositionSchema[] {
