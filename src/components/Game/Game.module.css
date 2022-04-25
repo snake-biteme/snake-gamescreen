@@ -1,6 +1,5 @@
 .gameScreen {
     display: flex;
-    justify-content: space-around;
-    align-items: center;
-    width: 80vw;
+    width: 100vw;
+    justify-content: space-between;
 }
