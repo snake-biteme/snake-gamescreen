@@ -1,6 +1,6 @@
 import React, { useEffect, useState} from 'react';
 import {IAllPlayers, IAllPositions, IPositionSchema, IScores} from '../../interfaces/api';
-import {COLUMNS, INACTIVE, MIN_LENGTH, ROWS, TICK} from '../../consts';
+import {COLUMNS, FOOD_COEFFICIENT, INACTIVE, MIN_LENGTH, ROWS, TICK} from '../../consts';
 import Board from './components/Board/Board';
 import NewPlayerLogic from './components/NewPlayerLogic';
 import styles from './Game.module.css';
@@ -66,7 +66,7 @@ function Game() {
                         // todo instead of deleting turn it into food?
                         toBeCleared.push(...positions[id].position);
 
-                        // deactive player status in scores
+                        // deactivate player status in scores
                         setScores(prev => {
                             return {...prev, [id]: {...prev[id], status: INACTIVE}};
                         });
@@ -127,10 +127,9 @@ function Game() {
 
         // UPDATE FOOD
         // clear food that is eaten from food state
-        const newFoods = eatenFood.length > 0 ? getUpdatedFood(foods, eatenFood) : foods;
+        const newFoods = eatenFood.length > 0 ? getUpdatedFood(foods, eatenFood) : [...foods];
         // generate additional food
-        const foodToAdd = Object.keys(newPositions).length - newFoods.length;
-
+        const foodToAdd = Math.floor((Object.keys(newPositions).length - newFoods.length) + (Object.keys(newPositions).length * FOOD_COEFFICIENT) );
         // const newFood: IPositionSchema[] = []
         for (let i = 0; i < foodToAdd; i++) {
             const foodPosition = getUnoccupiedPosition(positions, foods);
