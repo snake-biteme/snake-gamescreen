@@ -69,8 +69,11 @@ function Game({setColors}: IProps) {
             const toBeCleared: (IPositionSchema | undefined)[] = [];
 
             let collided = false;
-            // check against every snake, including itself
-            for (const snake of Object.values(positions)) {
+            // check against every snake, including itself but without the tail!
+            const positionsToCheck = {...positions};
+            positionsToCheck[id].position.pop();
+
+            for (const snake of Object.values(positionsToCheck)) {
                 snake.position.forEach(cell => {
                     if (cell.row === newHead.row && cell.col === newHead.col) {
                         collided = true;
