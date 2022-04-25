@@ -41,8 +41,9 @@ export function getUpdatedFood(foods: IPositionSchema[], eatenFood: IPositionSch
 
     for (const food of foods) {
         for (const eaten of eatenFood) {
-            if (food.row !== eaten.row && food.col !== eaten.row) {
-                updatedFood.push(food);
+            // if one is different then keep food
+            if (food.row !== eaten.row || food.col !== eaten.col) {
+                updatedFood.push({...food});
             }
         }
     }
