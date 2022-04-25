@@ -1,7 +1,9 @@
 .container {
     display: flex;
     flex-direction: column;
-    width: 200px;
-    margin-right: 80px;
+    align-items: center;
+    width: 300px;
+    min-width: 300px;
     margin-left: var(--medium);
+    margin-right: var(--medium);
 }
