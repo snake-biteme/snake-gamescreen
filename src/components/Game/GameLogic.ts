@@ -1,42 +1,39 @@
 import {IAllPlayers, IAllPositions, IPositionSchema, TDirections} from '../../interfaces/api';
-import {getRandomColumn, getRandomRow} from '../utils';
+import {randomIntFromInterval} from '../utils';
 import {COLUMNS, ROWS} from '../../consts';
 
-export function getOccupiedByPLayers(positions: IAllPositions, rowOrCol: ('row' | 'col')): number[] {
-    //todo can be a set
-    return Object.values(positions).reduce((prev: (number)[], currentPositions) => {
-        const currentRows = currentPositions.position.map((position: IPositionSchema) => position[rowOrCol]);
-        return [...prev, ...currentRows];
-    }, []);
-}
+export function isPositionOccupied(positionToCheck: IPositionSchema, positions: IAllPositions, foods: IPositionSchema[]): boolean {
+    for (const snake of Object.values(positions)) {
+        for (const cell of snake.position) {
+            if (positionToCheck.row === cell.row && positionToCheck.col === cell.col) return true;
+        }
+    }
 
-export function getOccupiedByFood(foods: IPositionSchema[], rowOrCol: ('row' | 'col')): number[] {
-    // todo can be a set
-    return foods.map((food) => food[rowOrCol]);
+    for (const food of foods) {
+        if (positionToCheck.row === food.row && positionToCheck.col === food.col) return true;
+    }
+    return false;
 }
 
 export function getUnoccupiedPosition(positions: IAllPositions, foods: IPositionSchema[]): IPositionSchema {
-    // check that new random position is not clashing with existing players or food
-    let randomRow = getRandomRow();
-    const occupiedPlayerRows = getOccupiedByPLayers(positions, 'row');
-    const occupiedFoodRows = getOccupiedByFood(foods, 'row');
-    const allOccupiedRows = [...occupiedPlayerRows, ...occupiedFoodRows];
-    while (allOccupiedRows.includes(randomRow)) {
-        randomRow = getRandomRow();
+    // generate all possible coordinates for rows and columns
+    const allUnoccupiedPositions = [];
+    for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < COLUMNS; c++) {
+            const position = {
+                row: r,
+                col: c,
+            };
+            // check if any of them clash with the current position of players or foods
+            if (!isPositionOccupied(position, positions, foods)) {
+                allUnoccupiedPositions.push(position);
+            }
+        }
     }
 
-    let randomCol = getRandomColumn();
-    const occupiedPlayerCols = getOccupiedByPLayers(positions, 'col');
-    const occupiedFoodCols = getOccupiedByFood(foods, 'col');
-    const allOccupiedCols = [...occupiedPlayerCols, ...occupiedFoodCols];
-    while (allOccupiedCols.includes(randomCol)) {
-        randomCol = getRandomColumn();
-    }
-
-    return {
-        row: randomRow,
-        col: randomCol
-    };
+    // get a random position from unoccupied positions
+    const randomIndex = randomIntFromInterval(0, allUnoccupiedPositions.length);
+    return allUnoccupiedPositions[randomIndex];
 }
 
 export function getAllColors(players: IAllPlayers): string[] {

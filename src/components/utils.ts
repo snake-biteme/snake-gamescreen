@@ -1,23 +1,15 @@
-import {COLUMNS, ROWS} from '../consts';
+// utility functions for general data manipulation and transformation
 
 export function randomIntFromInterval(min: number, max: number) { // min and max included
     return Math.floor(Math.random() * (max - min) + min);
 }
 
-export function getRandomRow() {
-    return randomIntFromInterval(0, ROWS);
-}
-
-export function getRandomColumn() {
-    return randomIntFromInterval(0, COLUMNS);
-}
-
-export function bothArraysEqual(prevColors: string[], allColors: string[]) {
+export function bothArraysEqual(array1: string[], array2: string[]) {
     //https://stackoverflow.com/questions/3115982/how-to-check-if-two-arrays-are-equal-with-javascript
-    return prevColors.every(item => allColors.includes(item)) && allColors.every(item => prevColors.includes(item));
+    return array1.every(item => array2.includes(item)) && array2.every(item => array1.includes(item));
 }
 
-
+//COLOR MANIPULATION
 export function rgbToHex(r: number, g: number, b: number) {
     return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
 }
