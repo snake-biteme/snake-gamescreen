@@ -1,5 +1,6 @@
 .board {
     box-shadow: 0 15px 60px hsla(0, 0%, 0%, 0.36);
+    margin-right: var(--medium);
 }
 
 .cell {

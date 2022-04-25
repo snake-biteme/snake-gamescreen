@@ -2,7 +2,7 @@
     display: flex;
     font-size: 60px;
     align-items: flex-end;
-    margin-left: 20px;
+    margin-left: var(--medium);
 }
 
 .letter {

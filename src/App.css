@@ -1,6 +1,12 @@
 :root {
     --primary-color: #1ad02c;
     --secondary-color: #cecece;
+    --medium: 20px;
+}
+* {
+    margin: 0;
+    padding: 0;
+    border: none;
 }
 
 .App {

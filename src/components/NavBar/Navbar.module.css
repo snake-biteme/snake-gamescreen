@@ -9,6 +9,6 @@
     width: 150px;
     height: 150px;
     border: 1px solid red;
-    margin-right: 20px;
+    margin-right: var(--medium);
     box-shadow: 0 15px 60px hsla(0, 0%, 0%, 0.24);
 }
