@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {COLUMNS, ROWS} from '../../../../consts';
+import {COLUMNS, MIN_SIZE, ROWS} from '../../../../consts';
 import styles from './Board.module.css';
 import {IAllPlayers} from '../../../../interfaces/api';
-
 
 
 interface IProps {
@@ -22,7 +21,10 @@ function Board({board, players} : IProps) {
             // loop through max number of cols
             for (let c = 0; c < COLUMNS; c++) {
                 const columnKey = `C_${c}`;
-                let colorStyle = {};
+                const colorStyle: any = {
+                    minWidth: MIN_SIZE,
+                    minHeight: MIN_SIZE,
+                };
                 let cellType = '';
 
                 //check if cell is occupied
@@ -34,7 +36,8 @@ function Board({board, players} : IProps) {
                     // by player
                     } else {
                         cellType = 'snakeCell';
-                        colorStyle = {backgroundColor: players[occupied].color};
+                        // colorStyle = {backgroundColor: players[occupied].color};
+                        colorStyle['backgroundColor'] = players[occupied].color;
                     }
                 }
                 // add the div to the row

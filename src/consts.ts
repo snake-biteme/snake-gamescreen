@@ -1,8 +1,11 @@
 import {v4 as uuidv4} from 'uuid';
 
-export const COLUMNS = 20;
-export const ROWS = 20;
-export const TICK = 1000;
+console.log(window.innerWidth);
+
+export const MIN_SIZE = 20;
+export const COLUMNS = 4;
+export const ROWS = 4;
+export const TICK = 400;
 export const MIN_LENGTH = 3;
 export const ACTIVE = true;
 export const INACTIVE = false;

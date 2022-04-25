@@ -3,8 +3,6 @@
 }
 
 .cell {
-    min-height: 20px;
-    min-width: 20px;
     border: 1px solid #000000;
 }
 
