@@ -13,8 +13,8 @@ function Player({player, score}: IProps) {
     return (
         <div className={`${styles[active]} ${styles.player}`}>
             <div className={styles.square} style={{background: color}}/>
-            <p>{name}</p>
-            <span>{score.food}</span>
+            <p className={styles.name}>{name}</p>
+            <span className={styles.food}>{score.food}</span>
         </div>
     );
 }

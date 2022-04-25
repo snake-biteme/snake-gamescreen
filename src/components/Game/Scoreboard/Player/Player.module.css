@@ -1,9 +1,21 @@
 .active {
     box-shadow: 0 6px 12px hsla(0, 0%, 0%, 0.30);
+    background-color: var(--secondary-color);
 }
 
 .inactive {
-    box-shadow: inset 0 15px 60px hsla(0, 0%, 0%, 0.30);
+    position: relative
+}
+
+/*https://stackoverflow.com/a/14283366/18631517*/
+.inactive:after {
+    position: absolute;
+    left: -10%;
+    top: 50%;
+    height: 2px;
+    background: #000000;
+    content: "";
+    width: 120%;
 }
 
 .player {
@@ -21,5 +33,7 @@
 }
 
 .food {
-
+    font-size: 130%;
+    font-weight: bold;
+    margin-right: 8px;
 }
