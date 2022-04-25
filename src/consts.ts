@@ -2,10 +2,12 @@ import {v4 as uuidv4} from 'uuid';
 
 export const MIN_SIZE = 24;
 
-console.log(Math.floor(window.innerWidth/ MIN_SIZE * 0.7));
-export const COLUMNS = Math.floor(window.innerWidth/ MIN_SIZE * 0.65);
+// dont forget to account for borders
+export const COLUMNS = Math.floor((window.innerWidth - 400)/ (MIN_SIZE + 2));
 export const ROWS = Math.floor(window.innerHeight/ MIN_SIZE * 0.5);
-export const TICK = 400;
+// export const COLUMNS = 4;
+// export const ROWS = 4;
+export const TICK = 600;
 export const MIN_LENGTH = 3;
 export const ACTIVE = true;
 export const INACTIVE = false;
