@@ -1,0 +1,25 @@
+.active {
+    box-shadow: 0 6px 12px hsla(0, 0%, 0%, 0.30);
+}
+
+.inactive {
+    box-shadow: inset 0 15px 60px hsla(0, 0%, 0%, 0.30);
+}
+
+.player {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px;
+    border-radius: 8px;
+}
+
+.square {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+}
+
+.food {
+
+}

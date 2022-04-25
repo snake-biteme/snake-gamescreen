@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {IAllPlayers, IScores} from '../../../interfaces/api';
-import {pSBC} from '../../utils';
 import styles from './Scoreboard.module.css';
+import Player from './Player/Player';
 
 interface IProps {
     players: IAllPlayers,
@@ -18,13 +18,7 @@ function Scoreboard({players, scores}: IProps) {
             .reduce((r, [k, v]) => ({...r, [k]: v}), {});
 
         const htmlList = Object.entries(sortedScores).map(([id, score]) => {
-            const {color, name} = players[id];
-
-            const active = score.status ? 'active' : 'inactive';
-            // todo might not need to lighten color
-            return <div key={id} className={`${styles[active]} ${styles.player}`} style={{background: pSBC(0.1, color, undefined, undefined)}}>
-                <p>{active} {name} {score.food}</p>
-            </div>;
+            return <Player key={id} player={players[id]} score={score}/>;
         });
         setScoreBoard(htmlList);
     }, [scores]);
