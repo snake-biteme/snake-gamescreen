@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {IAllPlayers, IAllPositions, IFood, IPositionSchema, IScores} from '../../interfaces/api';
+import {IAllPlayers, IAllPositions, IFood, IPositionSchema, IScores, TBoard} from '../../interfaces/api';
 import {COLUMNS, FOOD_COEFFICIENT, INACTIVE, MIN_LENGTH, ROWS, TICK} from '../../consts';
 import Board from './components/Board/Board';
 import NewPlayerLogic from './components/NewPlayerLogic';
@@ -17,7 +17,7 @@ function Game() {
     const [players, setPlayers] = useState<IAllPlayers>({});
     const [positions, setPositions] = useState<IAllPositions>({});
     const [foods, setFoods] = useState<IFood[]>([]);
-    const [board, setBoard] = useState<(string | null)[][]>(initialBoard());
+    const [board, setBoard] = useState<TBoard>(initialBoard());
     const [scores, setScores] = useState<IScores>({});
 
     useEffect(() => {
@@ -109,7 +109,7 @@ function Game() {
             }
 
             // CLEAR BOARD OF FOOD AND SNAKE BODY PARTS
-            setBoard((prev: (string | null)[][]) => {
+            setBoard(prev => {
                 const updated = [...prev];
                 // clear tail and dead snakes from board
                 toBeCleared.forEach(cell => {
@@ -148,12 +148,16 @@ function Game() {
 
     useEffect(() => {
         // create a copy of current board
-        const newBoard: (string | null)[][] = JSON.parse(JSON.stringify(board));
+        const newBoard: TBoard = JSON.parse(JSON.stringify(board));
         if (Object.keys(positions).length > 0) {
             // set all snakes to board
             for (const [id, position] of Object.entries(positions)) {
-                position.position.forEach((oneCell => {
-                    newBoard[oneCell.row][oneCell.col] = id;
+                position.position.forEach(((oneCell, index) => {
+                    if (index === 0) {
+                        newBoard[oneCell.row][oneCell.col] = {[id]: 'HEAD'};
+                    } else {
+                        newBoard[oneCell.row][oneCell.col] = {[id]: 'BODY'};
+                    }
                 }));
             }
 

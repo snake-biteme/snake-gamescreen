@@ -47,3 +47,5 @@ export interface IFood {
     position: IPositionSchema,
     type: TFood,
 }
+
+export type TBoard = ({[key: string]:string } | string | null)[][]

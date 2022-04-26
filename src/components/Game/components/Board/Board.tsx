@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {COLUMNS, FOODS, MIN_SIZE, ROWS} from '../../../../consts';
 import styles from './Board.module.css';
-import {IAllPlayers} from '../../../../interfaces/api';
+import {IAllPlayers, TBoard} from '../../../../interfaces/api';
 import {pSBC} from '../../../utils';
 
 
 interface IProps {
-    board: (string|null)[][],
+    board: TBoard,
     players: IAllPlayers,
 }
 
@@ -16,9 +16,10 @@ interface IStyle {
     backgroundColor?: string,
     border?: string,
     boxShadow?: string,
+    borderRadius?: string,
 }
 
-function Board({board, players} : IProps) {
+function Board({board, players}: IProps) {
     const [htmlBoard, setHTMLBoard] = useState<JSX.Element[]>([]);
 
     useEffect(() => {
@@ -40,19 +41,28 @@ function Board({board, players} : IProps) {
                 const occupied = board[r][c];
                 if (occupied !== null) {
                     // by food
-                    if (FOODS.includes(occupied)) {
+                    if (typeof occupied === 'string') {
                         cellType = 'foodCell';
                         foodType = occupied;
-                    // by player
+                        // by player
                     } else {
+                        const [id, bodyType] = Object.entries(occupied)[0];
+                        let playerColor = players[id].color;
+
                         cellType = 'snakeCell';
-                        customStyle['backgroundColor'] = players[occupied].color;
-                        customStyle['border'] = `1px solid ${players[occupied].color}`;
-                        customStyle['boxShadow'] = `0 1px 5px ${pSBC(-0.3, players[occupied].color, false, true)}`;
+
+                        if (bodyType === 'HEAD') {
+                            playerColor = pSBC(-0.3, playerColor, false, true);
+                        }
+                        customStyle['backgroundColor'] = playerColor;
+                        customStyle['border'] = `1px solid ${playerColor}`;
+                        customStyle['boxShadow'] = `0 1px 5px ${pSBC(-0.3, playerColor, false, true)}`;
                     }
                 }
                 // add the div to the row
-                row.push(<div key={columnKey} className={`${styles.cell} ${cellType !== '' ? styles[cellType] : ''} ${foodType !== '' ? styles[foodType] : ''}`} style={customStyle}/>);
+                row.push(<div key={columnKey}
+                    className={`${styles.cell} ${cellType !== '' ? styles[cellType] : ''} ${foodType !== '' ? styles[foodType] : ''}`}
+                    style={customStyle}/>);
             }
             const rowKey = `R_${r}`;
             // add all rows to complete the board
