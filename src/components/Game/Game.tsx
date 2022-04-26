@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {IAllPlayers, IAllPositions, IFood, IPositionSchema, IScores} from '../../interfaces/api';
 import {COLUMNS, FOOD_COEFFICIENT, INACTIVE, MIN_LENGTH, ROWS, TICK} from '../../consts';
 import Board from './components/Board/Board';
@@ -129,7 +129,7 @@ function Game() {
         // clear food that is eaten from food state
         const newFoods = eatenFood.length > 0 ? getUpdatedFood(foods, eatenFood) : [...foods];
         // generate additional food
-        const foodToAdd = Math.floor((Object.keys(newPositions).length - newFoods.length) + (Object.keys(newPositions).length * FOOD_COEFFICIENT) );
+        const foodToAdd = Math.floor((Object.keys(newPositions).length - newFoods.length) + (Object.keys(newPositions).length * FOOD_COEFFICIENT));
         // const newFood: IPositionSchema[] = []
         for (let i = 0; i < foodToAdd; i++) {
             const foodPosition = getUnoccupiedPosition(positions, foods);
@@ -168,16 +168,12 @@ function Game() {
 
 
     return (
-        <>
-            <div className={styles.gameScreen}>
-                <NewPlayerLogic setPlayers={setPlayers} setPositions={setPositions} setScores={setScores}
-                    foods={foods}/>
-                <Scoreboard scores={scores} players={players}/>
-                <Board board={board} players={players}/>
-            </div>
-            <div>{counter}</div>
-        </>
-
+        <div className={styles.gameScreen}>
+            <NewPlayerLogic setPlayers={setPlayers} setPositions={setPositions} setScores={setScores}
+                foods={foods}/>
+            <Scoreboard scores={scores} players={players}/>
+            <Board board={board} players={players}/>
+        </div>
     );
 }
 
