@@ -13,9 +13,43 @@
 }
 
 .foodCell {
-    background-color: var(--secondary-color);
-    border-radius: 50%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
 }
+
+.banana {
+    background-image: url("../../../../images/foods/banana.png");
+}
+
+.apple {
+    background-image: url("../../../../images/foods/apple.png");
+}
+
+.pineapple {
+    background-image: url("../../../../images/foods/pineapple.png");
+}
+
+.cherries {
+    background-image: url("../../../../images/foods/cherries.png");
+}
+
+.mango {
+    background-image: url("../../../../images/foods/mango.png");
+}
+
+.orange {
+    background-image: url("../../../../images/foods/orange.png");
+}
+
+.lemon {
+    background-image: url("../../../../images/foods/lemon.png");
+}
+
+.watermelon {
+    background-image: url("../../../../images/foods/watermelon.png");
+}
+
 
 .snakeCell {
     border-radius: 4px;

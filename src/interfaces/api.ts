@@ -40,3 +40,10 @@ export interface IScore {
 export interface IScores {
     [key: string]: IScore,
 }
+
+export type TFood = 'apple' | 'banana' | 'cherries' | 'lemon' | 'mango' | 'orange' | 'pineapple' | 'watermelon'
+
+export interface IFood {
+    position: IPositionSchema,
+    type: TFood,
+}

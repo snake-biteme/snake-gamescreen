@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {COLUMNS, MIN_SIZE, ROWS} from '../../../../consts';
+import {COLUMNS, FOODS, MIN_SIZE, ROWS} from '../../../../consts';
 import styles from './Board.module.css';
 import {IAllPlayers} from '../../../../interfaces/api';
 
@@ -31,13 +31,15 @@ function Board({board, players} : IProps) {
                     minHeight: MIN_SIZE,
                 };
                 let cellType = '';
+                let foodType = '';
 
                 //check if cell is occupied
                 const occupied = board[r][c];
                 if (occupied !== null) {
                     // by food
-                    if (occupied === 'FOOD') {
+                    if (FOODS.includes(occupied)) {
                         cellType = 'foodCell';
+                        foodType = occupied;
                     // by player
                     } else {
                         cellType = 'snakeCell';
@@ -45,7 +47,7 @@ function Board({board, players} : IProps) {
                     }
                 }
                 // add the div to the row
-                row.push(<div key={columnKey} className={`${styles.cell} ${styles[cellType]}`} style={customStyle}/>);
+                row.push(<div key={columnKey} className={`${styles.cell} ${cellType !== '' ? styles[cellType] : ''} ${foodType !== '' ? styles[foodType] : ''}`} style={customStyle}/>);
             }
             const rowKey = `R_${r}`;
             // add all rows to complete the board

@@ -14,6 +14,8 @@ export const INACTIVE = false;
 export const SCREEN_ID = uuidv4();
 export const FOOD_COEFFICIENT = 3;
 
+export const FOODS = ['apple', 'banana', 'cherries', 'lemon', 'mango', 'orange', 'pineapple', 'watermelon'];
+
 const rootElement = document.getElementById('root');
 
 export const API_URL: string = rootElement?.getAttribute('data-api-url') || '';

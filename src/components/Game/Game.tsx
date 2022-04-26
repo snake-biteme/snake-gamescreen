@@ -1,11 +1,11 @@
 import React, { useEffect, useState} from 'react';
-import {IAllPlayers, IAllPositions, IPositionSchema, IScores} from '../../interfaces/api';
+import {IAllPlayers, IAllPositions, IFood, IPositionSchema, IScores} from '../../interfaces/api';
 import {COLUMNS, FOOD_COEFFICIENT, INACTIVE, MIN_LENGTH, ROWS, TICK} from '../../consts';
 import Board from './components/Board/Board';
 import NewPlayerLogic from './components/NewPlayerLogic';
 import styles from './Game.module.css';
 import Scoreboard from './Scoreboard/Scoreboard';
-import {getNewHead, getUnoccupiedPosition, getUpdatedFood, updateDirection} from './GameLogic';
+import {getNewHead, getRandomFood, getUnoccupiedPosition, getUpdatedFood, updateDirection} from './GameLogic';
 
 function initialBoard() {
     const columns = new Array(COLUMNS).fill(null);
@@ -16,7 +16,7 @@ function Game() {
     const [counter, setCounter] = useState<number>(0);
     const [players, setPlayers] = useState<IAllPlayers>({});
     const [positions, setPositions] = useState<IAllPositions>({});
-    const [foods, setFoods] = useState<IPositionSchema[]>([]);
+    const [foods, setFoods] = useState<IFood[]>([]);
     const [board, setBoard] = useState<(string | null)[][]>(initialBoard());
     const [scores, setScores] = useState<IScores>({});
 
@@ -79,11 +79,11 @@ function Game() {
             let ateFood = false;
             for (const food of foods) {
                 // check if head will collide with food
-                if (newHead.col === food.col && newHead.row === food.row) {
+                if (newHead.col === food.position.col && newHead.row === food.position.row) {
                     ateFood = true;
                     foodToClear = {
-                        row: food.row,
-                        col: food.col,
+                        row: food.position.row,
+                        col: food.position.col,
                     };
 
                     eatenFood.push(foodToClear);
@@ -133,7 +133,11 @@ function Game() {
         // const newFood: IPositionSchema[] = []
         for (let i = 0; i < foodToAdd; i++) {
             const foodPosition = getUnoccupiedPosition(positions, foods);
-            newFoods.push(foodPosition);
+            const newFood = {
+                position: foodPosition,
+                type: getRandomFood(),
+            };
+            newFoods.push(newFood);
         }
 
         setFoods(newFoods);
@@ -144,7 +148,7 @@ function Game() {
 
     useEffect(() => {
         // create a copy of current board
-        const newBoard = JSON.parse(JSON.stringify(board));
+        const newBoard: (string | null)[][] = JSON.parse(JSON.stringify(board));
         if (Object.keys(positions).length > 0) {
             // set all snakes to board
             for (const [id, position] of Object.entries(positions)) {
@@ -153,9 +157,9 @@ function Game() {
                 }));
             }
 
-            // set all food to board
+            // set all foods to board
             for (const food of foods) {
-                newBoard[food.row][food.col] = 'FOOD';
+                newBoard[food.position.row][food.position.col] = food.type;
             }
 
             setBoard(newBoard);

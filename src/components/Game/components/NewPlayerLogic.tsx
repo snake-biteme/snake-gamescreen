@@ -2,7 +2,7 @@ import React, {useEffect, Dispatch, SetStateAction} from 'react';
 import {
     IAllPlayers,
     IAllPositions,
-    IPositionSchema,
+    IFood,
     IRealTimeData,
     IScores,
 } from '../../../interfaces/api';
@@ -16,7 +16,7 @@ interface IProps {
     setPlayers: Dispatch<SetStateAction<IAllPlayers>>,
     setPositions: Dispatch<SetStateAction<IAllPositions>>,
     setScores: Dispatch<SetStateAction<IScores>>,
-    foods: IPositionSchema[],
+    foods: IFood[],
 }
 
 function NewPlayerLogic({setPlayers, setPositions, setScores, foods}: IProps) {

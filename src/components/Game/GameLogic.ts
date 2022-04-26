@@ -1,8 +1,8 @@
-import {IAllPositions, IPositionSchema, TDirections} from '../../interfaces/api';
+import {IAllPositions, IFood, IPositionSchema, TDirections, TFood} from '../../interfaces/api';
 import {randomIntFromInterval} from '../utils';
-import {COLUMNS, ROWS} from '../../consts';
+import {COLUMNS, FOODS, ROWS} from '../../consts';
 
-export function isPositionOccupied(positionToCheck: IPositionSchema, positions: IAllPositions, foods: IPositionSchema[]): boolean {
+export function isPositionOccupied(positionToCheck: IPositionSchema, positions: IAllPositions, foods: IFood[]): boolean {
     for (const snake of Object.values(positions)) {
         for (const cell of snake.position) {
             if (positionToCheck.row === cell.row && positionToCheck.col === cell.col) return true;
@@ -10,12 +10,12 @@ export function isPositionOccupied(positionToCheck: IPositionSchema, positions: 
     }
 
     for (const food of foods) {
-        if (positionToCheck.row === food.row && positionToCheck.col === food.col) return true;
+        if (positionToCheck.row === food.position.row && positionToCheck.col === food.position.col) return true;
     }
     return false;
 }
 
-export function getUnoccupiedPosition(positions: IAllPositions, foods: IPositionSchema[]): IPositionSchema {
+export function getUnoccupiedPosition(positions: IAllPositions, foods: IFood[]): IPositionSchema {
     // generate all possible coordinates for rows and columns
     const allUnoccupiedPositions = [];
     for (let r = 0; r < ROWS; r++) {
@@ -36,13 +36,13 @@ export function getUnoccupiedPosition(positions: IAllPositions, foods: IPosition
     return allUnoccupiedPositions[randomIndex];
 }
 
-export function getUpdatedFood(foods: IPositionSchema[], eatenFood: IPositionSchema[]): IPositionSchema[] {
-    const updatedFood: IPositionSchema[] = [];
+export function getUpdatedFood(foods: IFood[], eatenFood: IPositionSchema[]): IFood[] {
+    const updatedFood: IFood[] = [];
 
     for (const food of foods) {
         for (const eaten of eatenFood) {
             // if one is different then keep food
-            if (food.row !== eaten.row || food.col !== eaten.col) {
+            if (food.position.row !== eaten.row || food.position.col !== eaten.col) {
                 updatedFood.push({...food});
             }
         }
@@ -83,4 +83,8 @@ export function getNewHead(currentHead: IPositionSchema, updatedDirection: TDire
     }
 
     return newHead;
+}
+
+export function getRandomFood(): TFood {
+    return FOODS[randomIntFromInterval(0, FOODS.length)] as TFood;
 }
