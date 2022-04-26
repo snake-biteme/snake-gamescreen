@@ -20,7 +20,7 @@
 
 .App:before {
     content: "";
-    background-image: url("./images/background.png");
+    background-image: url("./images/background-lighter.png");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
