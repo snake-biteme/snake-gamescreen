@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {IAllPlayers, IAllPositions, IFood, IPositionSchema, IScores, TBoard} from '../../interfaces/api';
-import {COLUMNS, FOOD_COEFFICIENT, INACTIVE, MIN_LENGTH, ROWS, TICK} from '../../consts';
+import {COLUMNS, FOOD_COEFFICIENT, INACTIVE, KILL_BONUS, MIN_LENGTH, ROWS, TICK} from '../../consts';
 import Board from './components/Board/Board';
 import NewPlayerLogic from './components/NewPlayerLogic';
 import styles from './Game.module.css';
@@ -59,16 +59,19 @@ function Game() {
             const positionsToCheck = {...positions};
             positionsToCheck[id].position.pop();
 
-            for (const snake of Object.values(positionsToCheck)) {
+            for (const [snakeId, snake] of Object.entries(positionsToCheck)) {
                 snake.position.forEach(cell => {
                     if (cell.row === newHead.row && cell.col === newHead.col) {
                         collided = true;
                         // todo instead of deleting turn it into food?
                         toBeCleared.push(...positions[id].position);
 
-                        // deactivate player status in scores
+                        // deactivate player status in scores and add 5 points to whoever killed the snake
                         setScores(prev => {
-                            return {...prev, [id]: {...prev[id], status: INACTIVE}};
+                            if (snakeId === id) {
+                                return {...prev, [id]: {...prev[id], status: INACTIVE}};
+                            }
+                            return {...prev, [id]: {...prev[id], status: INACTIVE}, [snakeId]: {...prev[snakeId], food: prev[snakeId].food + KILL_BONUS}};
                         });
                     }
                 });
