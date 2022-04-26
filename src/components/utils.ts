@@ -1,30 +1,7 @@
 // utility functions for general data manipulation and transformation
-
 export function randomIntFromInterval(min: number, max: number) { // min and max included
     return Math.floor(Math.random() * (max - min) + min);
 }
-
-export function bothArraysEqual(array1: string[], array2: string[]) {
-    //https://stackoverflow.com/questions/3115982/how-to-check-if-two-arrays-are-equal-with-javascript
-    return array1.every(item => array2.includes(item)) && array2.every(item => array1.includes(item));
-}
-
-//COLOR MANIPULATION
-export function rgbToHex(r: number, g: number, b: number) {
-    return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
-}
-
-export function hexToRgb(hex: string) {
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    if (result) {
-        const r = parseInt(result[1], 16);
-        const g = parseInt(result[2], 16);
-        const b = parseInt(result[3], 16);
-        return r + ',' + g + ',' + b;//return 23,14,45 -> reformat if needed
-    }
-    return null;
-}
-
 
 // https://github.com/PimpTrizkit/PJs/wiki/12.-Shade,-Blend-and-Convert-a-Web-Color-(pSBC.js)
 export const pSBC = (p: any, c0: any, c1: any, l: any): string => {

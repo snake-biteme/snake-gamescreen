@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {COLUMNS, FOODS, MIN_SIZE, ROWS} from '../../../../consts';
+import {COLUMNS, MIN_SIZE, ROWS} from '../../../../consts';
 import styles from './Board.module.css';
 import {IAllPlayers, TBoard} from '../../../../interfaces/api';
 import {pSBC} from '../../../utils';
