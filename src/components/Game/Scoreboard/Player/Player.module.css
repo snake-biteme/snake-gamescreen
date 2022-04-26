@@ -1,6 +1,6 @@
 .active {
-    box-shadow: 0 6px 12px hsla(0, 0%, 0%, 0.30);
-    background-color: var(--secondary-color);
+    box-shadow: 0 6px 18px var(--secondary-darker);
+    background-color: var(--secondary-lightest);
 }
 
 .inactive {
@@ -12,8 +12,8 @@
     position: absolute;
     left: -10%;
     top: 50%;
-    height: 2px;
-    background: #000000;
+    height: 3px;
+    background: var(--secondary-darker);
     content: "";
     width: 120%;
 }
@@ -24,12 +24,15 @@
     align-items: center;
     margin: 10px;
     border-radius: 8px;
-    width: 200px;
+    width: 250px;
+    color: var(--secondary-darkest);
+    font-size: 140%;
+    padding: 6px;
 }
 
 .square {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     border-radius: 8px;
 }
 

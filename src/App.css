@@ -1,8 +1,15 @@
 :root {
-    --primary-color: darkgreen;
-    --secondary-color: #cecece;
+    --primary-lightest: #81dc81;
+    --primary-lighter: #51a951;
+    --primary-color: #0F880FFF;
+    --primary-darker: #006400;
+    --primary-darkest: #003d00;
+    --secondary-lightest: #ececec;
+    --secondary-lighter: #adadad;
+    --secondary-color: #858585;
+    --secondary-darker: #5d5d5d;
+    --secondary-darkest: #3d3d3d;
     --background-fill: #B1BA90;
-    --primary-lighter: #0F880FFF;
     --medium: 20px;
 }
 
