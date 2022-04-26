@@ -52,7 +52,7 @@ function Board({board, players}: IProps) {
                         cellType = 'snakeCell';
 
                         if (bodyType === 'HEAD') {
-                            playerColor = pSBC(-0.3, playerColor, false, true);
+                            playerColor = pSBC(0.3, playerColor, false, false);
                         }
                         customStyle['backgroundColor'] = playerColor;
                         customStyle['border'] = `1px solid ${playerColor}`;
