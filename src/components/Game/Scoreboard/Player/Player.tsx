@@ -14,7 +14,7 @@ function Player({player, score}: IProps) {
     return (
         <div className={`${styles[active]} ${styles.player}`}>
             <div className={styles.square} style={score.status ? {background: color} : {background: pSBC(0.4, color, '#ffffff', true)}}/>
-            <p className={styles.name}>{name}</p>
+            <p className={styles.name}>{name}<span className={styles.highest}>{score.highest} top</span></p>
             <span className={styles.food}>{score.food}</span>
         </div>
     );

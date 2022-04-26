@@ -80,7 +80,6 @@ function Game() {
             // ANY FOOD EATEN?
             let foodToClear: IPositionSchema | undefined;
             let ateFood = false;
-            console.log(foods);
             for (const food of foods) {
                 // check if head will collide with food
                 if (newHead.col === food.position.col && newHead.row === food.position.row) {
@@ -94,7 +93,15 @@ function Game() {
 
                     setScores(prev => {
                         const addFoodCount = prev[id].food + 1;
-                        return {...prev, [id]: {...prev[id], food: addFoodCount}};
+                        const newHighest = addFoodCount > prev[id].highest ? addFoodCount : prev[id].highest;
+
+                        const updated = {
+                            ...prev[id],
+                            food: addFoodCount,
+                            highest: newHighest
+                        };
+
+                        return {...prev, [id]: updated};
                     });
                 }
             }
@@ -135,7 +142,6 @@ function Game() {
 
         // generate additional food
         const foodToAdd = Math.floor((Object.keys(newPositions).length - newFoods.length) + (Object.keys(newPositions).length * FOOD_COEFFICIENT));
-        console.log('#of foods to add', foodToAdd);
         // const newFood: IPositionSchema[] = []
         for (let i = 0; i < foodToAdd; i++) {
             const foodPosition = getUnoccupiedPosition(positions, foods);
@@ -146,7 +152,6 @@ function Game() {
             newFoods.push(newFood);
         }
 
-        console.log('newFoos', newFoods);
         setFoods(newFoods);
 
         setPositions(newPositions);

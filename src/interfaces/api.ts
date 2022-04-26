@@ -35,6 +35,7 @@ export interface IAllPositions {
 export interface IScore {
     food: number,
     status: boolean,
+    highest: number,
 }
 
 export interface IScores {
