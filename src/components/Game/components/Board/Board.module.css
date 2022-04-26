@@ -1,13 +1,13 @@
 .board {
     box-shadow: 0 15px 60px hsla(0, 0%, 0%, 0.36);
     margin-right: var(--medium);
-    background-color: rgb(15, 136, 15);
-    border: 12px solid rgb(15, 136, 15);
+    background-color: var(--primary-color);
+    border: 12px solid var(--primary-color);
     border-radius: 20px;
 }
 
 .cell {
-    background-color: var(--primary-color);
+    background-color: var(--primary-lighter);
     margin: 1px;
 }
 

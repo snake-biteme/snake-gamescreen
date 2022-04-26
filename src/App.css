@@ -1,6 +1,8 @@
 :root {
     --primary-color: darkgreen;
     --secondary-color: #cecece;
+    --background-fill: #B1BA90;
+    --primary-lighter: #0F880FFF;
     --medium: 20px;
 }
 

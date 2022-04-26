@@ -48,7 +48,7 @@ function Board({board, players} : IProps) {
                         cellType = 'snakeCell';
                         customStyle['backgroundColor'] = players[occupied].color;
                         customStyle['border'] = `1px solid ${players[occupied].color}`;
-                        customStyle['boxShadow'] = `0 1px 8px ${pSBC(0.3, players[occupied].color, false, true)}`;
+                        customStyle['boxShadow'] = `0 1px 5px ${pSBC(-0.3, players[occupied].color, false, true)}`;
                     }
                 }
                 // add the div to the row

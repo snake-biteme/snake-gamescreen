@@ -5,14 +5,6 @@
     width: 100%;
 }
 
-.qrcode {
-    width: 150px;
-    height: 150px;
-    border: 1px solid red;
-    margin-right: var(--medium);
-    box-shadow: 0 15px 60px hsla(0, 0%, 0%, 0.24);
-}
-
 .logo{
     max-width: 40%;
 }

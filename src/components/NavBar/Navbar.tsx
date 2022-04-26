@@ -10,7 +10,9 @@ function Navbar() {
     // className not supported
     const qrcodeStyles = {
         marginRight: '20px',
-        boxShadow: '0 15px 60px hsla(0, 0%, 0%, 0.24)'
+        // boxShadow: '0 15px 60px hsla(0, 0%, 0%, 0.24)',
+        border: '10px solid var(--primary-color)',
+        borderRadius: '20px',
     };
     return (
         <div className={styles.container}>
