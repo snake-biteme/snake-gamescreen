@@ -36,15 +36,20 @@ export function getUnoccupiedPosition(positions: IAllPositions, foods: IFood[]):
     return allUnoccupiedPositions[randomIndex];
 }
 
+function isEaten(food: IFood, eatenFood: IPositionSchema[]) {
+    for (const eaten of eatenFood) {
+        if (eaten.row === food.position.row && eaten.col === food.position.col) return true;
+    }
+    
+    return false;
+}
+
 export function getUpdatedFood(foods: IFood[], eatenFood: IPositionSchema[]): IFood[] {
     const updatedFood: IFood[] = [];
 
     for (const food of foods) {
-        for (const eaten of eatenFood) {
-            // if one is different then keep food
-            if (food.position.row !== eaten.row || food.position.col !== eaten.col) {
-                updatedFood.push({...food});
-            }
+        if (!isEaten(food, eatenFood)) {
+            updatedFood.push(food);
         }
     }
 
