@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {COLUMNS, FOODS, MIN_SIZE, ROWS} from '../../../../consts';
 import styles from './Board.module.css';
 import {IAllPlayers} from '../../../../interfaces/api';
+import {pSBC} from '../../../utils';
 
 
 interface IProps {
@@ -13,6 +14,8 @@ interface IStyle {
     minWidth: number,
     minHeight: number,
     backgroundColor?: string,
+    border?: string,
+    boxShadow?: string,
 }
 
 function Board({board, players} : IProps) {
@@ -44,6 +47,8 @@ function Board({board, players} : IProps) {
                     } else {
                         cellType = 'snakeCell';
                         customStyle['backgroundColor'] = players[occupied].color;
+                        customStyle['border'] = `1px solid ${players[occupied].color}`;
+                        customStyle['boxShadow'] = `0 1px 8px ${pSBC(0.3, players[occupied].color, false, true)}`;
                     }
                 }
                 // add the div to the row
