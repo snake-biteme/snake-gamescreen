@@ -6,6 +6,9 @@
       "dom.iterable",
       "esnext"
     ],
+    "types": [
+       "dom-screen-wake-lock"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
