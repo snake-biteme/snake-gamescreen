@@ -16,8 +16,8 @@ function Navbar() {
     };
     return (
         <div className={styles.container}>
-            <img className={styles.logo} src={logo}/>
-            <QRCodeSVG style={qrcodeStyles} value={`${url}/?screenId=${SCREEN_ID}`} size={200}/>
+            <img className={styles.logo} src={logo} alt="BiteMe letters each in its own square bordered with green color" title="BiteMe logo"/>
+            <QRCodeSVG style={qrcodeStyles} value={`${url}/?screenId=${SCREEN_ID}`} size={200} />
         </div>
     );
 }
