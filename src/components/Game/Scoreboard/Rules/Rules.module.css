@@ -1,0 +1,18 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    min-height: 100%;
+    /*background: var(--background-fill);*/
+}
+
+.depiction {
+    max-width: 150px;
+    max-height: 150px;
+}
+
+.description {
+    font-size: 130%;
+    font-weight: bold;
+}

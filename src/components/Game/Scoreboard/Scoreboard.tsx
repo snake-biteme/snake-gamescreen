@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {IAllPlayers, IScores} from '../../../interfaces/api';
 import styles from './Scoreboard.module.css';
 import Player from './Player/Player';
+import Rules from './Rules/Rules';
 
 interface IProps {
     players: IAllPlayers,
@@ -24,7 +25,9 @@ function Scoreboard({players, scores}: IProps) {
     }, [scores]);
 
     return (
-        <div className={styles.container}>{scoreBoard}</div>
+        <div className={styles.container}>
+            {scoreBoard.length > 0 ? scoreBoard : <Rules/>}
+        </div>
     );
 }
 
