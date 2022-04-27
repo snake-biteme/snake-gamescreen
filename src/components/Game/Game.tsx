@@ -43,6 +43,7 @@ function Game() {
             const currentHead = {...currentPosition[0]};
 
             // check if move is valid - can only move to three directions, if not valid keep the previous direction (not the last valid direction sent)
+            // fixed the u turn insta kill
             const updatedDirection = updateDirection(snake.prevDirection, players[id].direction);
 
             // get the position of new head
@@ -66,7 +67,7 @@ function Game() {
                         // todo instead of deleting turn it into food?
                         toBeCleared.push(...positions[id].position);
 
-                        // deactivate player status in scores and add 5 points to whoever killed the snake
+                        // deactivate player status in scores and add X points to whoever killed the snake
                         setScores(prev => {
                             if (snakeId === id) {
                                 return {...prev, [id]: {...prev[id], status: INACTIVE}};
@@ -106,7 +107,7 @@ function Game() {
                 }
             }
 
-            // if large enough or did not eat food - pop tail in positions - this allows for the snake to "move" rather than grow infinitelly
+            // if large enough or did not eat food - pop tail in positions - this allows for the snake to "move" rather than grow infinitely
             if (currentPosition.length > MIN_LENGTH && !ateFood) {
                 toBeCleared.push(currentPosition.pop());
             }

@@ -21,7 +21,6 @@ function App() {
 
     return (
         <>
-            <div className="background-image"/>
             <div className="App">
                 <Navbar/>
                 <Game/>

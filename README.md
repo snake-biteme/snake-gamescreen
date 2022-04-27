@@ -1,23 +1,63 @@
 # 💻 Gamescreen for BiteMe
 
-##BiteMe
-BiteMe is a multiplayer snake game.
-It is a share screen type of game.
+<img alt="img.png" src="readme-img/img.png"/>
+BiteMe is an online multiplayer snake game, 
+where one player shares the game screen and others control their snake using their phone. 
+Here is a [short explanatory video](https://www.youtube.com/watch?v=LK3VkUqv2XU).
+
+## Runs on
+- node v16.14.2
 
 ## Start
-`bash
+```bash
+npm i
 npm start
-`
+````
 
-## Basic design
+#### Env variables
+- REACT_APP_REGION  - aws region of graphql
+- REACT_APP_ACCESS_KEY_ID - aws access key id for graphql
+- REACT_APP_SECRET_ACCESS_KEY - aws secret access key for graphql
+- REACT_APP_API_URL - url to graphql
+- REACT_APP_CONTROLLER_URL - qr code url redirect
+
+## Design
+### Rules
+<img alt="rules" src="readme-img/img_2.png" width="30%"/>
+
+### GameBoard
+- there are 8 types of food
+- scoreboard keeps top score for the whole game as well as per life
+
+  <img alt="game board screen shot" src="readme-img/img_5.png" width="70%"/>
 
 ## Tech stack
 - React, Typescript
+- AWS AppSync
 
-## Architecture
+  <img alt="tech stack diagram" src="readme-img/img_1.png" width="70%"/>
 
-### States
+# Game Architecture
+## Components composition
+```tsx
+<>
+    <NavBar>
+      <Logo/>
+      <QR code/> {/*redirects to you to conroller with correct screenID*/}
+    <NavBar/>
+    <Game> {/*Game logic (ticking, growing, food, scores, players...)*/}
+      <NewPlayerLogic/> {/*handles graphQL subscription and mutations*/}
+      { players ? 
+        <Rules/> : // show rules if no players, otherwise show scoreboard
+        <Scoreboard>
+          <Player/> {/*Player score details*/}
+        <Scoreboard/> } 
+      <Board/> {/*rendering of snakes, foods, board*/} 
+    <Game/>
+</>
+```
 
+## States
 #### Counter
 - type: `number`
 - ensures that the game renders at each tick rather than at change of other states
@@ -60,32 +100,66 @@ export interface IAllPositions {
 - snake body is an array of coordinates
 
 #### Foods
-- type: `IPositionSchema[]`
+```ts
+export type TFood = 'apple' | 'banana' | 'cherries' | 'lemon' | 'mango' | 'orange' | 'pineapple' | 'watermelon'
+
+export interface IFood {
+    position: IPositionSchema,
+    type: TFood,
+}
+```
 - most up-to-date position of all foods
 
 #### Board
-- type: `(string | null)[][]`
+```ts
+export type TBoard = ({[key: string]:string } | string | null)[][]
+```
 - abstract representation of the board in the form of array of arrays (rows and cols)
-- if there is `food = 'FOOD'`
-- if there is `player = ${playerId}`
+- if there is `food = 'banana' | ...`
+- if there is `player = {[playerId]: 'BODY' | 'HEAD`}
+
+#### Scores
+```ts
+export interface IScore {
+    food: number,
+    status: boolean,
+    highest: number,
+}
+
+export interface IScores {
+    [key: string]: IScore,
+}
+```
+- keeps tabs on highest score as well as current score
+- sorted by current score
+
+
+
+## Adjustable inputs - in `src/consts.ts`
+- `FOOD_COEFFICIENT` - amount of food spawned
+- `MIN_LENGTH` - starting length of snakes 
+- `TICK` - speed of the game
+- `KILL_BONUS` - points for killing a snake
 
 ## Rules
-- amount of food will be always same or more than number of players
 - there are only 3 directions a snake can go (forward, left, right; no backwards)
-- minimal length of snakes is 3 cells
+- by "killing" a snake (if a snake runs into you and dies) you can get extra points
 
-## CICD
-### CI
-1. github workflow on feature branches to build a package
-2. using makefile to execute the commands
-3. github workflow on master branch to build a package as well as release to S3 - release bucket
-4. using makefile to execute commands as well as gulpfile for zipping
+## Caveats
+- Doing U turn too fast (i.e. within one tick) will result in the direction being ignored and the snake would continue as previous direction. 
+- If both snakes will hit the same spot at the same time, they pass through each other - for each of them the algorithm determined that the next cell is empty
+
+# CICD
+## CI
+1. github workflow on feature branches to build a package  - using makefile to execute the commands
+2. github workflow on master branch to build a package as well as release to S3 - release dev bucket - using makefile to execute commands as well as gulpfile for zipping
+3. github workflow on tag to build a package and release to both S3 - release stable bucket
 
 In simple words, everytime I push something to a feature branch, github will try to build a package that is ready to be deployed (npm run build). 
 Everytime I push to master branch, not only will a package be created but a version file will be added to the build. 
 This build is then saved as an artifact on github as well as saved to the S3 release bucket
 
-### CD
+## CD
 - on push to master, deploy to staging - happening in the infrastructure repository
 
 Everytime I push to master (merge pull from feature), a workflow on my infrastructure repository is triggered.
