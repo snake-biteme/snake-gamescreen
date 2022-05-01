@@ -57,4 +57,4 @@ jobs:
           -H "Accept: application/vnd.github.v3+json" \
           -H "Authorization: token ${{ secrets.PAT_TOKEN }}" \
           --data '{"ref": "refs/heads/master"}' \
-          https://api.github.com/repos/tinazhouhui/snake_infrastructure/actions/workflows/frontend.yml/dispatches
+          https://api.github.com/repos/snake-biteme/snake_infrastructure/actions/workflows/frontend.yml/dispatches
