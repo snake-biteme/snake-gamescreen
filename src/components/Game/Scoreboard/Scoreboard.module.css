@@ -1,4 +1,11 @@
 .container {
-    min-width: 300px;
+    max-height: 67.5vh;
+    overflow-x: hidden;
     margin-left: var(--medium);
 }
+/*webkit- (Chrome, Safari, newer versions of Opera)*/
+.container::-webkit-scrollbar { width: 0 !important }
+/* Firefox 64 */
+.container { scrollbar-width: none }
+/* IE 11 */
+.container { -ms-overflow-style: none; }
