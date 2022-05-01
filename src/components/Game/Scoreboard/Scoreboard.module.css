@@ -1,9 +1,4 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 300px;
     min-width: 300px;
     margin-left: var(--medium);
-    margin-right: var(--medium);
 }
