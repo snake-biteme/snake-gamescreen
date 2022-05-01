@@ -12,8 +12,29 @@
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png"/>
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json"/>
     <title>BiteMe</title>
+    <!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({
+            'gtm.start':
+                new Date().getTime(), event: 'gtm.js'
+        });
+        var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+        j.async = true;
+        j.src =
+            'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+        f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', '%REACT_APP_GOOGLE_TAG_MANAGER%');</script>
+    <!-- End Google Tag Manager -->
 </head>
 <body>
+<!-- Google Tag Manager (noscript) -->
+<noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=%REACT_APP_GOOGLE_TAG_MANAGER%"
+            height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
+<!-- End Google Tag Manager (noscript) -->
 <noscript>You need to enable JavaScript to run this app.</noscript>
 <div id="root"
      data-version="%REACT_APP_VERSION%"
@@ -21,7 +42,6 @@
      data-controller-url="%REACT_APP_CONTROLLER_URL%"
      data-access-key-id="%REACT_APP_ACCESS_KEY_ID%"
      data-secret-access-key="%REACT_APP_SECRET_ACCESS_KEY%"
-     data-google-analytics="%REACT_APP_GOOGLE_ANALYTICS%"
 ></div>
 </body>
 </html>
