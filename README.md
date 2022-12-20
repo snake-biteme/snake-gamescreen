@@ -150,6 +150,9 @@ export interface IScores {
 - If both snakes will hit the same spot at the same time, they pass through each other - for each of them the algorithm determined that the next cell is empty
 
 # CICD
+
+![image](https://user-images.githubusercontent.com/63497846/208659212-420821e6-d230-4c6c-82a5-facd4ef6dff3.png)
+
 ## CI
 1. github workflow on feature branches to build a package  - using makefile to execute the commands
 2. github workflow on master branch to build a package as well as release to S3 - release dev bucket - using makefile to execute commands as well as gulpfile for zipping
