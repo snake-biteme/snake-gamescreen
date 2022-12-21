@@ -23,7 +23,7 @@ function App() {
     return (
         <>
             <div className="App">
-                {window.innerWidth > 600 ?
+                {window.innerWidth > 600 && window.innerHeight > 500 ?
                     <>
                         <Navbar/>
                         <Game/>

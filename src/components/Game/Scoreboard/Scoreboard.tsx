@@ -3,6 +3,7 @@ import {IAllPlayers, IScores} from '../../../interfaces/api';
 import styles from './Scoreboard.module.css';
 import Player from './Player/Player';
 import Rules from './Rules/Rules';
+import {BOARD_HEIGHT} from '../../../consts';
 
 interface IProps {
     players: IAllPlayers,
@@ -25,7 +26,7 @@ function Scoreboard({players, scores}: IProps) {
     }, [scores]);
 
     return (
-        <div className={styles.container}>
+        <div className={styles.container} style={{height: BOARD_HEIGHT}}>
             {scoreBoard.length > 0 ? scoreBoard : <Rules/>}
         </div>
     );

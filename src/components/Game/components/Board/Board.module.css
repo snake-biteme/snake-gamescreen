@@ -4,6 +4,7 @@
     background-color: var(--primary-color);
     border: 12px solid var(--primary-color);
     border-radius: 20px;
+    height: 100%;
 }
 
 .cell {
