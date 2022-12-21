@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import Game from './components/Game/Game';
 import Navbar from './components/NavBar/Navbar';
+import SmallScreen from './components/SmallScreen/SmallScreen';
 
 
 function App() {
@@ -22,8 +23,13 @@ function App() {
     return (
         <>
             <div className="App">
-                <Navbar/>
-                <Game/>
+                {window.innerWidth > 600 ?
+                    <>
+                        <Navbar/>
+                        <Game/>
+                    </> :
+                    <SmallScreen/>
+                }
             </div>
         </>
     );
