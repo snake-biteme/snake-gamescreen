@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './Navbar.module.css';
 import {QRCodeSVG} from 'qrcode.react';
 import {CONTROLLER_URL, SCREEN_ID} from '../../consts';
-import logo from '../../images/logo.png';
+import Logo from '../Logo/Logo';
 
 function Navbar() {
 
@@ -15,8 +15,8 @@ function Navbar() {
     };
     return (
         <div className={styles.container}>
-            <img className={styles.logo} src={logo} alt="BiteMe letters each in its own square bordered with green color" title="BiteMe logo"/>
-            <QRCodeSVG style={qrcodeStyles} value={`${url}/?screenId=${SCREEN_ID}`} size={200} />
+            <Logo/>
+            <QRCodeSVG style={qrcodeStyles} value={`${url}/?screenId=${SCREEN_ID}`} size={200}/>
         </div>
     );
 }
