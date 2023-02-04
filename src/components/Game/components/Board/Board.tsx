@@ -11,8 +11,8 @@ interface IProps {
 }
 
 interface IStyle {
-    minWidth: number,
-    minHeight: number,
+    width: number,
+    height: number,
     backgroundColor?: string,
     border?: string,
     boxShadow?: string,
@@ -31,8 +31,8 @@ function Board({board, players}: IProps) {
             for (let c = 0; c < COLUMNS; c++) {
                 const columnKey = `C_${c}`;
                 const customStyle: IStyle = {
-                    minWidth: MIN_SIZE,
-                    minHeight: MIN_SIZE,
+                    width: MIN_SIZE,
+                    height: MIN_SIZE,
                 };
                 let cellType = '';
                 let foodType = '';
@@ -55,8 +55,8 @@ function Board({board, players}: IProps) {
                             playerColor = pSBC(0.3, playerColor, false, false);
                         }
                         customStyle['backgroundColor'] = playerColor;
-                        customStyle['border'] = `1px solid ${playerColor}`;
-                        customStyle['boxShadow'] = `0 1px 5px ${pSBC(-0.3, playerColor, false, true)}`;
+                        customStyle['border'] = `0.08rem solid ${playerColor}`;
+                        customStyle['boxShadow'] = `0 0.08rem 0.5rem ${pSBC(-0.3, playerColor, false, true)}`;
                     }
                 }
                 // add the div to the row
