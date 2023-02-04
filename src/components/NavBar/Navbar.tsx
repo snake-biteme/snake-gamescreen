@@ -9,9 +9,9 @@ function Navbar() {
     const url = CONTROLLER_URL;
     // className not supported
     const qrcodeStyles = {
-        marginRight: '20px',
-        border: '10px solid var(--primary-color)',
-        borderRadius: '20px',
+        marginRight: '1rem',
+        border: '0.5rem solid var(--primary-color)',
+        borderRadius: '1rem',
     };
     return (
         <div className={styles.container}>

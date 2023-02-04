@@ -23,7 +23,7 @@
     justify-content: space-between;
     align-items: center;
     margin: 0.8rem 1.6rem;
-    border-radius: 8px;
+    border-radius: 0.4rem;
     color: var(--secondary-darkest);
     font-size: 140%;
     padding: 0.4rem;
