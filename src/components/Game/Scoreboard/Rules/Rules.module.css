@@ -1,6 +1,8 @@
 .container {
     max-height: 100%;
     overflow: auto;
+    margin-right: var(--larger);
+    margin-left: var(--larger);
 }
 
 .depiction {
@@ -11,5 +13,5 @@
 .description {
     font-size: 130%;
     font-weight: bold;
-    padding-bottom: 2rem;
+    padding-bottom: var(--larger);
 }

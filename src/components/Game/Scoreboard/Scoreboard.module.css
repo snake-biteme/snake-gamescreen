@@ -1,6 +1,5 @@
 .container {
     overflow-x: hidden;
-    margin-left: var(--medium);
 }
 /*webkit- (Chrome, Safari, newer versions of Opera)*/
 .container::-webkit-scrollbar { width: 0 !important }
