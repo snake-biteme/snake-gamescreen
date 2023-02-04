@@ -4,7 +4,7 @@ export const TILE_SIZE = 24;
 
 // dont forget to account for borders
 export const BOARD_WIDTH = window.innerWidth - 400;
-export const BOARD_HEIGHT = window.innerHeight - 280;
+export const BOARD_HEIGHT = window.innerHeight - 350;
 export const COLUMNS = Math.floor(BOARD_WIDTH/ (TILE_SIZE + 2));
 export const ROWS = Math.floor(BOARD_HEIGHT/ (TILE_SIZE + 2));
 export const TICK = 300;
