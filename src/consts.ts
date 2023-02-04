@@ -1,13 +1,13 @@
 import {v4 as uuidv4} from 'uuid';
 
-export const MIN_SIZE = 24;
+export const TILE_SIZE = 24;
 
 // dont forget to account for borders
 export const BOARD_WIDTH = window.innerWidth - 400;
 export const BOARD_HEIGHT = window.innerHeight - 280;
-export const COLUMNS = Math.floor(BOARD_WIDTH/ (MIN_SIZE + 2));
-export const ROWS = Math.floor(BOARD_HEIGHT/ (MIN_SIZE + 2));
-export const TICK = 250;
+export const COLUMNS = Math.floor(BOARD_WIDTH/ (TILE_SIZE + 2));
+export const ROWS = Math.floor(BOARD_HEIGHT/ (TILE_SIZE + 2));
+export const TICK = 300;
 export const MIN_LENGTH = 3;
 export const ACTIVE = true;
 export const INACTIVE = false;

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {COLUMNS, MIN_SIZE, ROWS} from '../../../../consts';
+import {COLUMNS, TILE_SIZE, ROWS} from '../../../../consts';
 import styles from './Board.module.css';
 import {IAllPlayers, TBoard} from '../../../../interfaces/api';
 import {pSBC} from '../../../utils';
@@ -31,8 +31,8 @@ function Board({board, players}: IProps) {
             for (let c = 0; c < COLUMNS; c++) {
                 const columnKey = `C_${c}`;
                 const customStyle: IStyle = {
-                    width: MIN_SIZE,
-                    height: MIN_SIZE,
+                    width: TILE_SIZE,
+                    height: TILE_SIZE,
                 };
                 let cellType = '';
                 let foodType = '';
