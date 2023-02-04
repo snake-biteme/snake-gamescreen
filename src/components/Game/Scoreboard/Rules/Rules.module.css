@@ -4,12 +4,12 @@
 }
 
 .depiction {
-    max-width: 150px;
-    max-height: 150px;
+    max-width: 12rem;
+    max-height: 10rem;
 }
 
 .description {
     font-size: 130%;
     font-weight: bold;
-    padding-bottom: 10px;
+    padding-bottom: 2rem;
 }

@@ -1,5 +1,5 @@
 .active {
-    box-shadow: 0 6px 18px var(--secondary-darker);
+    box-shadow: 0 0.3rem 1rem var(--secondary-darker);
     background-color: var(--secondary-lightest);
 }
 
@@ -12,7 +12,7 @@
     position: absolute;
     left: -10%;
     top: 50%;
-    height: 3px;
+    height: 0.2rem;
     background: var(--secondary-darker);
     content: "";
     width: 120%;
@@ -22,26 +22,28 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 10px 20px;
+    margin: 0.8rem 1.6rem;
     border-radius: 8px;
     color: var(--secondary-darkest);
     font-size: 140%;
-    padding: 6px;
+    padding: 0.4rem;
 }
 
 .square {
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 0.4rem;
+    margin-right: 0.4rem;
 }
 
 .food {
     font-size: 130%;
     font-weight: bold;
-    margin-right: 8px;
+    margin-right: 0.5rem;
+    margin-left: 0.5rem;
 }
 
 .highest {
-    margin-left: 16px;
+    margin-left: 1rem;
     font-size: 80%;
 }
