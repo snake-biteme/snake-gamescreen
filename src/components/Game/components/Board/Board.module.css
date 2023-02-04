@@ -9,7 +9,7 @@
 
 .cell {
     background-color: var(--primary-lighter);
-    margin: 1px;
+    border: 0.08rem solid var(--primary-color)
 }
 
 .snakeCell {
