@@ -1,5 +1,4 @@
 .container {
-    max-height: 67.5vh;
     overflow-x: hidden;
     margin-left: var(--medium);
 }
