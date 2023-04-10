@@ -11,6 +11,8 @@ function Navbar() {
     const qrcodeStyles = {
         marginRight: '1rem',
         border: '0.5rem solid var(--primary-color)',
+        background: 'white',
+        padding: '0.2rem',
         borderRadius: '1rem',
     };
     return (
