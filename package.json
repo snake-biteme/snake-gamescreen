@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "aws-appsync": "^4.1.9",
+    "aws-appsync": "^3.0.2",
     "graphql-tag": "^2.10.1",
     "gulp": "^4.0.2",
     "gulp-zip": "^4.2.0",
