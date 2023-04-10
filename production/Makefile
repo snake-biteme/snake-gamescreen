@@ -59,9 +59,6 @@ qa:
 	@(printf "${BG}Running tests${NC}")
 		cd $(root_project) && export FORCE_COLOR=1 && npm test
 
-	@(printf "${BG}Running Flow${NC}")
-		cd $(root_project) && node_modules/.bin/flow check --show-all-errors || true
-
 .PHONY: release
 release:
 	@(printf "${BG}Upload package to S3 repository${NC}")

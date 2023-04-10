@@ -36,7 +36,7 @@ jobs:
         run: make -C production/ version
 
       - name: QA
-        run: npm test
+        run: make -C production/ qa
 
       - name: Build
         run: make -C production/ package
