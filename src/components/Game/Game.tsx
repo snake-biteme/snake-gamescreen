@@ -5,7 +5,15 @@ import Board from './components/Board/Board';
 import NewPlayerLogic from './components/NewPlayerLogic';
 import styles from './Game.module.css';
 import Scoreboard from './Scoreboard/Scoreboard';
-import {getNewHead, getRandomFood, getUnoccupiedPosition, getUpdatedFood, updateDirection} from './GameLogic';
+import {
+    dropPosition,
+    getNewHead,
+    getRandomFood,
+    getUnoccupiedPosition,
+    getUnoccupiedPositions,
+    getUpdatedFood,
+    updateDirection
+} from './GameLogic';
 
 function initialBoard() {
     const columns = new Array(COLUMNS).fill(null);
@@ -143,9 +151,12 @@ function Game() {
 
         // generate additional food
         const foodToAdd = Math.floor((Object.keys(newPositions).length - newFoods.length) + (Object.keys(newPositions).length * FOOD_COEFFICIENT));
-        // const newFood: IPositionSchema[] = []
+
+        let unoccupiedPositions = getUnoccupiedPositions(positions, foods);
+
         for (let i = 0; i < foodToAdd; i++) {
-            const foodPosition = getUnoccupiedPosition(positions, foods);
+            const foodPosition = getUnoccupiedPosition(unoccupiedPositions);
+            unoccupiedPositions = dropPosition(foodPosition, unoccupiedPositions);
             const newFood = {
                 position: foodPosition,
                 type: getRandomFood(),

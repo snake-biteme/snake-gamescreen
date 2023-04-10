@@ -9,7 +9,7 @@ import {
 import apiClientAppSync from '../../../services/apiClientAppSync';
 import {updatePosition} from '../../../services/graphql';
 import {ACTIVE, SCREEN_ID} from '../../../consts';
-import {getUnoccupiedPosition} from '../GameLogic';
+import {getUnoccupiedPosition, getUnoccupiedPositions} from '../GameLogic';
 
 interface IProps {
     // setState hook types: https://stackoverflow.com/a/56028976/18631517
@@ -35,7 +35,8 @@ function NewPlayerLogic({setPlayers, setPositions, setScores, foods}: IProps) {
         // generate random position for new players - checking if they exist
         setPositions((prevState: IAllPositions) => {
             if (!prevState[playerId]) {
-                const randomPosition = getUnoccupiedPosition(prevState, foods);
+                const unoccupiedPositions = getUnoccupiedPositions(prevState, foods);
+                const randomPosition = getUnoccupiedPosition(unoccupiedPositions);
                 return {
                     ...prevState,
                     [playerId]: {

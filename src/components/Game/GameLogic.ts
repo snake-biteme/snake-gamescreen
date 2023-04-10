@@ -15,7 +15,7 @@ export function isPositionOccupied(positionToCheck: IPositionSchema, positions: 
     return false;
 }
 
-export function getUnoccupiedPosition(positions: IAllPositions, foods: IFood[]): IPositionSchema {
+export function getUnoccupiedPositions(positions: IAllPositions, foods: IFood[]): IPositionSchema[] {
     // generate all possible coordinates for rows and columns
     const allUnoccupiedPositions = [];
     for (let r = 0; r < ROWS; r++) {
@@ -30,17 +30,33 @@ export function getUnoccupiedPosition(positions: IAllPositions, foods: IFood[]):
             }
         }
     }
+    return allUnoccupiedPositions;
+}
 
-    // get a random position from unoccupied positions
-    const randomIndex = randomIntFromInterval(0, allUnoccupiedPositions.length);
-    return allUnoccupiedPositions[randomIndex];
+/**
+ * Get a random position from unoccupied positions
+ * @param unoccupiedPositions
+ */
+export function getUnoccupiedPosition(unoccupiedPositions: IPositionSchema[]): IPositionSchema {
+    const randomIndex = randomIntFromInterval(0, unoccupiedPositions.length);
+    return unoccupiedPositions[randomIndex];
+}
+
+export function dropPosition(positionToDrop: IPositionSchema, positions: IPositionSchema[]) {
+    return positions.reduce((acc: IPositionSchema[], current) => {
+        if (current.row !== positionToDrop.row || current.col !== positionToDrop.col) {
+            acc.push(current);
+        }
+
+        return acc;
+    }, []);
 }
 
 function isEaten(food: IFood, eatenFood: IPositionSchema[]) {
     for (const eaten of eatenFood) {
         if (eaten.row === food.position.row && eaten.col === food.position.col) return true;
     }
-    
+
     return false;
 }
 
