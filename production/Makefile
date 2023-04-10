@@ -52,7 +52,7 @@ package: app
 		echo $(version) >$(release)/latest.version
 
 .PHONY: qa
-qa:
+qa: npm
 	@(printf "${BG}Prepare log directory${NC}")
 		mkdir -p $(root_project)/log
 
