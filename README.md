@@ -6,7 +6,7 @@ where one player shares the game screen and others control their snake using the
 Here is a [short explanatory video](https://www.youtube.com/watch?v=LK3VkUqv2XU).
 
 ## Runs on
-- node v16.14.2
+- node v18
 
 ## Start
 ```bash
