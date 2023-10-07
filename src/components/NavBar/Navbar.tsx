@@ -18,6 +18,11 @@ function Navbar() {
     return (
         <div className={styles.container}>
             <Logo/>
+            <h2 className={styles.feedback} >
+                Hey! Glad you are here and thank you for playing!
+                If you can, please share some feedback to <a href='mailto:info@startbite.me'>info@startbite.me</a>,
+                I would love to get your opinion on how to make the game even better.
+            </h2>
             <QRCodeSVG style={qrcodeStyles} value={`${url}/?screenId=${SCREEN_ID}`} size={200}/>
         </div>
     );
