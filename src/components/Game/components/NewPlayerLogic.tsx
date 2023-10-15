@@ -10,6 +10,7 @@ import apiClientAppSync from '../../../services/apiClientAppSync';
 import {updatePosition} from '../../../services/graphql';
 import {ACTIVE, SCREEN_ID} from '../../../consts';
 import {getUnoccupiedPosition, getUnoccupiedPositions} from '../GameLogic';
+import * as amplitude from '@amplitude/analytics-browser';
 
 interface IProps {
     // setState hook types: https://stackoverflow.com/a/56028976/18631517
@@ -35,6 +36,7 @@ function NewPlayerLogic({setPlayers, setPositions, setScores, foods}: IProps) {
         // generate random position for new players - checking if they exist
         setPositions((prevState: IAllPositions) => {
             if (!prevState[playerId]) {
+                amplitude.track('New player', {screenId: SCREEN_ID, playerId});
                 const unoccupiedPositions = getUnoccupiedPositions(prevState, foods);
                 const randomPosition = getUnoccupiedPosition(unoccupiedPositions);
                 return {
