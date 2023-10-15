@@ -23,3 +23,4 @@ export const CONTROLLER_URL: string = rootElement?.getAttribute('data-controller
 export const AWS_REGION: string = rootElement?.getAttribute('data-aws-region') || 'eu-west-1';
 export const AWS_ACCESS_KEY_ID: string = rootElement?.getAttribute('data-access-key-id') || '';
 export const AWS_SECRET_ACCESS_KEY: string = rootElement?.getAttribute('data-secret-access-key') || '';
+export const AMPLITUDE_API_KEY: string | null = rootElement?.getAttribute('data-amplitude-api-key') || null;
