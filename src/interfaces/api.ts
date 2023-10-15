@@ -4,8 +4,8 @@ export interface IPlayerSchema {
     playerId: string,
     screenId: string,
     name: string,
-    toGrow: number,
-    __typename: string,
+    toGrow?: number,
+    __typename?: string,
 }
 
 export type TDirections = 'UP' | 'DOWN' | 'RIGHT' | 'LEFT';
